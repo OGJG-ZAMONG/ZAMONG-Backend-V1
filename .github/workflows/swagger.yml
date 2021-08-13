@@ -1,0 +1,18 @@
+on:
+  push:
+    branches:
+      - main
+      - "feature/**"
+
+jobs:
+  deploy-document:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: Legion2/swagger-ui-action@v1
+        with:
+          output: swagger-ui
+          spec-file: ./src/main/resources/static/openapi.yml
+      - uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: swagger-ui
