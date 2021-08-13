@@ -8,17 +8,11 @@ jobs:
   deploy-document:
     runs-on: ubuntu-latest
     steps:
-      - name: Set up
-        uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
+      - uses: actions/checkout@v2
 
       - name: Test
-        run: |
-          ls
-          cd ./src
-          cd ..
-          
+        run: ls
+
       - name: Deploy Swagger Docs
         uses: Legion2/swagger-ui-action@v1
         with:
