@@ -11,7 +11,7 @@ jobs:
       - uses: actions/checkout@v2
 
       - name: Test
-        run: ls
+        run: pwd
 
       - name: Deploy Swagger Docs
         uses: Legion2/swagger-ui-action@v1
@@ -19,6 +19,12 @@ jobs:
           output: swagger-ui
           spec-file: ./src/main/resources/static/openapi.yml
 
+      - name: Test
+        run: pwd
+
+      - name: Test
+        run: pwd
+        
       - name: Deploy Github Page
         uses: peaceiris/actions-gh-pages@v3
         with:
