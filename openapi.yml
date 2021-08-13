@@ -1,0 +1,15 @@
+openapi: 3.0.3
+info:
+  title: ZAMONG Service
+  description: ZAMONG Service Backend API Specification
+  contact:
+    name: API Support
+    email: jiwoourty@gmail.com
+  version: 0.0.1
+servers:
+  - url: 'http://localhost:8080'
+    description: localhost server
+paths:
+  '/':
+    get:
+      'index'
