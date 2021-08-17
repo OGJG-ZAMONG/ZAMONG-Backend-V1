@@ -22,3 +22,15 @@ paths:
   '/':
     get:
       'index'
+components:
+  schemas:
+    UserModel:
+      type: object
+      readOnly: true
+      properties:
+        email:
+          required: true
+          type: string
+          format: email
+          description: Email Adress
+          example: jiwoourty@gmail.com
