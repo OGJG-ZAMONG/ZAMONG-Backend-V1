@@ -14,15 +14,24 @@ security:
 tags:
   - name: auth
     description: 사용자 인증 관련 API
-  - name: profile
-    description: 사용자 프로필 관련 API
+  - name: user
+    description: 사용자 관련 API
   - name: dream
     description: 꿈 관련 API
 paths:
-  '/':
+  '/user/{user-uuid}':
     get:
-      'index'
 components:
+  parameters:
+    user-uuid:
+      name: user-uuid
+      required: true
+      in: path
+      description: UUID 형태의 사용자의 식별자
+      schema:
+        type: string
+        format: uuid
+        writeOnly: true
   schemas:
     UserModel:
       type: object
