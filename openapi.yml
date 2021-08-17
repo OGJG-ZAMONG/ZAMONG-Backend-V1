@@ -14,15 +14,38 @@ security:
 tags:
   - name: auth
     description: 사용자 인증 관련 API
-  - name: profile
-    description: 사용자 프로필 관련 API
+  - name: user
+    description: 사용자 관련 API
   - name: dream
     description: 꿈 관련 API
 paths:
-  '/':
+  '/user/{user-uuid}':
+    parameters:
+      - $ref: '#/components/parameters/user-uuid'
     get:
-      'index'
+      description: '사용자 기본 정보'
+      tags:
+        - user
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserModel'
+        500:
+          $ref: '#/components/responses/500'
 components:
+  parameters:
+    user-uuid:
+      name: user-uuid
+      required: true
+      in: path
+      description: UUID 형태의 사용자의 식별자
+      schema:
+        type: string
+        format: uuid
+        writeOnly: true
   schemas:
     UserModel:
       type: object
@@ -34,3 +57,19 @@ components:
           format: email
           description: Email Adress
           example: jiwoourty@gmail.com
+    ErrorModel:
+      type: object
+      readOnly: true
+      properties:
+        message:
+          required: true
+          type: string
+          description: Error Message
+          example: Internal Server Error
+  responses:
+    500:
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorModel'
