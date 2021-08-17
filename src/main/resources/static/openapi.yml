@@ -20,7 +20,21 @@ tags:
     description: 꿈 관련 API
 paths:
   '/user/{user-uuid}':
+    parameters:
+      - $ref: '#/components/parameters/user-uuid'
     get:
+      description: '사용자 기본 정보'
+      tags:
+        - user
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserModel'
+        500:
+          $ref: '#/components/responses/500'
 components:
   parameters:
     user-uuid:
@@ -43,3 +57,19 @@ components:
           format: email
           description: Email Adress
           example: jiwoourty@gmail.com
+    ErrorModel:
+      type: object
+      readOnly: true
+      properties:
+        message:
+          required: true
+          type: string
+          description: Error Message
+          example: Internal Server Error
+  responses:
+    500:
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorModel'
