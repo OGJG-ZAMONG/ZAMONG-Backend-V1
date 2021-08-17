@@ -9,6 +9,15 @@ info:
 servers:
   - url: 'http://localhost:8080'
     description: localhost server
+security:
+  - BearerToken: [ ]
+tags:
+  - name: auth
+    description: 사용자 인증 관련 API
+  - name: profile
+    description: 사용자 프로필 관련 API
+  - name: dream
+    description: 꿈 관련 API
 paths:
   '/':
     get:
