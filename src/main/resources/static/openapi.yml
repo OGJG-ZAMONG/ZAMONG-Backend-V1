@@ -19,6 +19,35 @@ tags:
   - name: dream
     description: 꿈 관련 API
 paths:
+  '/auth/signup':
+    post:
+      tags:
+        - auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required: true
+              writeOnly: true
+              properties:
+                name:
+                  $ref: '#/components/parameters/name'
+                email:
+                  $ref: ''
+                authentication_code:
+                  $ref: ''
+                id: ''
+                  $ref: ''
+                password:
+                  $ref: ''
+      responses:
+        '201':
+          description: 회원가입 성공
+          content:
+            application/json:
+              schema:
+                type: string
   '/user/{user-uuid}':
     parameters:
       - $ref: '#/components/parameters/user-uuid'
@@ -46,6 +75,22 @@ components:
         type: string
         format: uuid
         writeOnly: true
+    name:
+      name: user
+      required: true
+      in: path
+      description: 사용자 이름
+      schema:
+        type: string
+        example: 김진근
+    email:
+      name: email
+      required: true
+      in: path
+      description: 사용자 이메일
+      schema:
+        type: string
+        example: jiwoourty@gmail.com
   schemas:
     UserModel:
       type: object
