@@ -34,13 +34,13 @@ paths:
                 name:
                   $ref: '#/components/parameters/name'
                 email:
-                  $ref: ''
+                  $ref: '#/components/parameters/email'
                 authentication_code:
-                  $ref: ''
-                id: ''
-                  $ref: ''
+                  $ref: '#/components/parameters/authentication_code'
+                id:
+                  $ref: '#/components/parameters/id'
                 password:
-                  $ref: ''
+                  $ref: '#/components/parameters/password'
       responses:
         201:
           description: 회원가입 성공
@@ -93,6 +93,29 @@ components:
       schema:
         type: string
         example: jiwoourty@gmail.com
+    authentication_code:
+      name: authentication_code
+      required: true
+      in: path
+      description: 6자 이메일 인증 코드
+      schema:
+        type: string
+        example: 000000
+    id:
+      name: id
+      required: true
+      in: path
+      description: 사용자 id
+      schema:
+        type: string
+        example: dsm_jingeun04
+    password:
+      name: password
+      required: true
+      in: path
+      description: 사용자 비밀번호
+      schema:
+        type: string
   schemas:
     UserModel:
       type: object
