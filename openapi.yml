@@ -50,6 +50,8 @@ paths:
                 $ref: '#/components/schemas/UserModel'
         400:
           $ref: '#/components/responses/InvalidParameter'
+        500:
+          $ref: '#/components/responses/500'
   '/user/{user-uuid}':
     parameters:
       - $ref: '#/components/parameters/user-uuid'
@@ -81,52 +83,52 @@ components:
       name: user
       required: true
       in: path
-      description: 사용자 이름
-      schema:
-        type: string
-        example: 김진근
+      example: 김진근
     email:
       name: email
       required: true
       in: path
-      description: 사용자 이메일
-      schema:
-        type: string
-        example: jiwoourty@gmail.com
+      example: 201403kjg@dsm.hs.kr
     authentication_code:
       name: authentication_code
       required: true
       in: path
-      description: 6자 이메일 인증 코드
-      schema:
-        type: string
-        example: 000000
+      example: "000000 (문자열)"
     id:
       name: id
       required: true
       in: path
-      description: 사용자 id
-      schema:
-        type: string
-        example: dsm_jingeun04
+      example: dsm_jingeun04
     password:
       name: password
       required: true
       in: path
-      description: 사용자 비밀번호
-      schema:
-        type: string
+      example: 사용자 비밀번호
   schemas:
     UserModel:
       type: object
       readOnly: true
       properties:
+        uuid:
+          required: true
+          type: uuid
+          format: uuid
+          example: 123e4567-e89b-12d3-a456-426614174000
+        id:
+          required: true
+          example: dsm_jingeun04
         email:
           required: true
           type: string
           format: email
-          description: Email Adress
-          example: jiwoourty@gmail.com
+          example: 201403kjg@dsm.hs.kr
+        name:
+          required: true
+          type: string
+          example: 김진근
+        password:
+          required: true
+          example: 사용자 비밀번호
     ErrorModel:
       type: object
       readOnly: true
