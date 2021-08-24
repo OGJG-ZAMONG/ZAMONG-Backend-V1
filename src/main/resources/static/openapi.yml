@@ -18,6 +18,38 @@ tags:
     description: 꿈 관련 API
 
 paths:
+  '/auth/user-id/duplicate':
+    post:
+      tags:
+        - auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required: true
+              writeOnly: true
+              properties:
+                id:
+                  $ref: '#/components/parameters/id'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    example: "response success"
+                  status:
+                    example: 200
+                  response:
+                    example: "사용가능한 아이디입니다"
+        400:
+          $ref: '#/components/responses/DuplicatedUserId'
+        500:
+          $ref: '#/components/responses/InternalServerError'
   '/auth/signup':
     post:
       tags:
@@ -52,7 +84,7 @@ paths:
                     example: "response success"
                   status:
                     example: 201
-                  user:
+                  response:
                     type: object
                     $ref: '#/components/schemas/UserModel'
         401:
@@ -81,8 +113,10 @@ paths:
                   response:
                     type: object
                     $ref: '#/components/schemas/UserModel'
+        400:
+          $ref: '#/components/responses/BadUserUUID'
         500:
-          $ref: '#/components/responses/500'
+          $ref: '#/components/responses/InternalServerError'
 
 components:
   parameters:
@@ -145,6 +179,36 @@ components:
         password:
           required: true
           example: 사용자 비밀번호
+    BadUserUUIDModel:
+      type: object
+      properties:
+        message:
+          type: string
+          example: response error
+        status:
+          example: 400
+        response:
+          type: object
+          properties:
+            name:
+              example: Bad User UUID
+            description:
+              example: "잘못된 식별자입니다"
+    DuplicatedUserIdErrorModel:
+      type: object
+      properties:
+        message:
+          type: string
+          example: response error
+        status:
+          example: 400
+        response:
+          type: object
+          properties:
+            name:
+              example: Duplicated User Id
+            description:
+              example: "중복된 아이디입니다"
     UnauthorizedAuthenticationCodeErrorModel:
       type: object
       properties:
@@ -177,6 +241,18 @@ components:
             description:
               example: "오류가 발생했습니다"
   responses:
+    BadUserUUID:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/BadUserUUIDModel'
+    DuplicatedUserId:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/DuplicatedUserIdErrorModel'
     UnauthorizedAuthenticationCode:
       description: Bad Request
       content:
