@@ -9,8 +9,6 @@ info:
 servers:
   - url: 'http://localhost:8080'
     description: localhost server
-security:
-  - BearerToken: [ ]
 tags:
   - name: auth
     description: 사용자 인증 관련 API
@@ -18,6 +16,7 @@ tags:
     description: 사용자 관련 API
   - name: dream
     description: 꿈 관련 API
+
 paths:
   '/auth/signup':
     post:
@@ -47,11 +46,19 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/UserModel'
-        400:
-          $ref: '#/components/responses/InvalidParameter'
+                type: object
+                properties:
+                  message:
+                    example: "response success"
+                  status:
+                    example: 201
+                  user:
+                    type: object
+                    $ref: '#/components/schemas/UserModel'
+        401:
+          $ref: '#/components/responses/UnauthorizedAuthenticationCode'
         500:
-          $ref: '#/components/responses/500'
+          $ref: '#/components/responses/InternalServerError'
   '/user/{user-uuid}':
     parameters:
       - $ref: '#/components/parameters/user-uuid'
@@ -65,9 +72,18 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/UserModel'
+                type: object
+                properties:
+                  message:
+                    example: "response success"
+                  status:
+                    example: 200
+                  response:
+                    type: object
+                    $ref: '#/components/schemas/UserModel'
         500:
           $ref: '#/components/responses/500'
+
 components:
   parameters:
     user-uuid:
@@ -114,42 +130,62 @@ components:
           type: uuid
           format: uuid
           example: 123e4567-e89b-12d3-a456-426614174000
-        id:
+        name:
           required: true
-          example: dsm_jingeun04
+          type: string
+          example: 김진근
         email:
           required: true
           type: string
           format: email
           example: 201403kjg@dsm.hs.kr
-        name:
+        id:
           required: true
-          type: string
-          example: 김진근
+          example: dsm_jingeun04
         password:
           required: true
           example: 사용자 비밀번호
-    ErrorModel:
+    UnauthorizedAuthenticationCodeErrorModel:
+      type: object
+      properties:
+        message:
+          type: string
+          example: response error
+        status:
+          example: 401
+        response:
+          type: object
+          properties:
+            name:
+              example: Unauthorized Authentication Code
+            description:
+              example: "인증코드가 잘못되었습니다"
+    InternalServerErrorModel:
       type: object
       readOnly: true
       properties:
         message:
-          required: true
           type: string
-          description: Error Message
           example: Internal Server Error
+        status:
+          example: 500
+        response:
+          type: object
+          properties:
+            name:
+              example: Internal Server Error
+            description:
+              example: "오류가 발생했습니다"
   responses:
-    InvalidParameter:
-      description: Invalid Parameter
-    401:
-      description: Unauthorized
-    403:
-      description: Forbidden
-    404:
-      description: Not Found
-    500:
+    UnauthorizedAuthenticationCode:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/UnauthorizedAuthenticationCodeErrorModel'
+    InternalServerError:
       description: Internal Server Error
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/ErrorModel'
+            $ref: '#/components/schemas/InternalServerErrorModel'
