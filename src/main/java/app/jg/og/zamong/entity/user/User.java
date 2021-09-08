@@ -5,9 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.UUID;
 
 @Builder
@@ -18,7 +16,7 @@ import java.util.UUID;
 public class User {
 
     @Id
-    private UUID uuid;
+    private String uuid;
 
     @Column(length = 20)
     private String name;
