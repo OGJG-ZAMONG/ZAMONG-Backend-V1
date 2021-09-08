@@ -1,0 +1,16 @@
+spring:
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: none
+  datasource:
+    url: ${JDBC_URL}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    password: ${DATABASE_PASSWORD}
+    username: ${DATABASE_USERNAME}
+auth:
+  jwt:
+    exp:
+      refresh: ${JWT_EXP_REFRESH}
+      access: ${JWT_EXP_ACCESS}
+    secret: ${JWT_SECRET_KEY}
