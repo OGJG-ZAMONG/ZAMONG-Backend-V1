@@ -1,6 +1,8 @@
 package app.jg.og.zamong.service;
 
+import app.jg.og.zamong.dto.request.LoginUserRequest;
 import app.jg.og.zamong.dto.request.SignUpUserRequest;
+import app.jg.og.zamong.dto.response.IssueTokenResponse;
 import app.jg.og.zamong.entity.user.User;
 import app.jg.og.zamong.entity.user.UserRepository;
 import app.jg.og.zamong.security.JwtTokenProvider;
@@ -70,4 +72,34 @@ public class AuthServiceTest {
         // then
         assertThat(expectUser).isEqualTo(user);
     }
+
+    @Test
+    void 로그인_성공() {
+        //given
+        String identity = user.getId();
+        String uuid = user.getUuid();
+
+        given(userRepository.findByEmailOrId(identity, identity)).willReturn(Optional.of(user));
+
+        String password = user.getPassword();
+
+        given(passwordEncoder.matches(password, user.getPassword())).willReturn(true);
+
+        String accessToken = "accessToken";
+        String refreshToken = "refreshToken";
+
+        given(jwtTokenProvider.generateAccessToken(uuid)).willReturn(accessToken);
+        given(jwtTokenProvider.generateRefreshToken(uuid)).willReturn(refreshToken);
+
+        //when
+        LoginUserRequest request = LoginUserRequest.builder()
+                .userIdentity(identity)
+                .password(password)
+                .build();
+        IssueTokenResponse response = authService.loginUser(request);
+
+        //then
+        assertThat(response.getAccessToken()).isEqualTo(accessToken);
+        assertThat(response.getRefreshToken()).isEqualTo(refreshToken);
+;    }
 }
