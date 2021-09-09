@@ -1,6 +1,8 @@
 package app.jg.og.zamong.controller;
 
+import app.jg.og.zamong.dto.request.LoginUserRequest;
 import app.jg.og.zamong.dto.request.SignUpUserRequest;
+import app.jg.og.zamong.dto.response.IssueTokenResponse;
 import app.jg.og.zamong.entity.user.User;
 import app.jg.og.zamong.service.auth.AuthService;
 import lombok.RequiredArgsConstructor;
@@ -19,5 +21,10 @@ public class AuthController {
     @PostMapping("/signup")
     public User register(@RequestBody SignUpUserRequest request) {
         return authService.registerUser(request);
+    }
+
+    @PostMapping("/login")
+    public IssueTokenResponse login(@RequestBody LoginUserRequest request) {
+        return authService.loginUser(request);
     }
 }
