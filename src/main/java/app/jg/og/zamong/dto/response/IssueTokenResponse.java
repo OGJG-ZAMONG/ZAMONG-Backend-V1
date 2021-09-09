@@ -2,8 +2,10 @@ package app.jg.og.zamong.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
+import lombok.Getter;
 
 @Builder
+@Getter
 public class IssueTokenResponse {
 
     @JsonProperty("access_token")
