@@ -62,21 +62,16 @@ public class JwtTokenProvider {
         return null;
     }
 
-    public boolean validateToken(String token) {
-        try {
-            Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
-            return true;
-        } catch (Exception e) {
-            return false;
-        }
-    }
-
     public Authentication getAuthentication(String token) {
         AuthenticationDetails authenticationDetails = authenticationDetailService.loadUserByUsername(getUserUuid(token));
         return new UsernamePasswordAuthenticationToken(authenticationDetails, "", null); // authenticationDetails.getAuthorities
     }
 
     public String getUserUuid(String token) {
-        return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().getSubject();
+        try {
+            return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().getSubject();
+        } catch (Exception e) {
+            throw new RuntimeException();
+        }
     }
 }
