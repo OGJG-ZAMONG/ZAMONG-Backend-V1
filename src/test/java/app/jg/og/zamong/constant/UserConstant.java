@@ -5,4 +5,5 @@ public class UserConstant {
     public static final String EMAIL = "zamong@gmail.com";
     public static final String ID = "id";
     public static final String PASSWORD = "password";
+    public static final String AUTHENTICATION_CODE = "authenticationCode";
 }

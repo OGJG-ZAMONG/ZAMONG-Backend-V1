@@ -1,6 +1,7 @@
 package app.jg.og.zamong.service;
 
 import app.jg.og.zamong.constant.SecurityConstant;
+import app.jg.og.zamong.constant.UserConstant;
 import app.jg.og.zamong.dto.request.LoginUserRequest;
 import app.jg.og.zamong.dto.request.SignUpUserRequest;
 import app.jg.og.zamong.dto.response.IssueTokenResponse;
@@ -53,12 +54,12 @@ public class AuthServiceTest {
         //given
         String name = user.getName();
         String email = user.getEmail();
-        String authenticationCode = "000000";
         String id = user.getId();
         String password = user.getPassword();
+        String authenticationCode = UserConstant.AUTHENTICATION_CODE;
 
         given(userRepository.findByEmail(email)).willReturn(Optional.empty());
-        given(userRepository.save(any())).willReturn(user);
+        given(userRepository.save(any())).willReturn(UserBuilder.build());
 
         // when
         SignUpUserRequest request = SignUpUserRequest.builder()
@@ -71,7 +72,7 @@ public class AuthServiceTest {
         User expectUser = authService.registerUser(request);
 
         // then
-        assertThat(expectUser).isEqualTo(user);
+        assertThat(expectUser.equals(user)).isTrue();
     }
 
     @Test
