@@ -6,6 +6,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.UUID;
+
 @Service
 @RequiredArgsConstructor
 public class AuthenticationDetailService implements UserDetailsService {
@@ -14,7 +16,7 @@ public class AuthenticationDetailService implements UserDetailsService {
 
     @Override
     public AuthenticationDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return userRepository.findByUuid(username)
+        return userRepository.findByUuid(UUID.fromString(username))
                 .map(AuthenticationDetails::new)
                 .orElseThrow(() -> new UsernameNotFoundException("Not Found Username " + username));
     }
