@@ -1,5 +1,6 @@
 package app.jg.og.zamong.service;
 
+import app.jg.og.zamong.constant.SecurityConstant;
 import app.jg.og.zamong.dto.request.LoginUserRequest;
 import app.jg.og.zamong.dto.request.SignUpUserRequest;
 import app.jg.og.zamong.dto.response.IssueTokenResponse;
@@ -77,17 +78,13 @@ public class AuthServiceTest {
     void 로그인_성공() {
         //given
         String identity = user.getId();
-        String uuid = user.getUuid();
-
-        given(userRepository.findByEmailOrId(identity, identity)).willReturn(Optional.of(user));
-
+        String uuid = user.getUuid().toString();
         String password = user.getPassword();
+        String accessToken = SecurityConstant.ACCESS_TOKEN;
+        String refreshToken = SecurityConstant.REFRESH_TOKEN;
 
+        given(userRepository.findByEmailOrId(identity)).willReturn(Optional.of(user));
         given(passwordEncoder.matches(password, user.getPassword())).willReturn(true);
-
-        String accessToken = "accessToken";
-        String refreshToken = "refreshToken";
-
         given(jwtTokenProvider.generateAccessToken(uuid)).willReturn(accessToken);
         given(jwtTokenProvider.generateRefreshToken(uuid)).willReturn(refreshToken);
 
