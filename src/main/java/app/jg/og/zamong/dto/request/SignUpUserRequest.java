@@ -18,7 +18,7 @@ public class SignUpUserRequest {
     @Email
     private final String email;
 
-    @JsonProperty("d")
+    @JsonProperty("authentication_code")
     @Size(min = 6, max = 6)
     private final String authenticationCode;
 
