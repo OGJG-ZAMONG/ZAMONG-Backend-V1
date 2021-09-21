@@ -5,7 +5,6 @@ import app.jg.og.zamong.security.auth.AuthenticationDetails;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
@@ -20,26 +19,19 @@ import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 @RequiredArgsConstructor
 public class JwtTokenProvider {
 
-    @Value("${auth.jwt.exp.refresh}")
-    private Long refreshTokenExpiration;
-
-    @Value("${auth.jwt.exp.access}")
-    private Long accessTokenExpiration;
-
-    @Value("${auth.jwt.secret}")
-    private String secretKey;
-
     private static final String REGEX_BEARER_TOKEN = "Bearer [([a-zA-Z0-9-._~+/]+=*)]{30,600}";
 
     private final AuthenticationDetailService authenticationDetailService;
 
+    private final JwtConfigurationProperties jwtConfigurationProperties;
+
     public String generateAccessToken(String uuid) {
         return Jwts.builder()
                 .setIssuedAt(new Date())
-                .setExpiration((new Date(System.currentTimeMillis() + accessTokenExpiration * 1000)))
+                .setExpiration((new Date(System.currentTimeMillis() + jwtConfigurationProperties.getExp().getAccess() * 1000)))
                 .setSubject(uuid)
                 .claim("type", "access")
-                .signWith(SignatureAlgorithm.HS256, secretKey)
+                .signWith(SignatureAlgorithm.HS256, jwtConfigurationProperties.getSecret())
                 .compact();
 
     }
@@ -47,10 +39,10 @@ public class JwtTokenProvider {
     public String generateRefreshToken(String uuid) {
         return Jwts.builder()
                 .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + refreshTokenExpiration * 1000))
+                .setExpiration(new Date(System.currentTimeMillis() + jwtConfigurationProperties.getExp().getRefresh() * 1000))
                 .setSubject(uuid)
                 .claim("type", "refresh")
-                .signWith(SignatureAlgorithm.HS256, secretKey)
+                .signWith(SignatureAlgorithm.HS256, jwtConfigurationProperties.getSecret())
                 .compact();
     }
 
@@ -69,7 +61,7 @@ public class JwtTokenProvider {
 
     public String getUserUuid(String token) {
         try {
-            return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().getSubject();
+            return Jwts.parser().setSigningKey(jwtConfigurationProperties.getSecret()).parseClaimsJws(token).getBody().getSubject();
         } catch (Exception e) {
             throw new RuntimeException();
         }
