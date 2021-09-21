@@ -13,3 +13,4 @@ auth:
     exp:
       refresh: 7200
       access: 7200
+    secret: helloworld
