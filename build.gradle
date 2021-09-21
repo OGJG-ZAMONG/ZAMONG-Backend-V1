@@ -64,6 +64,10 @@ jacocoTestCoverageVerification {
                 value = 'COVEREDRATIO'
                 minimum = 0.30
             }
+
+            excludes = [
+                    'app.jg.og.zamong.security.*'
+            ]
         }
     }
 }
