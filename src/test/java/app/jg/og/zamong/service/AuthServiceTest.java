@@ -73,6 +73,7 @@ public class AuthServiceTest {
 
         // then
         assertThat(expectUser.equals(user)).isTrue();
+        assertThat(expectUser.hashCode()).isEqualTo(user.hashCode());
     }
 
     @Test
