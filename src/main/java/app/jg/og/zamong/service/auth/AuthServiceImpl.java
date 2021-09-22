@@ -41,15 +41,15 @@ public class AuthServiceImpl implements AuthService {
     }
 
     private User verifyUser(LoginUserRequest request) throws RuntimeException {
-        return userRepository.findByEmailOrId(request.getUserIdentity(), request.getUserIdentity())
+        return userRepository.findByEmailOrId(request.getUserIdentity())
                 .filter(user -> passwordEncoder.matches(request.getPassword(), user.getPassword()))
                 .orElseThrow(RuntimeException::new);
     }
 
     private IssueTokenResponse generateIssueTokenResponse(User user) {
         return IssueTokenResponse.builder()
-                .accessToken(jwtTokenProvider.generateAccessToken(user.getUuid()))
-                .refreshToken(jwtTokenProvider.generateRefreshToken(user.getUuid()))
+                .accessToken(jwtTokenProvider.generateAccessToken(user.getUuid().toString()))
+                .refreshToken(jwtTokenProvider.generateRefreshToken(user.getUuid().toString()))
                 .build();
     }
 }

@@ -1,6 +1,10 @@
 package app.jg.og.zamong.service;
 
+import app.jg.og.zamong.constant.SecurityConstant;
+import app.jg.og.zamong.constant.UserConstant;
+import app.jg.og.zamong.dto.request.LoginUserRequest;
 import app.jg.og.zamong.dto.request.SignUpUserRequest;
+import app.jg.og.zamong.dto.response.IssueTokenResponse;
 import app.jg.og.zamong.entity.user.User;
 import app.jg.og.zamong.entity.user.UserRepository;
 import app.jg.og.zamong.security.JwtTokenProvider;
@@ -50,12 +54,12 @@ public class AuthServiceTest {
         //given
         String name = user.getName();
         String email = user.getEmail();
-        String authenticationCode = "000000";
         String id = user.getId();
         String password = user.getPassword();
+        String authenticationCode = UserConstant.AUTHENTICATION_CODE;
 
         given(userRepository.findByEmail(email)).willReturn(Optional.empty());
-        given(userRepository.save(any())).willReturn(user);
+        given(userRepository.save(any())).willReturn(UserBuilder.build());
 
         // when
         SignUpUserRequest request = SignUpUserRequest.builder()
@@ -68,6 +72,33 @@ public class AuthServiceTest {
         User expectUser = authService.registerUser(request);
 
         // then
-        assertThat(expectUser).isEqualTo(user);
+        assertThat(expectUser.equals(user)).isTrue();
+        assertThat(expectUser.hashCode()).isEqualTo(user.hashCode());
     }
+
+    @Test
+    void 로그인_성공() {
+        //given
+        String identity = user.getId();
+        String uuid = user.getUuid().toString();
+        String password = user.getPassword();
+        String accessToken = SecurityConstant.ACCESS_TOKEN;
+        String refreshToken = SecurityConstant.REFRESH_TOKEN;
+
+        given(userRepository.findByEmailOrId(identity)).willReturn(Optional.of(user));
+        given(passwordEncoder.matches(password, user.getPassword())).willReturn(true);
+        given(jwtTokenProvider.generateAccessToken(uuid)).willReturn(accessToken);
+        given(jwtTokenProvider.generateRefreshToken(uuid)).willReturn(refreshToken);
+
+        //when
+        LoginUserRequest request = LoginUserRequest.builder()
+                .userIdentity(identity)
+                .password(password)
+                .build();
+        IssueTokenResponse response = authService.loginUser(request);
+
+        //then
+        assertThat(response.getAccessToken()).isEqualTo(accessToken);
+        assertThat(response.getRefreshToken()).isEqualTo(refreshToken);
+;    }
 }

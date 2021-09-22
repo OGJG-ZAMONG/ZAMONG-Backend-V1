@@ -8,8 +8,12 @@ spring:
     driver-class-name: org.h2.Driver
     username: sa
     password:
+  redis:
+    host: localhost
+    port: 6377
 auth:
   jwt:
     exp:
       refresh: 7200
       access: 7200
+    secret: helloworld
