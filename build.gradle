@@ -43,6 +43,8 @@ dependencies {
     implementation 'it.ozimov:embedded-redis:0.7.2'
 
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+
+    implementation 'org.springframework.boot:spring-boot-starter-mail'
 }
 
 test {
