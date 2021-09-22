@@ -22,6 +22,22 @@ public class EmailApplicationTest {
         assertThat(code1).isNotEqualTo(code2);
     }
 
+    @Test
+    void 여섯문자_포맷팅() {
+        String[] codes = createAuthenticationCode().split("");
+
+        String result = String.format("%s%s%s%s%s%s",
+                codes[0],
+                codes[1],
+                codes[2],
+                codes[3],
+                codes[4],
+                codes[5]
+        );
+        
+        assertThat(result.length()).isEqualTo(6);
+    }
+
     private String createAuthenticationCode() {
        return String.format("%06d", RANDOM.nextInt(1000000) % 1000000);
     }
