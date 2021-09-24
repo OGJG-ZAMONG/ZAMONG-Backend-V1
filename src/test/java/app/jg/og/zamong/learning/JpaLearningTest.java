@@ -1,4 +1,4 @@
-package app.jg.og.zamong.infrastructure;
+package app.jg.og.zamong.learning;
 
 import app.jg.og.zamong.constant.UserConstant;
 import app.jg.og.zamong.controller.IntegrationTest;
@@ -11,7 +11,7 @@ import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class JpaApplicationTest extends IntegrationTest {
+public class JpaLearningTest extends IntegrationTest {
 
     @PersistenceContext
     private EntityManager em;

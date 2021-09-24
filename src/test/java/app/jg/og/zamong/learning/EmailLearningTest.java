@@ -1,4 +1,4 @@
-package app.jg.og.zamong.infrastructure;
+package app.jg.og.zamong.learning;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.core.io.ClassPathResource;
@@ -8,7 +8,7 @@ import java.util.Random;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class EmailApplicationTest {
+public class EmailLearningTest {
 
     public static final Random RANDOM = new Random(System.currentTimeMillis());
 
