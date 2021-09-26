@@ -10,6 +10,7 @@ import app.jg.og.zamong.entity.redis.authenticationcode.AuthenticationCode;
 import app.jg.og.zamong.entity.redis.authenticationcode.AuthenticationCodeRepository;
 import app.jg.og.zamong.entity.user.User;
 import app.jg.og.zamong.entity.user.UserRepository;
+import app.jg.og.zamong.exception.business.BadAuthenticationCodeException;
 import app.jg.og.zamong.exception.business.UserIdentityDuplicationException;
 import app.jg.og.zamong.exception.business.UserNotFoundException;
 import app.jg.og.zamong.security.JwtTokenProvider;
@@ -40,6 +41,10 @@ public class AuthServiceImpl implements AuthService {
                 .ifPresent((user) -> {
                     throw new UserIdentityDuplicationException("이미 사용중인 아이디 혹은 이메일입니다");
                 });
+
+        authenticationCodeRepository.findById(request.getEmail())
+                .filter(a -> request.getAuthenticationCode().equals(a.getCode()))
+                .orElseThrow(() -> new BadAuthenticationCodeException("잘못된 인증코드입니다"));
 
         User user = this.userRepository.save(User.builder()
                 .name(request.getName())
