@@ -7,7 +7,11 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.MailException;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
+
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
 
 @Service
 @RequiredArgsConstructor
@@ -22,16 +26,21 @@ public class MailServiceImpl implements MailService {
 
     @Override
     public String sendEmail(SendMailRequest request) throws MailException {
-        SimpleMailMessage message = new SimpleMailMessage();
+        try {
+            MimeMessage message = mailSender.createMimeMessage();
+            MimeMessageHelper messageHelper = new MimeMessageHelper(message, false, "UTF-8");
 
-        message.setTo(request.getAddress());
-        message.setFrom(fromAddress);
-        message.setSubject(request.getTitle());
-        message.setText(getFormattedString(request.getAuthenticationCode().split("")));
+            messageHelper.setTo(request.getAddress());
+            messageHelper.setFrom(fromAddress);
+            messageHelper.setSubject(request.getTitle());
+            messageHelper.setText(getFormattedString(request.getAuthenticationCode().split("")), true);
 
-        mailSender.send(message);
+            mailSender.send(message);
 
-        return "ok";
+            return "ok";
+        } catch (MessagingException e) {
+            throw new RuntimeException();
+        }
     }
 
     private String getFormattedString(String[] codes) {
