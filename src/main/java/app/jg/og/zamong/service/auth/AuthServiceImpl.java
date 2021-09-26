@@ -9,6 +9,7 @@ import app.jg.og.zamong.entity.redis.authenticationcode.AuthenticationCode;
 import app.jg.og.zamong.entity.redis.authenticationcode.AuthenticationCodeRepository;
 import app.jg.og.zamong.entity.user.User;
 import app.jg.og.zamong.entity.user.UserRepository;
+import app.jg.og.zamong.exception.business.UserNotFoundException;
 import app.jg.og.zamong.security.JwtTokenProvider;
 import app.jg.og.zamong.service.mail.MailService;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +17,7 @@ import org.springframework.mail.MailException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.mail.MessagingException;
 import java.util.Random;
 
 @RequiredArgsConstructor
@@ -54,7 +56,7 @@ public class AuthServiceImpl implements AuthService {
     private User verifyUser(LoginUserRequest request) throws RuntimeException {
         return userRepository.findByEmailOrId(request.getUserIdentity())
                 .filter(user -> passwordEncoder.matches(request.getPassword(), user.getPassword()))
-                .orElseThrow(RuntimeException::new);
+                .orElseThrow(() -> new UserNotFoundException("해당하는 유저를 찾을 수 없습니다"));
     }
 
     private IssueTokenResponse generateIssueTokenResponse(User user) {
@@ -70,17 +72,13 @@ public class AuthServiceImpl implements AuthService {
     public void sendOutAuthenticationEmail(EmailAuthenticationRequest request) {
         String authenticationCode = createAuthenticationCode();
         String emailAddress = request.getAddress();
-        try {
-            authenticationCodeRepository.save(new AuthenticationCode(emailAddress, authenticationCode));
-            mailService.sendEmail(SendMailRequest.builder()
-                    .address(emailAddress)
-                    .authenticationCode(authenticationCode)
-                    .title("ZAMONG 이메일 인증 안내")
-                    .build()
-            );
-        } catch (MailException e) {
-            throw new RuntimeException("이메일 전송 실패");
-        }
+        authenticationCodeRepository.save(new AuthenticationCode(emailAddress, authenticationCode));
+        mailService.sendEmail(SendMailRequest.builder()
+                .address(emailAddress)
+                .authenticationCode(authenticationCode)
+                .title("ZAMONG 이메일 인증 안내")
+                .build()
+        );
     }
 
     private String createAuthenticationCode() {

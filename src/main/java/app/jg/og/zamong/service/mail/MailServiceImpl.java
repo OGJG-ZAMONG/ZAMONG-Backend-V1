@@ -1,6 +1,7 @@
 package app.jg.og.zamong.service.mail;
 
 import app.jg.og.zamong.dto.request.SendMailRequest;
+import app.jg.og.zamong.exception.externalinfra.MailSendFailedException;
 import app.jg.og.zamong.service.mailtemplate.MailTemplateService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -25,22 +26,25 @@ public class MailServiceImpl implements MailService {
     private String fromAddress;
 
     @Override
-    public String sendEmail(SendMailRequest request) throws MailException {
+    public String sendEmail(SendMailRequest request) {
         try {
-            MimeMessage message = mailSender.createMimeMessage();
-            MimeMessageHelper messageHelper = new MimeMessageHelper(message, false, "UTF-8");
-
-            messageHelper.setTo(request.getAddress());
-            messageHelper.setFrom(fromAddress);
-            messageHelper.setSubject(request.getTitle());
-            messageHelper.setText(getFormattedString(request.getAuthenticationCode().split("")), true);
-
-            mailSender.send(message);
-
+            sendMailLogic(request);
             return "ok";
-        } catch (MessagingException e) {
-            throw new RuntimeException();
+        } catch (Exception e) {
+            throw new MailSendFailedException("메일 전송에 실패하였습니다");
         }
+    }
+
+    private void sendMailLogic(SendMailRequest request) throws Exception {
+        MimeMessage message = mailSender.createMimeMessage();
+        MimeMessageHelper messageHelper = new MimeMessageHelper(message, false, "UTF-8");
+
+        messageHelper.setTo(request.getAddress());
+        messageHelper.setFrom(fromAddress);
+        messageHelper.setSubject(request.getTitle());
+        messageHelper.setText(getFormattedString(request.getAuthenticationCode().split("")), true);
+
+        mailSender.send(message);
     }
 
     private String getFormattedString(String[] codes) {
