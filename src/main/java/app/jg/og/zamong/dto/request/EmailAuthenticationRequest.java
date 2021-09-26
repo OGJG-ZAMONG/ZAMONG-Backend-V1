@@ -1,14 +1,17 @@
 package app.jg.og.zamong.dto.request;
 
-import lombok.Builder;
-import lombok.Getter;
+import lombok.*;
 
 import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
 
-@Getter
 @Builder
+@Getter
+@AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class EmailAuthenticationRequest {
 
     @Email
-    private final String address;
+    @NotBlank
+    private String address;
 }
