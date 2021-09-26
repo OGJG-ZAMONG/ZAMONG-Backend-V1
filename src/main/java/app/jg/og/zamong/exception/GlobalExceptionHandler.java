@@ -1,6 +1,7 @@
 package app.jg.og.zamong.exception;
 
 import app.jg.og.zamong.exception.business.BusinessException;
+import app.jg.og.zamong.exception.externalinfra.ExternalInfraException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
@@ -29,6 +30,15 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(BusinessException.class)
     public ResponseEntity<ErrorResponse> handleBusinessException(BusinessException e) {
+        ErrorCode errorCode = e.getErrorCode();
+        String errorDescription = e.getMessage();
+        ErrorResponse response = ErrorResponse.of(errorCode, errorDescription);
+
+        return new ResponseEntity<>(response, HttpStatus.valueOf(errorCode.getStatus()));
+    }
+
+    @ExceptionHandler(ExternalInfraException.class)
+    public ResponseEntity<ErrorResponse> handleExternalInfraException(ExternalInfraException e) {
         ErrorCode errorCode = e.getErrorCode();
         String errorDescription = e.getMessage();
         ErrorResponse response = ErrorResponse.of(errorCode, errorDescription);
