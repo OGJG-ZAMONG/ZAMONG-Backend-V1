@@ -5,20 +5,20 @@ import app.jg.og.zamong.dto.request.LoginUserRequest;
 import app.jg.og.zamong.dto.request.SendMailRequest;
 import app.jg.og.zamong.dto.request.SignUpUserRequest;
 import app.jg.og.zamong.dto.response.IssueTokenResponse;
+import app.jg.og.zamong.dto.response.SignedUserResponse;
 import app.jg.og.zamong.entity.redis.authenticationcode.AuthenticationCode;
 import app.jg.og.zamong.entity.redis.authenticationcode.AuthenticationCodeRepository;
 import app.jg.og.zamong.entity.user.User;
 import app.jg.og.zamong.entity.user.UserRepository;
+import app.jg.og.zamong.exception.business.BadAuthenticationCodeException;
+import app.jg.og.zamong.exception.business.BadUserInformationException;
 import app.jg.og.zamong.exception.business.UserIdentityDuplicationException;
-import app.jg.og.zamong.exception.business.UserNotFoundException;
 import app.jg.og.zamong.security.JwtTokenProvider;
 import app.jg.og.zamong.service.mail.MailService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.mail.MailException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import javax.mail.MessagingException;
 import java.util.Random;
 
 @RequiredArgsConstructor
@@ -34,18 +34,24 @@ public class AuthServiceImpl implements AuthService {
     private final MailService mailService;
 
     @Override
-    public User registerUser(SignUpUserRequest request) {
+    public SignedUserResponse registerUser(SignUpUserRequest request) {
         userRepository.findByEmailOrId(request.getEmail(), request.getId())
                 .ifPresent((user) -> {
                     throw new UserIdentityDuplicationException("이미 사용중인 아이디 혹은 이메일입니다");
                 });
 
-        return this.userRepository.save(User.builder()
+        authenticationCodeRepository.findById(request.getEmail())
+                .filter(a -> request.getAuthenticationCode().equals(a.getCode()))
+                .orElseThrow(() -> new BadAuthenticationCodeException("잘못된 인증코드입니다"));
+
+        User user = this.userRepository.save(User.builder()
                 .name(request.getName())
                 .email(request.getEmail())
                 .id(request.getId())
                 .password(passwordEncoder.encode(request.getPassword()))
                 .build());
+
+        return SignedUserResponse.of(user);
     }
 
     @Override
@@ -57,7 +63,7 @@ public class AuthServiceImpl implements AuthService {
     private User verifyUser(LoginUserRequest request) throws RuntimeException {
         return userRepository.findByEmailOrId(request.getUserIdentity())
                 .filter(user -> passwordEncoder.matches(request.getPassword(), user.getPassword()))
-                .orElseThrow(() -> new UserNotFoundException("해당하는 유저를 찾을 수 없습니다"));
+                .orElseThrow(() -> new BadUserInformationException("잘못된 아이디 혹은 비밀번호입니다"));
     }
 
     private IssueTokenResponse generateIssueTokenResponse(User user) {

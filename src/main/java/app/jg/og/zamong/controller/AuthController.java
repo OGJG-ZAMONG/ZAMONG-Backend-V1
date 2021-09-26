@@ -4,6 +4,7 @@ import app.jg.og.zamong.dto.request.EmailAuthenticationRequest;
 import app.jg.og.zamong.dto.request.LoginUserRequest;
 import app.jg.og.zamong.dto.request.SignUpUserRequest;
 import app.jg.og.zamong.dto.response.IssueTokenResponse;
+import app.jg.og.zamong.dto.response.SignedUserResponse;
 import app.jg.og.zamong.entity.user.User;
 import app.jg.og.zamong.service.auth.AuthService;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +23,7 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("/signup")
-    public User register(@Valid @RequestBody SignUpUserRequest request) {
+    public SignedUserResponse register(@Valid @RequestBody SignUpUserRequest request) {
         return authService.registerUser(request);
     }
 
