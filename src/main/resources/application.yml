@@ -23,6 +23,8 @@ spring:
           auth: true
           starttls:
             enable: true
+  jackson:
+    property-naming-strategy: SNAKE_CASE
 auth:
   jwt:
     exp:

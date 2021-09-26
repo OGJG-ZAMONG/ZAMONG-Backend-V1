@@ -1,6 +1,5 @@
 package app.jg.og.zamong.dto.request;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -18,7 +17,6 @@ public class SignUpUserRequest {
     @Email
     private final String email;
 
-    @JsonProperty("authentication_code")
     @Size(min = 6, max = 6)
     private final String authenticationCode;
 
