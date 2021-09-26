@@ -7,6 +7,7 @@ import app.jg.og.zamong.dto.request.LoginUserRequest;
 import app.jg.og.zamong.dto.request.SignUpUserRequest;
 import app.jg.og.zamong.dto.response.IssueTokenResponse;
 import app.jg.og.zamong.dto.response.SignedUserResponse;
+import app.jg.og.zamong.entity.redis.authenticationcode.AuthenticationCode;
 import app.jg.og.zamong.entity.redis.authenticationcode.AuthenticationCodeRepository;
 import app.jg.og.zamong.entity.user.User;
 import app.jg.og.zamong.entity.user.UserRepository;
@@ -64,8 +65,10 @@ public class AuthServiceTest {
         String id = user.getId();
         String password = user.getPassword();
         String authenticationCode = UserConstant.AUTHENTICATION_CODE;
+        AuthenticationCode code = new AuthenticationCode(email, authenticationCode);
 
         given(userRepository.findByEmailOrId(email, id)).willReturn(Optional.empty());
+        given(authenticationCodeRepository.findById(email)).willReturn(Optional.of(code));
         given(userRepository.save(any())).willReturn(UserBuilder.build());
 
         // when
