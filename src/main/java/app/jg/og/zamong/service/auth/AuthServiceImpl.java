@@ -9,6 +9,7 @@ import app.jg.og.zamong.entity.redis.authenticationcode.AuthenticationCode;
 import app.jg.og.zamong.entity.redis.authenticationcode.AuthenticationCodeRepository;
 import app.jg.og.zamong.entity.user.User;
 import app.jg.og.zamong.entity.user.UserRepository;
+import app.jg.og.zamong.exception.business.UserIdentityDuplicationException;
 import app.jg.og.zamong.exception.business.UserNotFoundException;
 import app.jg.og.zamong.security.JwtTokenProvider;
 import app.jg.og.zamong.service.mail.MailService;
@@ -34,9 +35,9 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public User registerUser(SignUpUserRequest request) {
-        userRepository.findByEmail(request.getEmail())
+        userRepository.findByEmailOrId(request.getEmail(), request.getId())
                 .ifPresent((user) -> {
-                    throw new RuntimeException();
+                    throw new UserIdentityDuplicationException("이미 사용중인 아이디 혹은 이메일입니다");
                 });
 
         return this.userRepository.save(User.builder()
