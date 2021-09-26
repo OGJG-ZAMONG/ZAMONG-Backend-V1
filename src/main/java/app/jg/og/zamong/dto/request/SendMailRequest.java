@@ -1,15 +1,16 @@
 package app.jg.og.zamong.dto.request;
 
-import lombok.Builder;
-import lombok.Getter;
+import lombok.*;
 
-@Getter
 @Builder
+@Getter
+@AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class SendMailRequest {
 
-    private final String address;
+    private String address;
 
-    private final String authenticationCode;
+    private String authenticationCode;
 
-    private final String title;
+    private String title;
 }
