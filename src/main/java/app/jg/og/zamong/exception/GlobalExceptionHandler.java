@@ -1,5 +1,6 @@
 package app.jg.og.zamong.exception;
 
+import app.jg.og.zamong.exception.business.BusinessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
@@ -24,5 +25,14 @@ public class GlobalExceptionHandler {
         ErrorResponse response = ErrorResponse.of(ErrorCode.METHOD_NOT_ALLOWED, errorDescription);
 
         return new ResponseEntity<>(response, HttpStatus.METHOD_NOT_ALLOWED);
+    }
+
+    @ExceptionHandler(BusinessException.class)
+    public ResponseEntity<ErrorResponse> handleBusinessException(BusinessException e) {
+        ErrorCode errorCode = e.getErrorCode();
+        String errorDescription = e.getMessage();
+        ErrorResponse response = ErrorResponse.of(errorCode, errorDescription);
+
+        return new ResponseEntity<>(response, HttpStatus.valueOf(errorCode.getStatus()));
     }
 }
