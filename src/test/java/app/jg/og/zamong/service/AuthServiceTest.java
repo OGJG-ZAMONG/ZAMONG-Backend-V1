@@ -64,7 +64,7 @@ public class AuthServiceTest {
         String password = user.getPassword();
         String authenticationCode = UserConstant.AUTHENTICATION_CODE;
 
-        given(userRepository.findByEmail(email)).willReturn(Optional.empty());
+        given(userRepository.findByEmailOrId(email, id)).willReturn(Optional.empty());
         given(userRepository.save(any())).willReturn(UserBuilder.build());
 
         // when
