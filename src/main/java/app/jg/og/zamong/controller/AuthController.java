@@ -1,5 +1,6 @@
 package app.jg.og.zamong.controller;
 
+import app.jg.og.zamong.dto.request.EmailAuthenticationRequest;
 import app.jg.og.zamong.dto.request.LoginUserRequest;
 import app.jg.og.zamong.dto.request.SignUpUserRequest;
 import app.jg.og.zamong.dto.response.IssueTokenResponse;
@@ -28,5 +29,10 @@ public class AuthController {
     @PostMapping("/login")
     public IssueTokenResponse login(@Valid @RequestBody LoginUserRequest request) {
         return authService.loginUser(request);
+    }
+
+    @PostMapping("/mail")
+    public void mail(@Valid @RequestBody EmailAuthenticationRequest request) {
+        authService.sendOutAuthenticationEmail(request);
     }
 }

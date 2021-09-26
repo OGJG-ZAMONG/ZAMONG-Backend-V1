@@ -1,4 +1,4 @@
-package app.jg.og.zamong.infrastructure;
+package app.jg.og.zamong.learning;
 
 import app.jg.og.zamong.controller.IntegrationTest;
 import app.jg.og.zamong.entity.redis.authenticationcode.AuthenticationCode;
@@ -10,7 +10,7 @@ import org.springframework.data.redis.core.ValueOperations;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class RedisApplicationTest extends IntegrationTest {
+public class RedisLearningTest extends IntegrationTest {
 
     @Autowired
     private RedisTemplate<String, String> redisTemplate;

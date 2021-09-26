@@ -2,14 +2,16 @@ package app.jg.og.zamong.service;
 
 import app.jg.og.zamong.constant.SecurityConstant;
 import app.jg.og.zamong.constant.UserConstant;
+import app.jg.og.zamong.dto.request.EmailAuthenticationRequest;
 import app.jg.og.zamong.dto.request.LoginUserRequest;
 import app.jg.og.zamong.dto.request.SignUpUserRequest;
 import app.jg.og.zamong.dto.response.IssueTokenResponse;
+import app.jg.og.zamong.entity.redis.authenticationcode.AuthenticationCodeRepository;
 import app.jg.og.zamong.entity.user.User;
 import app.jg.og.zamong.entity.user.UserRepository;
 import app.jg.og.zamong.security.JwtTokenProvider;
-import app.jg.og.zamong.service.auth.AuthService;
 import app.jg.og.zamong.service.auth.AuthServiceImpl;
+import app.jg.og.zamong.service.mail.MailService;
 import app.jg.og.zamong.util.UserBuilder;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -20,9 +22,11 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
 
+import javax.mail.MessagingException;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 
@@ -35,12 +39,14 @@ public class AuthServiceTest {
 
     @Mock
     private UserRepository userRepository;
-
     @Mock
     private PasswordEncoder passwordEncoder;
-
     @Mock
     private JwtTokenProvider jwtTokenProvider;
+    @Mock
+    private AuthenticationCodeRepository authenticationCodeRepository;
+    @Mock
+    private MailService mailService;
 
     static private User user;
 
@@ -101,4 +107,34 @@ public class AuthServiceTest {
         assertThat(response.getAccessToken()).isEqualTo(accessToken);
         assertThat(response.getRefreshToken()).isEqualTo(refreshToken);
 ;    }
+
+    @Test
+    void 이메일_전송_성공() {
+        try {
+            authService.sendOutAuthenticationEmail(EmailAuthenticationRequest.builder()
+                    .address(user.getEmail())
+                    .build());
+        } catch (Exception e) {
+            fail("이메일 전송 실패");
+        }
+    }
+
+    @Test
+    void 이메일_전송_실패() throws MessagingException {
+        //given
+        given(mailService.sendEmail(any())).willThrow(new RuntimeException());
+
+        //when
+        Exception exception = null;
+        try {
+            authService.sendOutAuthenticationEmail(EmailAuthenticationRequest.builder()
+                    .address(user.getEmail())
+                    .build());
+        } catch (RuntimeException e) {
+            exception = e;
+        }
+
+        //then
+        assertThat(exception).isInstanceOf(RuntimeException.class);
+    }
 }
