@@ -10,6 +10,7 @@ public enum ErrorCode {
 
     USER_NOT_FOUND(400, "User Not Found"),
     USER_IDENTITY_DUPLICATION(400, "User Identity is Duplication"),
+    BAD_AUTHENTICATION_CODE(400, "Bad Authentication Code"),
 
     MAIL_SEND_FAILED(400, "Mail Send Failed");
 
