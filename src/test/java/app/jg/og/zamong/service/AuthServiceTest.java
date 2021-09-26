@@ -6,6 +6,7 @@ import app.jg.og.zamong.dto.request.EmailAuthenticationRequest;
 import app.jg.og.zamong.dto.request.LoginUserRequest;
 import app.jg.og.zamong.dto.request.SignUpUserRequest;
 import app.jg.og.zamong.dto.response.IssueTokenResponse;
+import app.jg.og.zamong.dto.response.SignedUserResponse;
 import app.jg.og.zamong.entity.redis.authenticationcode.AuthenticationCodeRepository;
 import app.jg.og.zamong.entity.user.User;
 import app.jg.og.zamong.entity.user.UserRepository;
@@ -75,11 +76,10 @@ public class AuthServiceTest {
                 .id(id)
                 .password(password)
                 .build();
-        User expectUser = authService.registerUser(request);
+        SignedUserResponse response = authService.registerUser(request);
 
         // then
-        assertThat(expectUser.equals(user)).isTrue();
-        assertThat(expectUser.hashCode()).isEqualTo(user.hashCode());
+        assertThat(response.getUuid()).isNotNull();
     }
 
     @Test
