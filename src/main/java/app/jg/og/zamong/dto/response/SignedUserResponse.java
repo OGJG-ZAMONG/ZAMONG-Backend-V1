@@ -8,7 +8,7 @@ import java.util.UUID;
 
 @Builder
 @Getter
-public class SignedUserResponse {
+public class SignedUserResponse implements Response {
 
     private final UUID uuid;
 

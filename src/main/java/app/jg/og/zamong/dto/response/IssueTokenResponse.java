@@ -6,7 +6,7 @@ import lombok.Getter;
 
 @Builder
 @Getter
-public class IssueTokenResponse {
+public class IssueTokenResponse implements Response {
 
     @JsonProperty("access_token")
     private final String accessToken;
