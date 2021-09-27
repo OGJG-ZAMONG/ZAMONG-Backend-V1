@@ -31,3 +31,6 @@ auth:
       refresh: ${JWT_EXP_REFRESH}
       access: ${JWT_EXP_ACCESS}
     secret: ${JWT_SECRET_KEY}
+server:
+  servlet:
+    context-path: /v1/api
