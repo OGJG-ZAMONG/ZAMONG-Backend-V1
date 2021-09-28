@@ -5,7 +5,7 @@ import app.jg.og.zamong.dto.request.LoginUserRequest;
 import app.jg.og.zamong.dto.request.SendMailRequest;
 import app.jg.og.zamong.dto.request.SignUpUserRequest;
 import app.jg.og.zamong.dto.response.IssueTokenResponse;
-import app.jg.og.zamong.dto.response.MailSentResponse;
+import app.jg.og.zamong.dto.response.StringResponse;
 import app.jg.og.zamong.dto.response.SignedUserResponse;
 import app.jg.og.zamong.entity.redis.authenticationcode.AuthenticationCode;
 import app.jg.og.zamong.entity.redis.authenticationcode.AuthenticationCodeRepository;
@@ -77,7 +77,7 @@ public class AuthServiceImpl implements AuthService {
     public static final Random RANDOM = new Random(System.currentTimeMillis());
 
     @Override
-    public MailSentResponse sendOutAuthenticationEmail(EmailAuthenticationRequest request) {
+    public StringResponse sendOutAuthenticationEmail(EmailAuthenticationRequest request) {
         String authenticationCode = createAuthenticationCode();
         String emailAddress = request.getAddress();
         authenticationCodeRepository.save(new AuthenticationCode(emailAddress, authenticationCode));
@@ -87,7 +87,7 @@ public class AuthServiceImpl implements AuthService {
                 .title("ZAMONG 이메일 인증 안내")
                 .build()
         );
-        return new MailSentResponse("메일을 성공적으로 보냈습니다");
+        return new StringResponse("메일을 성공적으로 보냈습니다");
     }
 
     private String createAuthenticationCode() {

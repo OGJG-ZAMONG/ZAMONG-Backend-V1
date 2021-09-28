@@ -5,7 +5,7 @@ import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor
-public class MailSentResponse implements Response {
+public class StringResponse implements Response {
 
     private final String message;
 
