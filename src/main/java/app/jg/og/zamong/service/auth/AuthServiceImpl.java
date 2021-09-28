@@ -1,9 +1,6 @@
 package app.jg.og.zamong.service.auth;
 
-import app.jg.og.zamong.dto.request.EmailAuthenticationRequest;
-import app.jg.og.zamong.dto.request.LoginUserRequest;
-import app.jg.og.zamong.dto.request.SendMailRequest;
-import app.jg.og.zamong.dto.request.SignUpUserRequest;
+import app.jg.og.zamong.dto.request.*;
 import app.jg.og.zamong.dto.response.IssueTokenResponse;
 import app.jg.og.zamong.dto.response.StringResponse;
 import app.jg.og.zamong.dto.response.SignedUserResponse;
@@ -33,6 +30,15 @@ public class AuthServiceImpl implements AuthService {
     private final AuthenticationCodeRepository authenticationCodeRepository;
 
     private final MailService mailService;
+
+    @Override
+    public StringResponse checkIdDuplication(CheckIdDuplicationRequest request) {
+        userRepository.findById(request.getId())
+                .ifPresent((user) -> {
+                    throw new UserIdentityDuplicationException("이미 사용중인 아이디입니다");
+                });
+        return new StringResponse("사용가능한 아이디입니다");
+    }
 
     @Override
     public SignedUserResponse registerUser(SignUpUserRequest request) {
