@@ -41,11 +41,7 @@ paths:
           content:
             application/json:
               schema:
-                properties:
-                  status:
-                    example: 200
-                  response:
-                    example: "사용가능한 아이디입니다"
+                $ref: '#/components/schemas/IdNotDuplicateResponse'
 
   '/auth/signup':
     post:
@@ -95,17 +91,9 @@ paths:
           content:
             application/json:
               schema:
-                properties:
-                  status:
-                    example: 200
-                  response:
-                    properties:
-                      access_token:
-                        example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ..."
-                      refresh_token:
-                        example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ..."
+                $ref: '#/components/schemas/IssueTokenResponse'
         500:
-          $ref: '#/components/responses/InternalServerError'
+          $ref: '#/components/responses/IssueTokenResponse'
 
   '/auth/refresh':
     post:
@@ -127,15 +115,7 @@ paths:
           content:
             application/json:
               schema:
-                properties:
-                  status:
-                    example: 200
-                  response:
-                    properties:
-                      access_token:
-                        example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ..."
-                      refresh_token:
-                        example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ..."
+                $ref: '#/components/schemas/IssueTokenResponse'
         500:
           $ref: '#/components/responses/InternalServerError'
 
@@ -199,7 +179,7 @@ components:
     user_identity:
       example: 사용자 id 또는 email
     timestamp:
-      example: 2021-09-27T18:22:45.426066
+      example: "2021-09-27T18:22:45.426066"
 
   schemas:
 
@@ -209,7 +189,7 @@ components:
           example: 201
         timestamp:
           $ref: '#/components/parameters/timestamp'
-        content: 
+        content:
           readOnly: true
           properties:
             collection_value:
@@ -231,7 +211,7 @@ components:
           example: 200
         timestamp:
           $ref: '#/components/parameters/timestamp'
-        content: 
+        content:
           readOnly: true
           properties:
             collection_value:
@@ -239,13 +219,27 @@ components:
             response:
               example: "메일을 성공적으로 보냈습니다"
 
+    IdNotDuplicateResponse:
+      properties:
+        status:
+          example: 200
+        timestamp:
+          $ref: '#/components/parameters/timestamp'
+        content:
+          readOnly: true
+          properties:
+            collection_value:
+              example: false
+            response:
+              example: "사용가능한 아이디입니다"
+
     IssueTokenResponse:
       properties:
         status:
           example: 200
         timestamp:
           $ref: '#/components/parameters/timestamp'
-        content: 
+        content:
           readOnly: true
           properties:
             collection_value:
@@ -254,7 +248,7 @@ components:
               properties:
                 access_token:
                   example: "eeyJhbGciOiJIUzI1NiJ9..."
-                refresh_token: 
+                refresh_token:
                   example: "eyJhbGciOiJIUzI1NiJ9..."
 
   responses:
