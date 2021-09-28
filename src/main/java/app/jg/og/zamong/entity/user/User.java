@@ -1,9 +1,11 @@
 package app.jg.og.zamong.entity.user;
 
+import app.jg.og.zamong.entity.dream.Dream;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.UUID;
 
 @Builder
@@ -28,4 +30,7 @@ public class User {
     private String id;
 
     private String password;
+
+    @OneToMany(mappedBy = "user")
+    private List<Dream> dreams;
 }
