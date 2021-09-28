@@ -2,11 +2,13 @@ package app.jg.og.zamong.service;
 
 import app.jg.og.zamong.constant.SecurityConstant;
 import app.jg.og.zamong.constant.UserConstant;
+import app.jg.og.zamong.dto.request.CheckIdDuplicationRequest;
 import app.jg.og.zamong.dto.request.EmailAuthenticationRequest;
 import app.jg.og.zamong.dto.request.LoginUserRequest;
 import app.jg.og.zamong.dto.request.SignUpUserRequest;
 import app.jg.og.zamong.dto.response.IssueTokenResponse;
 import app.jg.og.zamong.dto.response.SignedUserResponse;
+import app.jg.og.zamong.dto.response.StringResponse;
 import app.jg.og.zamong.entity.redis.authenticationcode.AuthenticationCode;
 import app.jg.og.zamong.entity.redis.authenticationcode.AuthenticationCodeRepository;
 import app.jg.og.zamong.entity.user.User;
@@ -55,6 +57,23 @@ public class AuthServiceTest {
     @BeforeAll
     static void setUp() {
         user = UserBuilder.build();
+    }
+
+    @Test
+    void 아이디_중복확인_성공() {
+        //given
+        String id = user.getId();
+
+        given(userRepository.findById(id)).willReturn(Optional.empty());
+
+        //when
+        CheckIdDuplicationRequest request = CheckIdDuplicationRequest.builder()
+                .id(id)
+                .build();
+        StringResponse response = authService.checkIdDuplication(request);
+
+        final String successMessage = "사용가능한 아이디입니다";
+        assertThat(response.getMessage()).isEqualTo(successMessage);
     }
 
     @Test
