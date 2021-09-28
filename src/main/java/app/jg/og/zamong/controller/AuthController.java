@@ -1,5 +1,6 @@
 package app.jg.og.zamong.controller;
 
+import app.jg.og.zamong.dto.request.CheckIdDuplicationRequest;
 import app.jg.og.zamong.dto.request.EmailAuthenticationRequest;
 import app.jg.og.zamong.dto.request.LoginUserRequest;
 import app.jg.og.zamong.dto.request.SignUpUserRequest;
@@ -29,6 +30,11 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseBody login(@Valid @RequestBody LoginUserRequest request) {
         return ResponseBody.of(authService.loginUser(request), HttpStatus.OK.value());
+    }
+
+    @PostMapping("/user-id/duplicate")
+    public ResponseBody duplicate(@Valid @RequestBody CheckIdDuplicationRequest request) {
+        return ResponseBody.of(authService.checkIdDuplication(request), HttpStatus.OK.value());
     }
 
     @PostMapping("/mail")
