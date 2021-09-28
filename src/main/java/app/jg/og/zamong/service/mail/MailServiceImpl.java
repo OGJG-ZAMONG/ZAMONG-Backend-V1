@@ -42,8 +42,11 @@ public class MailServiceImpl implements MailService {
         messageHelper.setTo(request.getAddress());
         messageHelper.setFrom(fromAddress);
         messageHelper.setSubject(request.getTitle());
-        messageHelper.setText(getFormattedString(request.getAuthenticationCode().split("")), true);
 
+        final String text = getFormattedString(request.getAuthenticationCode().split(""));
+        final boolean isHTML = true;
+
+        messageHelper.setText(text, isHTML);
         mailSender.send(message);
     }
 
