@@ -6,6 +6,8 @@ import app.jg.og.zamong.dto.response.StringResponse;
 import app.jg.og.zamong.dto.response.SignedUserResponse;
 import app.jg.og.zamong.entity.redis.authenticationcode.AuthenticationCode;
 import app.jg.og.zamong.entity.redis.authenticationcode.AuthenticationCodeRepository;
+import app.jg.og.zamong.entity.redis.refreshtoken.RefreshToken;
+import app.jg.og.zamong.entity.redis.refreshtoken.RefreshTokenRepository;
 import app.jg.og.zamong.entity.user.User;
 import app.jg.og.zamong.entity.user.UserRepository;
 import app.jg.og.zamong.exception.business.BadAuthenticationCodeException;
@@ -28,6 +30,7 @@ public class AuthServiceImpl implements AuthService {
 
     private final UserRepository userRepository;
     private final AuthenticationCodeRepository authenticationCodeRepository;
+    private final RefreshTokenRepository refreshTokenRepository;
 
     private final MailService mailService;
 
@@ -64,7 +67,11 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public IssueTokenResponse loginUser(LoginUserRequest request) {
         User user = verifyUser(request);
-        return generateIssueTokenResponse(user);
+        IssueTokenResponse response = generateIssueTokenResponse(user);
+
+        refreshTokenRepository.save(new RefreshToken(user.getUuid().toString(), response.getRefreshToken()));
+
+        return response;
     }
 
     private User verifyUser(LoginUserRequest request) throws RuntimeException {
