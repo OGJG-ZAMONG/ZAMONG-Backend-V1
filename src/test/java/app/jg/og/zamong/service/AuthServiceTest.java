@@ -2,15 +2,14 @@ package app.jg.og.zamong.service;
 
 import app.jg.og.zamong.constant.SecurityConstant;
 import app.jg.og.zamong.constant.UserConstant;
-import app.jg.og.zamong.dto.request.CheckIdDuplicationRequest;
-import app.jg.og.zamong.dto.request.EmailAuthenticationRequest;
-import app.jg.og.zamong.dto.request.LoginUserRequest;
-import app.jg.og.zamong.dto.request.SignUpUserRequest;
+import app.jg.og.zamong.dto.request.*;
 import app.jg.og.zamong.dto.response.IssueTokenResponse;
 import app.jg.og.zamong.dto.response.SignedUserResponse;
 import app.jg.og.zamong.dto.response.StringResponse;
 import app.jg.og.zamong.entity.redis.authenticationcode.AuthenticationCode;
 import app.jg.og.zamong.entity.redis.authenticationcode.AuthenticationCodeRepository;
+import app.jg.og.zamong.entity.redis.refreshtoken.RefreshToken;
+import app.jg.og.zamong.entity.redis.refreshtoken.RefreshTokenRepository;
 import app.jg.og.zamong.entity.user.User;
 import app.jg.og.zamong.entity.user.UserRepository;
 import app.jg.og.zamong.security.JwtTokenProvider;
@@ -49,6 +48,8 @@ public class AuthServiceTest {
     private JwtTokenProvider jwtTokenProvider;
     @Mock
     private AuthenticationCodeRepository authenticationCodeRepository;
+    @Mock
+    private RefreshTokenRepository refreshTokenRepository;
     @Mock
     private MailService mailService;
 
@@ -117,6 +118,7 @@ public class AuthServiceTest {
         given(passwordEncoder.matches(password, user.getPassword())).willReturn(true);
         given(jwtTokenProvider.generateAccessToken(uuid)).willReturn(accessToken);
         given(jwtTokenProvider.generateRefreshToken(uuid)).willReturn(refreshToken);
+        given(refreshTokenRepository.save(any())).willReturn(new RefreshToken(uuid, refreshToken));
 
         //when
         LoginUserRequest request = LoginUserRequest.builder()
@@ -131,6 +133,28 @@ public class AuthServiceTest {
 ;    }
 
     @Test
+    void 토큰_재발급_성공() {
+        //given
+        String userId = user.getUuid().toString();
+        String accessToken = SecurityConstant.ACCESS_TOKEN;
+        String refreshToken = SecurityConstant.REFRESH_TOKEN;
+
+        given(jwtTokenProvider.getUserUuid(refreshToken)).willReturn(userId);
+        given(refreshTokenRepository.findById(userId)).willReturn(Optional.of(new RefreshToken(userId, refreshToken)));
+        given(jwtTokenProvider.generateAccessToken(userId)).willReturn(accessToken);
+
+        //when
+        ReIssueTokenRequest request = ReIssueTokenRequest.builder()
+                .refreshToken(refreshToken)
+                .build();
+        IssueTokenResponse response = authService.refreshToken(request);
+
+        //then
+        assertThat(response.getAccessToken()).isEqualTo(accessToken);
+        assertThat(response.getRefreshToken()).isEqualTo(refreshToken);
+    }
+
+    @Test
     void 이메일_전송_성공() {
         try {
             authService.sendOutAuthenticationEmail(EmailAuthenticationRequest.builder()
@@ -142,7 +166,7 @@ public class AuthServiceTest {
     }
 
     @Test
-    void 이메일_전송_실패() throws MessagingException {
+    void 이메일_전송_실패() {
         //given
         given(mailService.sendEmail(any())).willThrow(new RuntimeException());
 

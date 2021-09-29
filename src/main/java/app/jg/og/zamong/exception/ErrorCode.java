@@ -12,8 +12,11 @@ public enum ErrorCode {
     USER_IDENTITY_DUPLICATION(400, "User Identity is Duplication"),
     BAD_AUTHENTICATION_CODE(400, "Bad Authentication Code"),
     BAD_USER_INFORMATION(400, "Bad User Information"),
+    UNAUTHORIZED_TOKEN(401, "Unauthorized Token"),
 
-    MAIL_SEND_FAILED(400, "Mail Send Failed");
+    MAIL_SEND_FAILED(400, "Mail Send Failed"),
+
+    INTERNAL_SERVER_ERROR(500, "Internal Server Error");
 
     private final Integer status;
     private final String message;
