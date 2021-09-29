@@ -1,5 +1,6 @@
 package app.jg.og.zamong.security;
 
+import app.jg.og.zamong.exception.business.UnauthorizedTokenException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -20,9 +21,15 @@ public class JwtTokenFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String token = jwtTokenProvider.resolveToken(request);
         if(token != null) {
-            Authentication authentication = jwtTokenProvider.getAuthentication(token);
-            SecurityContextHolder.getContext().setAuthentication(authentication);
+            try {
+                Authentication authentication = jwtTokenProvider.getAuthentication(token);
+                SecurityContextHolder.getContext().setAuthentication(authentication);
+            } catch (UnauthorizedTokenException e) {
+                response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
+                return;
+            }
         }
+
         filterChain.doFilter(request, response);
     }
 }
