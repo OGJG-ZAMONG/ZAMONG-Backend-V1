@@ -1,9 +1,6 @@
 package app.jg.og.zamong.controller;
 
-import app.jg.og.zamong.dto.request.CheckIdDuplicationRequest;
-import app.jg.og.zamong.dto.request.EmailAuthenticationRequest;
-import app.jg.og.zamong.dto.request.LoginUserRequest;
-import app.jg.og.zamong.dto.request.SignUpUserRequest;
+import app.jg.og.zamong.dto.request.*;
 import app.jg.og.zamong.dto.response.ResponseBody;
 import app.jg.og.zamong.service.auth.AuthService;
 import lombok.RequiredArgsConstructor;
@@ -40,5 +37,10 @@ public class AuthController {
     @PostMapping("/mail")
     public ResponseBody mail(@Valid @RequestBody EmailAuthenticationRequest request) {
         return ResponseBody.of(authService.sendOutAuthenticationEmail(request), HttpStatus.OK.value());
+    }
+
+    @PostMapping("/refresh")
+    public ResponseBody refresh(@Valid @RequestBody ReIssueTokenRequest request) {
+        return ResponseBody.of(authService.refreshToken(request), HttpStatus.OK.value());
     }
 }
