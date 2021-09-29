@@ -24,7 +24,7 @@ public class AuthenticationDetails implements UserDetails {
 
     @Override
     public String getUsername() {
-        return null;
+        return user.getUuid().toString();
     }
 
     @Override
