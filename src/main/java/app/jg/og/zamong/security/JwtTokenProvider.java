@@ -1,5 +1,6 @@
 package app.jg.og.zamong.security;
 
+import app.jg.og.zamong.exception.business.UnauthorizedTokenException;
 import app.jg.og.zamong.security.auth.AuthenticationDetailService;
 import app.jg.og.zamong.security.auth.AuthenticationDetails;
 import io.jsonwebtoken.Jwts;
@@ -63,7 +64,7 @@ public class JwtTokenProvider {
         try {
             return Jwts.parser().setSigningKey(jwtConfigurationProperties.getSecret()).parseClaimsJws(token).getBody().getSubject();
         } catch (Exception e) {
-            throw new RuntimeException();
+            throw new UnauthorizedTokenException("인증되지 않은 토큰입니다");
         }
     }
 }
