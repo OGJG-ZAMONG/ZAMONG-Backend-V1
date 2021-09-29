@@ -11,6 +11,8 @@ import app.jg.og.zamong.dto.response.SignedUserResponse;
 import app.jg.og.zamong.dto.response.StringResponse;
 import app.jg.og.zamong.entity.redis.authenticationcode.AuthenticationCode;
 import app.jg.og.zamong.entity.redis.authenticationcode.AuthenticationCodeRepository;
+import app.jg.og.zamong.entity.redis.refreshtoken.RefreshToken;
+import app.jg.og.zamong.entity.redis.refreshtoken.RefreshTokenRepository;
 import app.jg.og.zamong.entity.user.User;
 import app.jg.og.zamong.entity.user.UserRepository;
 import app.jg.og.zamong.security.JwtTokenProvider;
@@ -49,6 +51,8 @@ public class AuthServiceTest {
     private JwtTokenProvider jwtTokenProvider;
     @Mock
     private AuthenticationCodeRepository authenticationCodeRepository;
+    @Mock
+    private RefreshTokenRepository refreshTokenRepository;
     @Mock
     private MailService mailService;
 
@@ -117,6 +121,7 @@ public class AuthServiceTest {
         given(passwordEncoder.matches(password, user.getPassword())).willReturn(true);
         given(jwtTokenProvider.generateAccessToken(uuid)).willReturn(accessToken);
         given(jwtTokenProvider.generateRefreshToken(uuid)).willReturn(refreshToken);
+        given(refreshTokenRepository.save(any())).willReturn(new RefreshToken(uuid, refreshToken));
 
         //when
         LoginUserRequest request = LoginUserRequest.builder()
