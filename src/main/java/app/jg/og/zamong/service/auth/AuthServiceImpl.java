@@ -12,6 +12,7 @@ import app.jg.og.zamong.entity.user.User;
 import app.jg.og.zamong.entity.user.UserRepository;
 import app.jg.og.zamong.exception.business.BadAuthenticationCodeException;
 import app.jg.og.zamong.exception.business.BadUserInformationException;
+import app.jg.og.zamong.exception.business.UnauthorizedTokenException;
 import app.jg.og.zamong.exception.business.UserIdentityDuplicationException;
 import app.jg.og.zamong.security.JwtTokenProvider;
 import app.jg.og.zamong.service.mail.MailService;
@@ -105,5 +106,20 @@ public class AuthServiceImpl implements AuthService {
 
     private String createAuthenticationCode() {
         return String.format("%06d", RANDOM.nextInt(1000000) % 1000000);
+    }
+
+    @Override
+    public IssueTokenResponse refreshToken(ReIssueTokenRequest request) {
+        String refreshToken = request.getRefreshToken();
+        String userId = jwtTokenProvider.getUserUuid(refreshToken);
+
+        refreshTokenRepository.findById(userId)
+                .filter(rt -> rt.getRefreshToken().equals(refreshToken))
+                .orElseThrow(() -> new UnauthorizedTokenException("인증되지 않은 토큰입니다"));
+
+        return IssueTokenResponse.builder()
+                .accessToken(jwtTokenProvider.generateAccessToken(userId))
+                .refreshToken(refreshToken)
+                .build();
     }
 }
