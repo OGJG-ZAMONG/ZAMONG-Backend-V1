@@ -29,4 +29,8 @@ public class Dream {
     @ManyToOne(targetEntity = User.class, fetch = FetchType.LAZY)
     @JoinColumn(name = "user_uuid", nullable = false)
     private User user;
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 }
