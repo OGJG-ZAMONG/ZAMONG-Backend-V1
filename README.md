@@ -1,6 +1,6 @@
 # ZAMONG-Backend-V1
 
-[![.github/workflows/build.yml](https://github.com/OGJG-ZAMONG/ZAMONG-Backend-V1/actions/workflows/build.yml/badge.svg)](https://github.com/OGJG-ZAMONG/ZAMONG-Backend-V1/actions/workflows/build.yml)
+[![.github/workflows/build.yml](https://github.com/OGJG-ZAMONG/ZAMONG-Backend-V1/actions/workflows/build.yml/badge.svg)](https://github.com/OGJG-ZAMONG/ZAMONG-Backend-V1/actions/workflows/build.yml) [![codecov](https://codecov.io/gh/OGJG-ZAMONG/ZAMONG-Backend-V1/branch/main/graph/badge.svg?token=GPR3629N1N)](https://codecov.io/gh/OGJG-ZAMONG/ZAMONG-Backend-V1)
 
 ## Reference
 
