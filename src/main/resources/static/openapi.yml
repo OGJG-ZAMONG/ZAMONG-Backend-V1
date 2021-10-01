@@ -92,8 +92,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/IssueTokenResponse'
-        500:
-          $ref: '#/components/responses/IssueTokenResponse'
 
   '/auth/refresh':
     post:
@@ -116,8 +114,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/IssueTokenResponse'
-        500:
-          $ref: '#/components/responses/InternalServerError'
 
   '/user/{user-uuid}':
     parameters:
@@ -137,7 +133,7 @@ paths:
                   status:
                     example: 200
                   response:
-                    $ref: '#/components/schemas/ResponseBody'
+                    $ref: '#/components/schemas/UserInformationResponse'
 
   '/user/me':
     parameters:
@@ -156,7 +152,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ResponseBody'
+                $ref: '#/components/schemas/UserInformationResponse'
 
 components:
 
@@ -182,6 +178,32 @@ components:
       example: "2021-09-27T18:22:45.426066"
 
   schemas:
+
+    UserInformationResponse:
+      properties:
+        status:
+          example: 201
+        timestamp:
+          $ref: '#/components/parameters/timestamp'
+        content:
+          readOnly: true
+          properties:
+            collection_value:
+              example: false
+            response:
+              properties:
+                uuid:
+                  $ref: '#/components/parameters/user-uuid'
+                name:
+                  $ref: '#/components/parameters/name'
+                email:
+                  $ref: '#/components/parameters/email'
+                id:
+                  $ref: '#/components/parameters/id'
+                share_dream_count:
+                  example: 18
+                lucy_count:
+                  example: 87
 
     SignedUserResponse:
       properties:
@@ -250,21 +272,3 @@ components:
                   example: "eeyJhbGciOiJIUzI1NiJ9..."
                 refresh_token:
                   example: "eyJhbGciOiJIUzI1NiJ9..."
-
-  responses:
-
-    InternalServerError:
-      description: Internal Server Error
-      content:
-        application/json:
-          schema:
-            properties:
-              status:
-                example: 500
-              response:
-                type: object
-                properties:
-                  name:
-                    example: Internal Server Error
-                  description:
-                    example: "오류가 발생했습니다"
