@@ -1,5 +1,7 @@
 package app.jg.og.zamong.entity.dream;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -17,10 +19,7 @@ public enum DreamType {
     HOLY_DREAM("HDR", "영몽");
 
     private final String code;
-    private final String value;
 
-    @Override
-    public String toString() {
-        return value;
-    }
+    @JsonValue
+    private final String value;
 }
