@@ -11,8 +11,9 @@ import java.util.UUID;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Inheritance(strategy = InheritanceType.JOINED)
 @Entity
-public class Dream {
+public abstract class Dream {
 
     @Id
     @GeneratedValue(generator = "uuid2")
