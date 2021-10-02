@@ -18,17 +18,16 @@ public abstract class Dream {
     @Column(columnDefinition = "BINARY(16)")
     private UUID uuid;
 
+    @Setter
     @Column(length = 100)
     private String title;
 
+    @Setter
     @Column(columnDefinition = "text")
     private String content;
 
+    @Setter
     @ManyToOne(targetEntity = User.class, fetch = FetchType.LAZY)
     @JoinColumn(name = "user_uuid", nullable = false)
     private User user;
-
-    public void setUser(User user) {
-        this.user = user;
-    }
 }
