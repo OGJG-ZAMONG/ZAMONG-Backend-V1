@@ -8,12 +8,11 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum DreamQuality {
 
-    BEST("BST"),
-    GOOD("GD"),
-    SOSO("SO"),
-    BAD("BD"),
-    WORST("WST");
+    BST("BEST"),
+    GD("GOOD"),
+    SO("SOSO"),
+    BD("BAD"),
+    WST("WORST");
 
-    @JsonValue
-    private final String value;
+    private final String code;
 }
