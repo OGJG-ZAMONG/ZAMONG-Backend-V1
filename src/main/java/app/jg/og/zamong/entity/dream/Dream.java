@@ -2,12 +2,16 @@ package app.jg.og.zamong.entity.dream;
 
 import app.jg.og.zamong.entity.user.User;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.util.UUID;
 
 @Getter
+@SuperBuilder
+@AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Inheritance(strategy = InheritanceType.JOINED)
 @Entity
 public abstract class Dream {
