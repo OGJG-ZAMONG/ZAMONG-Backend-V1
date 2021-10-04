@@ -24,11 +24,13 @@ public class ShareDream extends Dream {
     private Boolean isShared;
 
     @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "sleep_datetime")
     private Date sleepDateTime;
 
     @Column(columnDefinition = "tinyint")
     private Integer sleepTime;
 
     @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "share_datetime")
     private Date shareDateTime;
 }
