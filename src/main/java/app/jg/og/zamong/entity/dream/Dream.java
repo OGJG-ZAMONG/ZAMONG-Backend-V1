@@ -1,11 +1,13 @@
 package app.jg.og.zamong.entity.dream;
 
+import app.jg.og.zamong.entity.dream.dreamtype.DreamType;
 import app.jg.og.zamong.entity.user.User;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.UUID;
 
 @Getter
@@ -28,7 +30,10 @@ public abstract class Dream {
     @Column(columnDefinition = "text")
     private String content;
 
-    @ManyToOne(targetEntity = User.class, fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_uuid", nullable = false)
     private User user;
+
+    @OneToMany
+    private List<DreamType> dreamTypes;
 }
