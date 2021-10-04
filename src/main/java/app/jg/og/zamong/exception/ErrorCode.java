@@ -15,6 +15,7 @@ public enum ErrorCode {
     UNAUTHORIZED_TOKEN(401, "Unauthorized Token"),
 
     MAIL_SEND_FAILED(400, "Mail Send Failed"),
+    ATTRIBUTE_CONVERT_FAILED(400, "Attribute Convert Failed"),
 
     INTERNAL_SERVER_ERROR(500, "Internal Server Error");
 
