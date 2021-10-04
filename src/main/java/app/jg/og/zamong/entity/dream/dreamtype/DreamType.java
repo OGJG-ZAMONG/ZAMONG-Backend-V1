@@ -1,6 +1,7 @@
 package app.jg.og.zamong.entity.dream.dreamtype;
 
 import app.jg.og.zamong.entity.dream.Dream;
+import app.jg.og.zamong.entity.dream.dreamtype.converter.DreamTypeConverter;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
@@ -20,6 +21,7 @@ public class DreamType {
     @Column(columnDefinition = "BINARY(16)")
     private UUID uuid;
 
+    @Convert(converter = DreamTypeConverter.class)
     @Column(length = 4, columnDefinition = "char(4)")
     private app.jg.og.zamong.entity.dream.enums.DreamType code;
 

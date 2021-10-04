@@ -15,13 +15,15 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public enum DreamQuality {
 
-    BEST("BST"),
-    GOOD("GD"),
-    SOSO("SO"),
-    BAD("BD"),
-    WORST("WST");
+    BEST("BST", "아주 좋아요"),
+    GOOD("GD", "재밌어요"),
+    SOSO("SO", "그저 그래요"),
+    BAD("BD", "안좋아요"),
+    WORST("WST", "아주 안좋아요");
 
     private final String code;
+
+    private final String value;
 
     private static final Map<String, DreamQuality> qualities =
             Collections.unmodifiableMap(Arrays.stream(DreamQuality.values())

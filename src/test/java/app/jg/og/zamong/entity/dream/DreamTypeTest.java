@@ -22,7 +22,7 @@ public class DreamTypeTest {
 
         String jsonString = mapper.writeValueAsString(dream);
 
-        assertThat(jsonString).isEqualTo("{\"name\":\"" + name + "\",\"dreamType\":\"" + dreamType.getValue() + "\"}");
+        assertThat(jsonString).isEqualTo("{\"name\":\"" + name + "\",\"dreamType\":\"" + dreamType.name() + "\"}");
     }
 
     static class InnerDream {
