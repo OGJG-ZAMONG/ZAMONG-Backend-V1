@@ -1,6 +1,7 @@
 package app.jg.og.zamong.entity.user;
 
 import app.jg.og.zamong.entity.dream.Dream;
+import app.jg.og.zamong.entity.follow.Follow;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
@@ -33,4 +34,10 @@ public class User {
 
     @OneToMany(mappedBy = "user")
     private List<Dream> dreams;
+
+    @OneToMany(mappedBy = "following")
+    private List<Follow> followers;
+
+    @OneToMany(mappedBy = "follower")
+    private List<Follow> followings;
 }
