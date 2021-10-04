@@ -43,7 +43,6 @@ public class ShareDreamLearningTest extends IntegrationTest {
                 .content(DreamConstant.CONTENT)
                 .user(findUser)
                 .quality(DreamConstant.QUALITY)
-                .type(DreamConstant.TYPE)
                 .isShared(DreamConstant.IS_SHARED)
                 .sleepDateTime(sleepDateTime)
                 .sleepTime(DreamConstant.SLEEP_TIME)

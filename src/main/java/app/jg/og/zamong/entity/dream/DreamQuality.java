@@ -1,6 +1,5 @@
 package app.jg.og.zamong.entity.dream;
 
-import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -8,11 +7,11 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum DreamQuality {
 
-    BST("BEST"),
-    GD("GOOD"),
-    SO("SOSO"),
-    BD("BAD"),
-    WST("WORST");
+    BEST("BST"),
+    GOOD("GD"),
+    SOSO("SO"),
+    BAD("BD"),
+    WORST("WST");
 
     private final String code;
 }

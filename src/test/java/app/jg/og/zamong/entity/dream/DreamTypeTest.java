@@ -14,7 +14,7 @@ public class DreamTypeTest {
 
         InnerDream dream = new InnerDream();
         String name = "myDream";
-        DreamType dreamType = DreamType.NTM;
+        DreamType dreamType = DreamType.NIGHTMARE;
 
         dream.setName(name);
         dream.setDreamType(dreamType);
