@@ -3,7 +3,7 @@ package app.jg.og.zamong.service.auth;
 import app.jg.og.zamong.dto.request.*;
 import app.jg.og.zamong.dto.response.IssueTokenResponse;
 import app.jg.og.zamong.dto.response.StringResponse;
-import app.jg.og.zamong.dto.response.SignedUserResponse;
+import app.jg.og.zamong.dto.response.SignUpUserResponse;
 import app.jg.og.zamong.entity.redis.authenticationcode.AuthenticationCode;
 import app.jg.og.zamong.entity.redis.authenticationcode.AuthenticationCodeRepository;
 import app.jg.og.zamong.entity.redis.refreshtoken.RefreshToken;
@@ -45,7 +45,7 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public SignedUserResponse registerUser(SignUpUserRequest request) {
+    public SignUpUserResponse registerUser(SignUpUserRequest request) {
         userRepository.findByEmailOrId(request.getEmail(), request.getId())
                 .ifPresent((user) -> {
                     throw new UserIdentityDuplicationException("이미 사용중인 아이디 혹은 이메일입니다");
@@ -62,7 +62,7 @@ public class AuthServiceImpl implements AuthService {
                 .password(passwordEncoder.encode(request.getPassword()))
                 .build());
 
-        return SignedUserResponse.of(user);
+        return SignUpUserResponse.of(user);
     }
 
     @Override

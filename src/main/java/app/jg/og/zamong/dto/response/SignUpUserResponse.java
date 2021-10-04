@@ -8,7 +8,7 @@ import java.util.UUID;
 
 @Builder
 @Getter
-public class SignedUserResponse implements Response {
+public class SignUpUserResponse implements Response {
 
     private final UUID uuid;
 
@@ -18,8 +18,8 @@ public class SignedUserResponse implements Response {
 
     private final String id;
 
-    public static SignedUserResponse of(User user) {
-        return SignedUserResponse.builder()
+    public static SignUpUserResponse of(User user) {
+        return SignUpUserResponse.builder()
                 .uuid(user.getUuid())
                 .name(user.getName())
                 .email(user.getEmail())
