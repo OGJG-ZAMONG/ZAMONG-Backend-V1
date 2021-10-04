@@ -3,7 +3,7 @@ package app.jg.og.zamong.dto.request;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
-import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
@@ -14,11 +14,11 @@ import javax.validation.constraints.Size;
 public class LoginUserRequest {
 
     @JsonProperty("user_identity")
-    @NotBlank(message = "아이디 혹은 이메일을 반드시 입력해야 합니다")
+    @NotNull(message = "아이디 혹은 이메일을 반드시 입력해야 합니다")
     @Size(min = 6, max = 320, message = "아이디 혹은 이메일은 6자 이상 320자 이하여야 합니다")
     private String userIdentity;
 
-    @NotBlank(message = "비밀번호를 반드시 입력해야 합니다")
+    @NotNull(message = "비밀번호를 반드시 입력해야 합니다")
     @Pattern(regexp = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[$@$!%*#?&])[A-Za-z\\d$@$!%*#?&]{8,}$", message = "비밀번호는 영문 대소문자와 숫자 특수기호 포함 8자 이상이어야 합니다")
     @Size(min = 8, max = 24, message = "너무 긴 비밀번호입니다")
     private String password;
