@@ -1,5 +1,6 @@
 package app.jg.og.zamong.entity.dream;
 
+import app.jg.og.zamong.entity.dream.enums.DreamType;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;

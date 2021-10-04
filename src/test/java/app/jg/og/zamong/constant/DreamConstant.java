@@ -1,6 +1,6 @@
 package app.jg.og.zamong.constant;
 
-import app.jg.og.zamong.entity.dream.DreamQuality;
+import app.jg.og.zamong.entity.dream.enums.DreamQuality;
 
 public class DreamConstant {
 

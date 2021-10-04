@@ -1,7 +1,7 @@
 package app.jg.og.zamong.entity.dream.sharedream;
 
 import app.jg.og.zamong.entity.dream.Dream;
-import app.jg.og.zamong.entity.dream.DreamQuality;
+import app.jg.og.zamong.entity.dream.enums.DreamQuality;
 import app.jg.og.zamong.entity.dream.sharedream.converter.DreamQualityConverter;
 import lombok.*;
 import lombok.experimental.SuperBuilder;

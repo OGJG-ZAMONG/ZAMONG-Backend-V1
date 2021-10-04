@@ -1,4 +1,4 @@
-package app.jg.og.zamong.entity.dream;
+package app.jg.og.zamong.entity.dream.enums;
 
 import app.jg.og.zamong.exception.externalinfra.AttributeConvertFailedException;
 import lombok.AllArgsConstructor;

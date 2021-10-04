@@ -1,6 +1,6 @@
 package app.jg.og.zamong.entity.dream.sharedream.converter;
 
-import app.jg.og.zamong.entity.dream.DreamQuality;
+import app.jg.og.zamong.entity.dream.enums.DreamQuality;
 
 import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;

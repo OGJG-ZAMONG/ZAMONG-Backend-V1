@@ -1,4 +1,4 @@
-package app.jg.og.zamong.entity.dream;
+package app.jg.og.zamong.entity.dream.enums;
 
 import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.AllArgsConstructor;
