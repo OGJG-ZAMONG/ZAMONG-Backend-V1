@@ -1,8 +1,15 @@
 package app.jg.og.zamong.entity.dream.enums;
 
-import com.fasterxml.jackson.annotation.JsonValue;
+import app.jg.og.zamong.exception.externalinfra.AttributeConvertFailedException;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Map;
+import java.util.Optional;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Getter
 @AllArgsConstructor
@@ -19,6 +26,14 @@ public enum DreamType {
 
     private final String code;
 
-    @JsonValue
     private final String value;
+
+    private static final Map<String, DreamType> types =
+            Collections.unmodifiableMap(Arrays.stream(DreamType.values())
+                    .collect(Collectors.toMap(DreamType::getCode, Function.identity())));
+
+    public static DreamType find(String code) {
+        return Optional.ofNullable(types.get(code))
+                .orElseThrow(() -> new AttributeConvertFailedException("Attribute Convert Failed " + code));
+    }
 }
