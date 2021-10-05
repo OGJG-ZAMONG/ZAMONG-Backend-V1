@@ -4,7 +4,7 @@ import app.jg.og.zamong.constant.SecurityConstant;
 import app.jg.og.zamong.constant.UserConstant;
 import app.jg.og.zamong.dto.request.*;
 import app.jg.og.zamong.dto.response.IssueTokenResponse;
-import app.jg.og.zamong.dto.response.SignedUserResponse;
+import app.jg.og.zamong.dto.response.SignUpUserResponse;
 import app.jg.og.zamong.dto.response.StringResponse;
 import app.jg.og.zamong.entity.redis.authenticationcode.AuthenticationCode;
 import app.jg.og.zamong.entity.redis.authenticationcode.AuthenticationCodeRepository;
@@ -25,7 +25,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
 
-import javax.mail.MessagingException;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -99,7 +98,7 @@ public class AuthServiceTest {
                 .id(id)
                 .password(password)
                 .build();
-        SignedUserResponse response = authService.registerUser(request);
+        SignUpUserResponse response = authService.registerUser(request);
 
         // then
         assertThat(response.getUuid()).isNotNull();
