@@ -28,6 +28,7 @@ paths:
       tags:
         - auth
       summary: "회원가입시 아이디 중복 확인 API"
+      description: "회원가입시 아이디가 중복되는지 확인하기 위한 API입니다"
       requestBody:
         content:
           application/json:
@@ -42,6 +43,27 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/IdNotDuplicateResponse'
+
+  '/auth/mail':
+    post:
+      tags:
+        - auth
+      summary: "이메일 전송 API"
+      description: "API를 호출하면 이메일로 인증코드를 전송합니다"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                address:
+                  $ref: '#/components/parameters/email'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IssueTokenResponse'
 
   '/auth/signup':
     post:
