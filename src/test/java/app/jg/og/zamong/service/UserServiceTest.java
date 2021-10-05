@@ -1,8 +1,11 @@
 package app.jg.og.zamong.service;
 
+import app.jg.og.zamong.dto.response.FollowUserResponse;
 import app.jg.og.zamong.dto.response.UserInformationResponse;
 import app.jg.og.zamong.entity.dream.sharedream.ShareDream;
 import app.jg.og.zamong.entity.dream.sharedream.ShareDreamRepository;
+import app.jg.og.zamong.entity.follow.Follow;
+import app.jg.og.zamong.entity.follow.FollowRepository;
 import app.jg.og.zamong.entity.user.User;
 import app.jg.og.zamong.entity.user.UserRepository;
 import app.jg.og.zamong.service.user.UserServiceImpl;
@@ -21,6 +24,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 
 @ExtendWith(MockitoExtension.class)
@@ -34,6 +38,8 @@ public class UserServiceTest {
     private UserRepository userRepository;
     @Mock
     private ShareDreamRepository shareDreamRepository;
+    @Mock
+    private FollowRepository followRepository;
 
     static private User user;
 
@@ -58,5 +64,27 @@ public class UserServiceTest {
         //then
         assertThat(response.getEmail()).isEqualTo(user.getEmail());
         assertThat(response.getShareDreamCount()).isEqualTo(shareDreamCount);
+    }
+
+    @Test
+    void 유저_팔로우_성공() {
+        //given
+        User follower = User.builder().uuid(UUID.randomUUID()).build();
+        UUID uuid = user.getUuid();
+        UUID followerUuid = follower.getUuid();
+
+        given(userRepository.findByUuid(uuid)).willReturn(Optional.of(user));
+        given(userRepository.findByUuid(followerUuid)).willReturn(Optional.of(follower));
+        given(followRepository.save(any(Follow.class))).willReturn(Follow.builder()
+                .following(user)
+                .follower(follower)
+                .build());
+
+        //when
+        FollowUserResponse response = userService.followUser(uuid.toString(), followerUuid.toString());
+
+        //then
+        assertThat(response.getUserId()).isEqualTo(uuid);
+        assertThat(response.getFollowerId()).isEqualTo(followerUuid);
     }
 }
