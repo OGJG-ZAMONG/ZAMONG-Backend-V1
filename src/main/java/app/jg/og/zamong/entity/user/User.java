@@ -32,6 +32,8 @@ public class User {
 
     private String password;
 
+    private Integer lucyCount;
+
     @OneToMany(mappedBy = "user")
     private List<Dream> dreams;
 
