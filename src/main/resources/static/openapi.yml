@@ -188,6 +188,40 @@ paths:
               schema:
                 $ref: '#/components/schemas/FollowUserResponse'
 
+  '/user/{user-uuid}/following':
+    parameters:
+      - $ref: '#/components/parameters/bearer_header'
+      - $ref: '#/components/parameters/page'
+      - $ref: '#/components/parameters/size'
+    get:
+      tags:
+        - user
+      summary: "사용자 팔로잉 목록 API"
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FollowingUserGroupResponse'
+
+  '/user/{user-uuid}/follower':
+    parameters:
+      - $ref: '#/components/parameters/bearer_header'
+      - $ref: '#/components/parameters/page'
+      - $ref: '#/components/parameters/size'
+    get:
+      tags:
+        - user
+      summary: "사용자 팔로워 목록 API"
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FollowerUserGroupResponse'
+
   '/dream/share':
     parameters:
       - $ref: '#/components/parameters/bearer_header'
@@ -206,6 +240,16 @@ paths:
 components:
 
   parameters:
+    page:
+      name: page
+      in: query
+      example: 1
+      description: "요청할 크기에 따른 페이지 번호"
+    size: 
+      name: size
+      in: query
+      example: 12
+      description: "요청할 크기"
     bearer_header:
       name: Authorization
       in: header
@@ -216,6 +260,8 @@ components:
       in: path
       description: UUID 형태의 사용자의 식별자
       example: 7359fee5-426f-45f5-bd24-cc675e7bdd13
+    profile:
+      example: "http://211.38.86.92/media/pms/static/pms.png"
     name:
       example: 김진근
     email:
@@ -233,6 +279,62 @@ components:
 
   schemas:
 
+    FollowingUserGroupResponse:
+      properties:
+        status:
+          example: 200
+        timestamp:
+          $ref: '#/components/parameters/timestamp'
+        content:
+          readOnly: true
+          properties:
+            collection_value:
+              example: true
+            response:
+              properties:
+                followings:
+                  type: array
+                  items: 
+                    properties:
+                      profile:
+                        $ref: '#/components/parameters/user-uuid'
+                      id:
+                        $ref: '#/components/parameters/id'
+                      follow_date: 
+                        $ref: '#/components/parameters/timestamp'
+                      is_following:
+                        example: true
+
+    FollowerUserGroupResponse:
+      properties:
+        status:
+          example: 200
+        timestamp:
+          $ref: '#/components/parameters/timestamp'
+        content:
+          readOnly: true
+          properties:
+            collection_value:
+              example: true
+            response:
+              properties:
+                followers:
+                  type: array
+                  items: 
+                    properties:
+                      profile:
+                        $ref: '#/components/parameters/profile'
+                      id:
+                        $ref: '#/components/parameters/id'
+                      follow_date: 
+                        $ref: '#/components/parameters/timestamp'
+                      is_following:
+                        example: true
+                total_size: 
+                  example: 1
+                total_page: 
+                  example: 3
+
     FollowUserResponse:
       properties:
         status:
@@ -243,13 +345,15 @@ components:
           readOnly: true
           properties:
             collection_value:
-              example: false
+              example: true
             response:
               properties:
                 user_id:
                   $ref: '#/components/parameters/user-uuid'
                 follower_id:
                   $ref: '#/components/parameters/user-uuid'
+                follow_date:
+                  $ref: '#/components/parameters/timestamp'
                   
     UserInformationResponse:
       properties:
@@ -272,6 +376,8 @@ components:
                   $ref: '#/components/parameters/email'
                 id:
                   $ref: '#/components/parameters/id'
+                profile:
+                  $ref: '#/components/parameters/profile'
                 share_dream_count:
                   example: 18
                 lucy_count:
