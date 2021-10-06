@@ -229,10 +229,10 @@ paths:
                 $ref: '#/components/parameters/dream_types'
               quality:
                 $ref: '#/components/parameters/quality'
-              sleep_date_time:
+              sleep_start_time:
                 $ref: '#/components/parameters/timestamp'
-              sleep_time:
-                example: "integer 잠잔 시간"
+              sleep_end_time:
+                $ref: '#/components/parameters/timestamp'
       tags:
         - dream
       summary: "공유꿈 작성 API"
@@ -242,6 +242,54 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/CreateShareDreamResponse'
+  '/dream/share/title':
+      patch:
+        parameters:
+          - in: 'body'
+            name: 'body'
+            required: true
+            schema:
+              properties:
+                title: 
+                  $ref: '#/components/parameters/title'
+        tags:
+          - dream
+        summary: "꿈 제목 부분 수정 API"
+        responses:
+          204:
+            description: "No Content"
+  '/dream/share/content':
+      patch:
+        parameters:
+          - in: 'body'
+            name: 'body'
+            required: true
+            schema:
+              properties:
+                content: 
+                  $ref: '#/components/parameters/content'
+        tags:
+          - dream
+        summary: "꿈 본문 부분 수정 API"
+        responses:
+          204:
+            description: "No Content"
+  '/dream/share/quality':
+      patch:
+        parameters:
+          - in: 'body'
+            name: 'body'
+            required: true
+            schema:
+              properties:
+                quality: 
+                  $ref: '#/components/parameters/quality'
+        tags:
+          - dream
+        summary: "꿈 품질 부분 수정 API"
+        responses:
+          204:
+            description: "No Content"
 
   '/dream/{dream-uuid}':
     delete:
@@ -249,12 +297,27 @@ paths:
         - $ref: '#/components/parameters/dream-uuid'
       tags:
         - dream
-      summary: "꿈 삭제 API"
+      summary: '꿈 삭제 API'
       responses:
         204:
-          description: "No Content"
-    
-      
+          description: 'No Content'
+
+  '/dream/dream-types':
+      patch:
+        parameters:
+          - in: 'body'
+            name: 'body'
+            required: true
+            schema:
+              properties:
+                dream_types: 
+                  $ref: '#/components/parameters/dream_types'
+        tags:
+          - dream
+        summary: "꿈 유형 부분 수정 API"
+        responses:
+          204:
+            description: "No Content"
 
 components:
 
@@ -332,9 +395,9 @@ components:
             response:
               properties:
                 uuid:
-                  $ref: '#/components/parameters/user-uuid'
-                title: 
-                  $ref: '#/components/parameters/title'
+                  $ref: '#/components/parameters/dream-uuid'
+                create_at:
+                  $ref: '#/components/parameters/timestamp'
 
     FollowingUserGroupResponse:
       properties:
