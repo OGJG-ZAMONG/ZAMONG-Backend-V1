@@ -46,12 +46,12 @@ paths:
   '/auth/mail':
     post:
       parameters:
-      - in: 'body'
-        name: 'body'
-        required: true
-        properties:
-          address:
-            $ref: '#/components/parameters/email'
+        - in: 'body'
+          name: 'body'
+          required: true
+          properties:
+            address:
+              $ref: '#/components/parameters/email'
       tags:
         - auth
       summary: "이메일 전송 API"
@@ -66,20 +66,20 @@ paths:
   '/auth/signup':
     post:
       parameters:
-      - in: 'body'
-        name: 'body'
-        required: true
-        properties:
-          name:
-            $ref: '#/components/parameters/name'
-          email:
-            $ref: '#/components/parameters/email'
-          authentication_code:
-            $ref: '#/components/parameters/authentication_code'
-          id:
-            $ref: '#/components/parameters/id'
-          password:
-            $ref: '#/components/parameters/password'
+        - in: 'body'
+          name: 'body'
+          required: true
+          properties:
+            name:
+              $ref: '#/components/parameters/name'
+            email:
+              $ref: '#/components/parameters/email'
+            authentication_code:
+              $ref: '#/components/parameters/authentication_code'
+            id:
+              $ref: '#/components/parameters/id'
+            password:
+              $ref: '#/components/parameters/password'
       tags:
         - auth
       summary: "회원가입 API"
@@ -93,14 +93,14 @@ paths:
   '/auth/login':
     post:
       parameters:
-      - in: 'body'
-        name: 'body'
-        required: true
-        properties:
-          user_identity:
-            $ref: '#/components/parameters/user_identity'
-          password:
-            $ref: '#/components/parameters/password'
+        - in: 'body'
+          name: 'body'
+          required: true
+          properties:
+            user_identity:
+              $ref: '#/components/parameters/user_identity'
+            password:
+              $ref: '#/components/parameters/password'
       tags:
         - auth
       summary: "로그인 API"
@@ -114,14 +114,14 @@ paths:
   '/auth/refresh':
     post:
       parameters:
-      - in: 'body'
-        name: 'body'
-        required: true
-        properties:
-          access_token:
-            example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ..."
-          refresh_token:
-            example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ..."
+        - in: 'body'
+          name: 'body'
+          required: true
+          properties:
+            access_token:
+              example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ..."
+            refresh_token:
+              example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ..."
       tags:
         - auth
       summary: "토큰 재발급 API"
@@ -165,7 +165,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/UserInformationResponse'
-  
+
   '/user/follow':
     parameters:
       - $ref: '#/components/parameters/bearer_header'
@@ -230,17 +230,16 @@ paths:
     post:
       parameters:
         - $ref: '#/components/parameters/bearer_header'
-        - $ref: '#/components/parameters/dream-uuid'
         - in: 'body'
           name: 'body'
           required: true
           schema:
             properties:
-              title: 
+              title:
                 $ref: '#/components/parameters/title'
               content:
                 $ref: '#/components/parameters/content'
-              dream_types: 
+              dream_types:
                 $ref: '#/components/parameters/dream_types'
               quality:
                 $ref: '#/components/parameters/quality'
@@ -281,11 +280,11 @@ paths:
           required: true
           schema:
             properties:
-              title: 
+              title:
                 $ref: '#/components/parameters/title'
               content:
                 $ref: '#/components/parameters/content'
-              dream_types: 
+              dream_types:
                 $ref: '#/components/parameters/dream_types'
               quality:
                 $ref: '#/components/parameters/quality'
@@ -304,96 +303,96 @@ paths:
                 $ref: '#/components/schemas/CreateShareDreamResponse'
 
   '/dream/share/quality/{dream-uuid}':
-      patch:
-        parameters:
-          - $ref: '#/components/parameters/dream-uuid'
-          - in: 'body'
-            name: 'body'
-            required: true
-            schema:
-              properties:
-                quality: 
-                  $ref: '#/components/parameters/quality'
-        tags:
-          - dream
-        summary: "공유 꿈 품질 부분 수정 API"
-        responses:
-          204:
-            description: "No Content"
+    patch:
+      parameters:
+        - $ref: '#/components/parameters/dream-uuid'
+        - in: 'body'
+          name: 'body'
+          required: true
+          schema:
+            properties:
+              quality:
+                $ref: '#/components/parameters/quality'
+      tags:
+        - dream
+      summary: "공유 꿈 품질 부분 수정 API"
+      responses:
+        204:
+          description: "No Content"
 
   '/dream/share/sleep-datetime/{dream-uuid}':
-      patch:
-        parameters:
-          - $ref: '#/components/parameters/dream-uuid'
-          - in: 'body'
-            name: 'body'
-            required: true
-            schema:
-              properties:
-                sleep_begin_datetime:
-                  $ref: '#/components/parameters/begin_datetime'
-                sleep_end_datetime:
-                  $ref: '#/components/parameters/end_datetime'
-        tags:
-          - dream
-        summary: "공유 꿈 꾼 시각 부분 수정 API"
-        responses:
-          204:
-            description: "No Content"
+    patch:
+      parameters:
+        - $ref: '#/components/parameters/dream-uuid'
+        - in: 'body'
+          name: 'body'
+          required: true
+          schema:
+            properties:
+              sleep_begin_datetime:
+                $ref: '#/components/parameters/begin_datetime'
+              sleep_end_datetime:
+                $ref: '#/components/parameters/end_datetime'
+      tags:
+        - dream
+      summary: "공유 꿈 꾼 시각 부분 수정 API"
+      responses:
+        204:
+          description: "No Content"
 
   '/dream/title/{dream-uuid}':
-      patch:
-        parameters:
-          - $ref: '#/components/parameters/dream-uuid'
-          - in: 'body'
-            name: 'body'
-            required: true
-            schema:
-              properties:
-                title: 
-                  $ref: '#/components/parameters/title'
-        tags:
-          - dream
-        summary: "꿈 제목 부분 수정 API"
-        responses:
-          204:
-            description: "No Content"
+    patch:
+      parameters:
+        - $ref: '#/components/parameters/dream-uuid'
+        - in: 'body'
+          name: 'body'
+          required: true
+          schema:
+            properties:
+              title:
+                $ref: '#/components/parameters/title'
+      tags:
+        - dream
+      summary: "꿈 제목 부분 수정 API"
+      responses:
+        204:
+          description: "No Content"
 
   '/dream/content/{dream-uuid}':
-      patch:
-        parameters:
-          - $ref: '#/components/parameters/dream-uuid'
-          - in: 'body'
-            name: 'body'
-            required: true
-            schema:
-              properties:
-                content: 
-                  $ref: '#/components/parameters/content'
-        tags:
-          - dream
-        summary: "꿈 본문 부분 수정 API"
-        responses:
-          204:
-            description: "No Content"
-            
+    patch:
+      parameters:
+        - $ref: '#/components/parameters/dream-uuid'
+        - in: 'body'
+          name: 'body'
+          required: true
+          schema:
+            properties:
+              content:
+                $ref: '#/components/parameters/content'
+      tags:
+        - dream
+      summary: "꿈 본문 부분 수정 API"
+      responses:
+        204:
+          description: "No Content"
+
   '/dream/dream-types/{dream-uuid}':
-      patch:
-        parameters:
-          - $ref: '#/components/parameters/dream-uuid'
-          - in: 'body'
-            name: 'body'
-            required: true
-            schema:
-              properties:
-                dream_types: 
-                  $ref: '#/components/parameters/dream_types'
-        tags:
-          - dream
-        summary: "꿈 유형 부분 수정 API"
-        responses:
-          204:
-            description: "No Content"
+    patch:
+      parameters:
+        - $ref: '#/components/parameters/dream-uuid'
+        - in: 'body'
+          name: 'body'
+          required: true
+          schema:
+            properties:
+              dream_types:
+                $ref: '#/components/parameters/dream_types'
+      tags:
+        - dream
+      summary: "꿈 유형 부분 수정 API"
+      responses:
+        204:
+          description: "No Content"
 
   '/dream/{dream-uuid}':
     delete:
@@ -415,7 +414,7 @@ components:
       required: true
       example: 1
       description: "요청할 크기에 따른 페이지 번호"
-    size: 
+    size:
       name: size
       in: query
       required: true
@@ -437,7 +436,7 @@ components:
       name: dream-uuid
       in: path
       required: true
-      description: 꿈의 식별자 
+      description: 꿈의 식별자
       example: 7359fee5-426f-45f5-bd24-cc675e7bdd13
     profile:
       example: 'https://ogjg-zamong.s3.ap-northeast-1.amazonaws.com/default-posting-image/Rectangle+1.png'
@@ -463,11 +462,11 @@ components:
       example: '나 꿈속에서 꿈인거 알아차리고 깨어남'
     content:
       example: '내꿈 상황은 소묘실기보려고 학교반에 앉아서 대기상태. 거기에 애들도 많았었고 그냥 수능시험보는거랑 똑같았음 자리배치...'
-    dream_types: 
+    dream_types:
       type: array
       example:
-      - 'LUCID_DREAM'
-      - 'NIGHTMARE'
+        - 'LUCID_DREAM'
+        - 'NIGHTMARE'
     quality:
       example: 'BAD'
     lucy_count:
@@ -508,13 +507,13 @@ components:
               properties:
                 share_dreams:
                   type: array
-                  items: 
+                  items:
                     properties:
-                      default_posting_image: 
+                      default_posting_image:
                         $ref: '#/components/parameters/profile'
-                      title: 
+                      title:
                         $ref: '#/components/parameters/title'
-                      profile: 
+                      profile:
                         $ref: '#/components/parameters/profile'
                       is_shared:
                         example: true
@@ -524,11 +523,11 @@ components:
                         $ref: '#/components/parameters/timestamp'
                       lucy_count:
                         $ref: '#/components/parameters/lucy_count'
-                      dream_types: 
+                      dream_types:
                         $ref: '#/components/parameters/dream_types'
-                total_size: 
+                total_size:
                   example: 1
-                total_page: 
+                total_page:
                   example: 3
 
     FollowingUserGroupResponse:
@@ -545,7 +544,7 @@ components:
               properties:
                 followings:
                   type: array
-                  items: 
+                  items:
                     properties:
                       uuid:
                         $ref: '#/components/parameters/user-uuid'
@@ -553,13 +552,13 @@ components:
                         $ref: '#/components/parameters/user-uuid'
                       id:
                         $ref: '#/components/parameters/id'
-                      follow_datetime: 
+                      follow_datetime:
                         $ref: '#/components/parameters/timestamp'
                       is_following:
                         example: true
-                total_size: 
+                total_size:
                   example: 1
-                total_page: 
+                total_page:
                   example: 3
 
     FollowerUserGroupResponse:
@@ -576,7 +575,7 @@ components:
               properties:
                 followers:
                   type: array
-                  items: 
+                  items:
                     properties:
                       uuid:
                         $ref: '#/components/parameters/user-uuid'
@@ -584,13 +583,13 @@ components:
                         $ref: '#/components/parameters/profile'
                       id:
                         $ref: '#/components/parameters/id'
-                      follow_datetime: 
+                      follow_datetime:
                         $ref: '#/components/parameters/timestamp'
                       is_following:
                         example: true
-                total_size: 
+                total_size:
                   example: 1
-                total_page: 
+                total_page:
                   example: 3
 
     FollowUserResponse:
@@ -611,7 +610,7 @@ components:
                   $ref: '#/components/parameters/user-uuid'
                 follow_datetime:
                   $ref: '#/components/parameters/timestamp'
-                  
+
     UserInformationResponse:
       properties:
         status:
