@@ -159,10 +159,7 @@ paths:
 
   '/user/me':
     parameters:
-      - name: Authorization
-        in: header
-        description: Authorization Bearer Header
-        example: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ..."
+      - $ref: '#/components/parameters/bearer_header'
     get:
       description: '내 기본 정보'
       tags:
@@ -175,10 +172,45 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/UserInformationResponse'
+  
+  '/user/follow':
+    parameters:
+      - $ref: '#/components/parameters/bearer_header'
+    post:
+      tags:
+        - user
+      summary: "사용자 팔로우 API"
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FollowUserResponse'
+
+  '/dream/share':
+    parameters:
+      - $ref: '#/components/parameters/bearer_header'
+    post:
+      tags:
+        - dream
+      summary: "공유꿈 작성 API"
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserInformationResponse'
 
 components:
 
   parameters:
+    bearer_header:
+      name: Authorization
+      in: header
+      description: Authorization Bearer Header
+      example: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ..."
     user-uuid:
       name: user-uuid
       in: path
@@ -201,10 +233,28 @@ components:
 
   schemas:
 
+    FollowUserResponse:
+      properties:
+        status:
+          example: 200
+        timestamp:
+          $ref: '#/components/parameters/timestamp'
+        content:
+          readOnly: true
+          properties:
+            collection_value:
+              example: false
+            response:
+              properties:
+                user_id:
+                  $ref: '#/components/parameters/user-uuid'
+                follower_id:
+                  $ref: '#/components/parameters/user-uuid'
+                  
     UserInformationResponse:
       properties:
         status:
-          example: 201
+          example: 200
         timestamp:
           $ref: '#/components/parameters/timestamp'
         content:
