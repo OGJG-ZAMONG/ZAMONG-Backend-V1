@@ -216,6 +216,7 @@ paths:
     post:
       parameters:
         - $ref: '#/components/parameters/bearer_header'
+        - $ref: '#/components/parameters/dream-uuid'
         - in: 'body'
           name: 'body'
           required: true
@@ -229,22 +230,94 @@ paths:
                 $ref: '#/components/parameters/dream_types'
               quality:
                 $ref: '#/components/parameters/quality'
-              sleep_start_time:
-                $ref: '#/components/parameters/timestamp'
-              sleep_end_time:
-                $ref: '#/components/parameters/timestamp'
+              sleep_start_datetime:
+                $ref: '#/components/parameters/start_datetime'
+              sleep_end_datetime:
+                $ref: '#/components/parameters/end_datetime'
       tags:
         - dream
-      summary: "공유꿈 작성 API"
+      summary: "공유 꿈 작성 API"
       responses:
         200:
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/CreateShareDreamResponse'
-  '/dream/share/title':
+
+  '/dream/share/{dream-uuid}':
+    put:
+      parameters:
+        - $ref: '#/components/parameters/bearer_header'
+        - $ref: '#/components/parameters/dream-uuid'
+        - in: 'body'
+          name: 'body'
+          required: true
+          schema:
+            properties:
+              title: 
+                $ref: '#/components/parameters/title'
+              content:
+                $ref: '#/components/parameters/content'
+              dream_types: 
+                $ref: '#/components/parameters/dream_types'
+              quality:
+                $ref: '#/components/parameters/quality'
+              sleep_start_datetime:
+                $ref: '#/components/parameters/start_datetime'
+              sleep_end_datetime:
+                $ref: '#/components/parameters/end_datetime'
+      tags:
+        - dream
+      summary: "공유 꿈 수정 API"
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateShareDreamResponse'
+
+  '/dream/share/quality/{dream-uuid}':
       patch:
         parameters:
+          - $ref: '#/components/parameters/dream-uuid'
+          - in: 'body'
+            name: 'body'
+            required: true
+            schema:
+              properties:
+                quality: 
+                  $ref: '#/components/parameters/quality'
+        tags:
+          - dream
+        summary: "공유 꿈 품질 부분 수정 API"
+        responses:
+          204:
+            description: "No Content"
+
+  '/dream/share/sleep-datetime/{dream-uuid}':
+      patch:
+        parameters:
+          - $ref: '#/components/parameters/dream-uuid'
+          - in: 'body'
+            name: 'body'
+            required: true
+            schema:
+              properties:
+                sleep_start_datetime:
+                  $ref: '#/components/parameters/start_datetime'
+                sleep_end_datetime:
+                  $ref: '#/components/parameters/end_datetime'
+        tags:
+          - dream
+        summary: "공유 꿈 꾼 시각 부분 수정 API"
+        responses:
+          204:
+            description: "No Content"
+
+  '/dream/title/{dream-uuid}':
+      patch:
+        parameters:
+          - $ref: '#/components/parameters/dream-uuid'
           - in: 'body'
             name: 'body'
             required: true
@@ -258,9 +331,11 @@ paths:
         responses:
           204:
             description: "No Content"
-  '/dream/share/content':
+
+  '/dream/content/{dream-uuid}':
       patch:
         parameters:
+          - $ref: '#/components/parameters/dream-uuid'
           - in: 'body'
             name: 'body'
             required: true
@@ -274,19 +349,21 @@ paths:
         responses:
           204:
             description: "No Content"
-  '/dream/share/quality':
+            
+  '/dream/dream-types/{dream-uuid}':
       patch:
         parameters:
+          - $ref: '#/components/parameters/dream-uuid'
           - in: 'body'
             name: 'body'
             required: true
             schema:
               properties:
-                quality: 
-                  $ref: '#/components/parameters/quality'
+                dream_types: 
+                  $ref: '#/components/parameters/dream_types'
         tags:
           - dream
-        summary: "꿈 품질 부분 수정 API"
+        summary: "꿈 유형 부분 수정 API"
         responses:
           204:
             description: "No Content"
@@ -301,23 +378,6 @@ paths:
       responses:
         204:
           description: 'No Content'
-
-  '/dream/dream-types':
-      patch:
-        parameters:
-          - in: 'body'
-            name: 'body'
-            required: true
-            schema:
-              properties:
-                dream_types: 
-                  $ref: '#/components/parameters/dream_types'
-        tags:
-          - dream
-        summary: "꿈 유형 부분 수정 API"
-        responses:
-          204:
-            description: "No Content"
 
 components:
 
@@ -368,6 +428,10 @@ components:
       example: 사용자 id 또는 email
     timestamp:
       example: '2021-09-27T18:22:45.426066'
+    start_datetime:
+      example: '2021-09-27T00:00:00.426066'
+    end_datetime:
+      example: '2021-09-27T07:00:00.426066'
     title:
       example: '나 꿈속에서 꿈인거 알아차리고 깨어남'
     content:
@@ -396,7 +460,9 @@ components:
               properties:
                 uuid:
                   $ref: '#/components/parameters/dream-uuid'
-                create_at:
+                created_at:
+                  $ref: '#/components/parameters/timestamp'
+                updated_at:
                   $ref: '#/components/parameters/timestamp'
 
     FollowingUserGroupResponse:
