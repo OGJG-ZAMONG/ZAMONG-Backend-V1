@@ -213,26 +213,26 @@ paths:
                 $ref: '#/components/schemas/FollowerUserGroupResponse'
 
   '/dream/share':
-    parameters:
-      - $ref: '#/components/parameters/bearer_header'
-      - in: 'body'
-        name: 'body'
-        required: true
-        schema:
-          properties:
-            title: 
-              $ref: '#/components/parameters/title'
-            content:
-              $ref: '#/components/parameters/content'
-            dream_types: 
-              $ref: '#/components/parameters/dream_types'
-            quality:
-              $ref: '#/components/parameters/quality'
-            sleep_date_time:
-              $ref: '#/components/parameters/timestamp'
-            sleep_time:
-              $ref: '#/components/parameters/timestamp'
     post:
+      parameters:
+        - $ref: '#/components/parameters/bearer_header'
+        - in: 'body'
+          name: 'body'
+          required: true
+          schema:
+            properties:
+              title: 
+                $ref: '#/components/parameters/title'
+              content:
+                $ref: '#/components/parameters/content'
+              dream_types: 
+                $ref: '#/components/parameters/dream_types'
+              quality:
+                $ref: '#/components/parameters/quality'
+              sleep_date_time:
+                $ref: '#/components/parameters/timestamp'
+              sleep_time:
+                example: "integer 잠잔 시간"
       tags:
         - dream
       summary: "공유꿈 작성 API"
@@ -241,7 +241,20 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/UserInformationResponse'
+                $ref: '#/components/schemas/CreateShareDreamResponse'
+
+  '/dream/{dream-uuid}':
+    delete:
+      parameters:
+        - $ref: '#/components/parameters/dream-uuid'
+      tags:
+        - dream
+      summary: "꿈 삭제 API"
+      responses:
+        204:
+          description: "No Content"
+    
+      
 
 components:
 
@@ -269,6 +282,12 @@ components:
       in: path
       required: true
       description: UUID 형태의 사용자의 식별자
+      example: 7359fee5-426f-45f5-bd24-cc675e7bdd13
+    dream-uuid:
+      name: dream-uuid
+      in: path
+      required: true
+      description: 꿈의 식별자 
       example: 7359fee5-426f-45f5-bd24-cc675e7bdd13
     profile:
       example: 'http://211.38.86.92/media/pms/static/pms.png'
@@ -300,6 +319,23 @@ components:
 
   schemas:
 
+    CreateShareDreamResponse:
+      properties:
+        status:
+          example: 201
+        timestamp:
+          $ref: '#/components/parameters/timestamp'
+        content:
+          properties:
+            collection_value:
+              example: false
+            response:
+              properties:
+                uuid:
+                  $ref: '#/components/parameters/user-uuid'
+                title: 
+                  $ref: '#/components/parameters/title'
+
     FollowingUserGroupResponse:
       properties:
         status:
@@ -307,7 +343,6 @@ components:
         timestamp:
           $ref: '#/components/parameters/timestamp'
         content:
-          readOnly: true
           properties:
             collection_value:
               example: true
@@ -333,7 +368,6 @@ components:
         timestamp:
           $ref: '#/components/parameters/timestamp'
         content:
-          readOnly: true
           properties:
             collection_value:
               example: true
@@ -363,7 +397,6 @@ components:
         timestamp:
           $ref: '#/components/parameters/timestamp'
         content:
-          readOnly: true
           properties:
             collection_value:
               example: true
@@ -383,7 +416,6 @@ components:
         timestamp:
           $ref: '#/components/parameters/timestamp'
         content:
-          readOnly: true
           properties:
             collection_value:
               example: false
@@ -411,7 +443,6 @@ components:
         timestamp:
           $ref: '#/components/parameters/timestamp'
         content:
-          readOnly: true
           properties:
             collection_value:
               example: false
@@ -433,7 +464,6 @@ components:
         timestamp:
           $ref: '#/components/parameters/timestamp'
         content:
-          readOnly: true
           properties:
             collection_value:
               example: false
@@ -447,7 +477,6 @@ components:
         timestamp:
           $ref: '#/components/parameters/timestamp'
         content:
-          readOnly: true
           properties:
             collection_value:
               example: false
@@ -461,7 +490,6 @@ components:
         timestamp:
           $ref: '#/components/parameters/timestamp'
         content:
-          readOnly: true
           properties:
             collection_value:
               example: false
