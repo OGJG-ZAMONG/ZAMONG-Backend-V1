@@ -181,11 +181,11 @@ paths:
                 $ref: '#/components/schemas/FollowUserResponse'
 
   '/user/{user-uuid}/following':
-    parameters:
-      - $ref: '#/components/parameters/bearer_header'
-      - $ref: '#/components/parameters/page'
-      - $ref: '#/components/parameters/size'
     get:
+      parameters:
+        - $ref: '#/components/parameters/bearer_header'
+        - $ref: '#/components/parameters/page'
+        - $ref: '#/components/parameters/size'
       tags:
         - user
       summary: "사용자 팔로잉 목록 API"
@@ -197,11 +197,11 @@ paths:
                 $ref: '#/components/schemas/FollowingUserGroupResponse'
 
   '/user/{user-uuid}/follower':
-    parameters:
-      - $ref: '#/components/parameters/bearer_header'
-      - $ref: '#/components/parameters/page'
-      - $ref: '#/components/parameters/size'
     get:
+      parameters:
+        - $ref: '#/components/parameters/bearer_header'
+        - $ref: '#/components/parameters/page'
+        - $ref: '#/components/parameters/size'
       tags:
         - user
       summary: "사용자 팔로워 목록 API"
@@ -213,6 +213,20 @@ paths:
                 $ref: '#/components/schemas/FollowerUserGroupResponse'
 
   '/dream/share':
+    get:
+      parameters:
+        - $ref: '#/components/parameters/bearer_header'
+        - $ref: '#/components/parameters/page'
+        - $ref: '#/components/parameters/size'
+      tags:
+        - dream
+      summary: "공개된 공유 꿈 목록 API"
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ShareDreamGroupResponse'
     post:
       parameters:
         - $ref: '#/components/parameters/bearer_header'
@@ -230,8 +244,8 @@ paths:
                 $ref: '#/components/parameters/dream_types'
               quality:
                 $ref: '#/components/parameters/quality'
-              sleep_start_datetime:
-                $ref: '#/components/parameters/start_datetime'
+              sleep_begin_datetime:
+                $ref: '#/components/parameters/begin_datetime'
               sleep_end_datetime:
                 $ref: '#/components/parameters/end_datetime'
       tags:
@@ -245,6 +259,19 @@ paths:
                 $ref: '#/components/schemas/CreateShareDreamResponse'
 
   '/dream/share/{dream-uuid}':
+    get:
+      parameters:
+        - $ref: '#/components/parameters/bearer_header'
+        - $ref: '#/components/parameters/dream-uuid'
+      tags:
+        - dream
+      summary: "공유 꿈 상세 정보 API"
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateShareDreamResponse'
     put:
       parameters:
         - $ref: '#/components/parameters/bearer_header'
@@ -262,8 +289,8 @@ paths:
                 $ref: '#/components/parameters/dream_types'
               quality:
                 $ref: '#/components/parameters/quality'
-              sleep_start_datetime:
-                $ref: '#/components/parameters/start_datetime'
+              sleep_begin_datetime:
+                $ref: '#/components/parameters/begin_datetime'
               sleep_end_datetime:
                 $ref: '#/components/parameters/end_datetime'
       tags:
@@ -303,8 +330,8 @@ paths:
             required: true
             schema:
               properties:
-                sleep_start_datetime:
-                  $ref: '#/components/parameters/start_datetime'
+                sleep_begin_datetime:
+                  $ref: '#/components/parameters/begin_datetime'
                 sleep_end_datetime:
                   $ref: '#/components/parameters/end_datetime'
         tags:
@@ -413,7 +440,7 @@ components:
       description: 꿈의 식별자 
       example: 7359fee5-426f-45f5-bd24-cc675e7bdd13
     profile:
-      example: 'http://211.38.86.92/media/pms/static/pms.png'
+      example: 'https://ogjg-zamong.s3.ap-northeast-1.amazonaws.com/default-posting-image/Rectangle+1.png'
     name:
       example: 김진근
     email:
@@ -428,7 +455,7 @@ components:
       example: 사용자 id 또는 email
     timestamp:
       example: '2021-09-27T18:22:45.426066'
-    start_datetime:
+    begin_datetime:
       example: '2021-09-27T00:00:00.426066'
     end_datetime:
       example: '2021-09-27T07:00:00.426066'
@@ -443,6 +470,8 @@ components:
       - 'NIGHTMARE'
     quality:
       example: 'BAD'
+    lucy_count:
+      example: 87
 
   schemas:
 
@@ -465,6 +494,43 @@ components:
                 updated_at:
                   $ref: '#/components/parameters/timestamp'
 
+    ShareDreamGroupResponse:
+      properties:
+        status:
+          example: 200
+        timestamp:
+          $ref: '#/components/parameters/timestamp'
+        content:
+          properties:
+            collection_value:
+              example: true
+            response:
+              properties:
+                share_dreams:
+                  type: array
+                  items: 
+                    properties:
+                      default_posting_image: 
+                        $ref: '#/components/parameters/profile'
+                      title: 
+                        $ref: '#/components/parameters/title'
+                      profile: 
+                        $ref: '#/components/parameters/profile'
+                      is_shared:
+                        example: true
+                      created_at:
+                        $ref: '#/components/parameters/timestamp'
+                      updated_at:
+                        $ref: '#/components/parameters/timestamp'
+                      lucy_count:
+                        $ref: '#/components/parameters/lucy_count'
+                      dream_types: 
+                        $ref: '#/components/parameters/dream_types'
+                total_size: 
+                  example: 1
+                total_page: 
+                  example: 3
+
     FollowingUserGroupResponse:
       properties:
         status:
@@ -481,14 +547,20 @@ components:
                   type: array
                   items: 
                     properties:
+                      uuid:
+                        $ref: '#/components/parameters/user-uuid'
                       profile:
                         $ref: '#/components/parameters/user-uuid'
                       id:
                         $ref: '#/components/parameters/id'
-                      follow_date: 
+                      follow_datetime: 
                         $ref: '#/components/parameters/timestamp'
                       is_following:
                         example: true
+                total_size: 
+                  example: 1
+                total_page: 
+                  example: 3
 
     FollowerUserGroupResponse:
       properties:
@@ -506,11 +578,13 @@ components:
                   type: array
                   items: 
                     properties:
+                      uuid:
+                        $ref: '#/components/parameters/user-uuid'
                       profile:
                         $ref: '#/components/parameters/profile'
                       id:
                         $ref: '#/components/parameters/id'
-                      follow_date: 
+                      follow_datetime: 
                         $ref: '#/components/parameters/timestamp'
                       is_following:
                         example: true
@@ -531,11 +605,11 @@ components:
               example: true
             response:
               properties:
-                user_id:
+                uuid:
                   $ref: '#/components/parameters/user-uuid'
                 follower_id:
                   $ref: '#/components/parameters/user-uuid'
-                follow_date:
+                follow_datetime:
                   $ref: '#/components/parameters/timestamp'
                   
     UserInformationResponse:
@@ -563,7 +637,7 @@ components:
                 share_dream_count:
                   example: 18
                 lucy_count:
-                  example: 87
+                  $ref: '#/components/parameters/lucy_count'
 
     SignedUserResponse:
       properties:
