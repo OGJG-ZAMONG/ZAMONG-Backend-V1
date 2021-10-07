@@ -29,7 +29,7 @@ public class ShareDreamLearningTest extends IntegrationTest {
 
     @Test
     @Transactional
-    void test() throws ParseException {
+    void 사용자의_공유꿈_저장() throws ParseException {
         User user = UserBuilder.build();
         User findUser = em.merge(user);
 
