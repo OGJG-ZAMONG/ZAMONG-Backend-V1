@@ -34,6 +34,7 @@ public class UserServiceImpl implements UserService {
                 .name(user.getName())
                 .email(user.getEmail())
                 .id(user.getId())
+                .profile(user.getProfile())
                 .shareDreamCount(shareDreamCount)
                 .lucyCount(user.getLucyCount())
                 .build();
