@@ -6,4 +6,6 @@ public class UserConstant {
     public static final String ID = "id_zamong";
     public static final String PASSWORD = "password1234@";
     public static final String AUTHENTICATION_CODE = "000000";
+    public static final String PROFILE_HOST = "http://localhost";
+    public static final String PROFILE_PATH = "/image.png";
 }
