@@ -1,6 +1,5 @@
 package app.jg.og.zamong.learning;
 
-import app.jg.og.zamong.constant.DreamConstant;
 import app.jg.og.zamong.controller.IntegrationTest;
 import app.jg.og.zamong.entity.dream.sharedream.ShareDream;
 import app.jg.og.zamong.entity.dream.sharedream.ShareDreamRepository;
@@ -14,11 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
-import java.util.Date;
-import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
