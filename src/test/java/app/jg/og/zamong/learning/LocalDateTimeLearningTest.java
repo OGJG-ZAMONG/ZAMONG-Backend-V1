@@ -13,15 +13,18 @@ public class LocalDateTimeLearningTest {
     LocalDateTime endDateTime;
 
     @Test
-    void test() {
+    void hoursDifferent() {
         int beginDateTimeHour = 2;
         int endDateTimeHour = 12;
 
         beginDateTime = LocalDateTime.of(2021, 10, 7, beginDateTimeHour, 37);
         endDateTime = LocalDateTime.of(2021, 10, 7, endDateTimeHour, 37);
 
-        Long different = ChronoUnit.HOURS.between(beginDateTime, endDateTime);
-        assertThat(different).isEqualTo(endDateTimeHour - beginDateTimeHour);
+        Long different1 = ChronoUnit.HOURS.between(beginDateTime, endDateTime);
+        Long different2 = ChronoUnit.HOURS.between(endDateTime, beginDateTime);
+
+        assertThat(different1).isEqualTo(endDateTimeHour - beginDateTimeHour);
+        assertThat(different2).isEqualTo(beginDateTimeHour - endDateTimeHour);
     }
 
     @Test
