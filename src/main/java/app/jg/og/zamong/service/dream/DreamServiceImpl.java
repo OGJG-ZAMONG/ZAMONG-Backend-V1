@@ -14,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.temporal.ChronoUnit;
 import java.util.UUID;
 
 @RequiredArgsConstructor
@@ -38,8 +39,8 @@ public class DreamServiceImpl implements DreamService {
                 .user(user)
                 .quality(request.getQuality())
                 .isShared(false)
-                .sleepDateTime(request.getSleepDateTime())
-                .sleepTime(request.getSleepTime())
+                .sleepDateTime(request.getSleepBeginDatetime())
+                .sleepTime((int) ChronoUnit.HOURS.between(request.getSleepBeginDatetime(), request.getSleepEndDatetime()))
                 .build()
         );
 
