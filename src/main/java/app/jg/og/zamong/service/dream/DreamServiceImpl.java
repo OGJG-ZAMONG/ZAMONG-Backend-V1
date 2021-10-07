@@ -51,7 +51,8 @@ public class DreamServiceImpl implements DreamService {
 
         return CreateShareDreamResponse.builder()
                 .uuid(shareDream.getUuid())
-                .title(shareDream.getTitle())
+                .createdAt(shareDream.getCreatedAt())
+                .updatedAt(shareDream.getUpdatedAt())
                 .build();
     }
 }
