@@ -35,9 +35,8 @@ public class ShareDreamLearningTest extends IntegrationTest {
         User user = UserBuilder.build();
         User findUser = em.merge(user);
 
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-        Date sleepDateTime = format.parse("2021-10-02");
-        Date shareDateTime = format.parse("2021-10-03");
+        LocalDateTime sleepDateTime = LocalDateTime.now();
+        LocalDateTime shareDateTime = LocalDateTime.now();
 
         ShareDream shareDream = ShareDream.builder()
                 .uuid(UUID.randomUUID())
