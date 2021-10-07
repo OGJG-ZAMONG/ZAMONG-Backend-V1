@@ -19,6 +19,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.context.ActiveProfiles;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -61,8 +62,8 @@ public class DreamServiceTest {
                 .content(shareDream.getContent())
                 .quality(shareDream.getQuality())
                 .dreamTypes(dreamTypes)
-                .sleepDateTime(shareDream.getSleepDateTime())
-                .sleepTime(shareDream.getSleepTime())
+                .sleepBeginDatetime(LocalDateTime.now())
+                .sleepEndDatetime(LocalDateTime.now())
                 .build();
 
         CreateShareDreamResponse response = dreamService.createShareDream(request);
