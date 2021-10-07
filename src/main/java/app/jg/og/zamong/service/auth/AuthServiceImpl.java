@@ -10,6 +10,8 @@ import app.jg.og.zamong.entity.redis.refreshtoken.RefreshToken;
 import app.jg.og.zamong.entity.redis.refreshtoken.RefreshTokenRepository;
 import app.jg.og.zamong.entity.user.User;
 import app.jg.og.zamong.entity.user.UserRepository;
+import app.jg.og.zamong.entity.user.profile.Profile;
+import app.jg.og.zamong.entity.user.profile.ProfileRepository;
 import app.jg.og.zamong.exception.business.BadAuthenticationCodeException;
 import app.jg.og.zamong.exception.business.BadUserInformationException;
 import app.jg.og.zamong.exception.business.UnauthorizedTokenException;
@@ -19,6 +21,7 @@ import app.jg.og.zamong.service.mail.MailService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Random;
 
@@ -32,6 +35,7 @@ public class AuthServiceImpl implements AuthService {
     private final UserRepository userRepository;
     private final AuthenticationCodeRepository authenticationCodeRepository;
     private final RefreshTokenRepository refreshTokenRepository;
+    private final ProfileRepository profileRepository;
 
     private final MailService mailService;
 
@@ -45,6 +49,7 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
+    @Transactional
     public SignUpUserResponse registerUser(SignUpUserRequest request) {
         userRepository.findByEmailOrId(request.getEmail(), request.getId())
                 .ifPresent((user) -> {
@@ -60,6 +65,11 @@ public class AuthServiceImpl implements AuthService {
                 .email(request.getEmail())
                 .id(request.getId())
                 .password(passwordEncoder.encode(request.getPassword()))
+                .lucyCount(0)
+                .build());
+
+        profileRepository.save(Profile.builder()
+                .uuid(user.getUuid())
                 .build());
 
         return SignUpUserResponse.of(user);
