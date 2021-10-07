@@ -36,7 +36,7 @@ public class LocalDateTimeLearningTest {
 
     @Test
     void after() {
-        beginDateTime = LocalDateTime.of(2021, 10, 7, 19, 37);
+        beginDateTime = LocalDateTime.of(2020, 10, 7, 19, 37);
         endDateTime = LocalDateTime.now();
 
         assertThat(endDateTime.isAfter(beginDateTime)).isTrue();
@@ -44,7 +44,7 @@ public class LocalDateTimeLearningTest {
 
     @Test
     void before() {
-        beginDateTime = LocalDateTime.of(2021, 10, 7, 19, 37);
+        beginDateTime = LocalDateTime.of(2020, 10, 7, 19, 37);
         endDateTime = LocalDateTime.now();
 
         assertThat(beginDateTime.isBefore(endDateTime)).isTrue();
