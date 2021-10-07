@@ -2,7 +2,9 @@ package app.jg.og.zamong.entity.user;
 
 import app.jg.og.zamong.entity.dream.Dream;
 import app.jg.og.zamong.entity.follow.Follow;
+import app.jg.og.zamong.entity.user.profile.Profile;
 import lombok.*;
+import lombok.experimental.Delegate;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -42,4 +44,9 @@ public class User {
 
     @OneToMany(mappedBy = "follower")
     private List<Follow> followings;
+
+    @Getter(value = AccessLevel.NONE)
+    @OneToOne(mappedBy = "user")
+    @Delegate
+    private Profile profile;
 }

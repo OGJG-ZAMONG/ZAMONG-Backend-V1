@@ -12,6 +12,7 @@ import app.jg.og.zamong.entity.redis.refreshtoken.RefreshToken;
 import app.jg.og.zamong.entity.redis.refreshtoken.RefreshTokenRepository;
 import app.jg.og.zamong.entity.user.User;
 import app.jg.og.zamong.entity.user.UserRepository;
+import app.jg.og.zamong.entity.user.profile.ProfileRepository;
 import app.jg.og.zamong.security.JwtTokenProvider;
 import app.jg.og.zamong.service.auth.AuthServiceImpl;
 import app.jg.og.zamong.service.mail.MailService;
@@ -51,6 +52,8 @@ public class AuthServiceTest {
     private RefreshTokenRepository refreshTokenRepository;
     @Mock
     private MailService mailService;
+    @Mock
+    private ProfileRepository profileRepository;
 
     static private User user;
 
@@ -89,6 +92,7 @@ public class AuthServiceTest {
         given(userRepository.findByEmailOrId(email, id)).willReturn(Optional.empty());
         given(authenticationCodeRepository.findById(email)).willReturn(Optional.of(code));
         given(userRepository.save(any())).willReturn(UserBuilder.build());
+        given(profileRepository.save(any())).willReturn(null);
 
         // when
         SignUpUserRequest request = SignUpUserRequest.builder()
