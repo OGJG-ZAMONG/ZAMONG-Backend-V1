@@ -3,6 +3,7 @@ package app.jg.og.zamong.dto.response;
 import lombok.Builder;
 import lombok.Getter;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Builder
@@ -11,5 +12,7 @@ public class CreateShareDreamResponse implements Response {
 
     private final UUID uuid;
 
-    private final String title;
+    private final LocalDateTime createdAt;
+
+    private final LocalDateTime updatedAt;
 }
