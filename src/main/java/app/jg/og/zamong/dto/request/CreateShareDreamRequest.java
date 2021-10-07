@@ -7,7 +7,6 @@ import lombok.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
 
 @Builder
@@ -29,9 +28,9 @@ public class CreateShareDreamRequest {
     @NotNull(message = "꿈의 품질을 입력해주세요")
     private DreamQuality quality;
 
-    @NotNull(message = "수면시각을 입력해주세요")
-    private LocalDateTime sleepDateTime;
+    @NotNull(message = "수면시작시각을 입력해주세요")
+    private LocalDateTime sleepBeginDatetime;
 
-    @NotNull(message = "수면시간을 입력해주세요")
-    private Integer sleepTime;
+    @NotNull(message = "수면종료시각을 입력해주세요")
+    private LocalDateTime sleepEndDatetime;
 }
