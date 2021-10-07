@@ -69,6 +69,5 @@ public class DreamServiceTest {
 
         //when
         assertThat(response.getUuid()).isEqualTo(shareDream.getUuid());
-        assertThat(response.getTitle()).isEqualTo(shareDream.getTitle());
     }
 }
