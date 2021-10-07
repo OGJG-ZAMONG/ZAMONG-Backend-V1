@@ -18,6 +18,8 @@ public class UserInformationResponse implements Response {
 
     private final String id;
 
+    private final String profile;
+
     private Integer shareDreamCount;
 
     private Integer lucyCount;
