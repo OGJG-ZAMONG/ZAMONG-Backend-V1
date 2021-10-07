@@ -7,7 +7,7 @@ import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Getter
 @SuperBuilder
@@ -23,14 +23,12 @@ public class ShareDream extends Dream {
     @Column(columnDefinition = "tinyint(1)")
     private Boolean isShared;
 
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "sleep_datetime")
-    private Date sleepDateTime;
+    @Column(name = "sleep_datetime", columnDefinition = "timestamp")
+    private LocalDateTime sleepDateTime;
 
     @Column(columnDefinition = "tinyint")
     private Integer sleepTime;
 
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "share_datetime")
-    private Date shareDateTime;
+    @Column(name = "share_datetime", columnDefinition = "timestamp")
+    private LocalDateTime shareDateTime;
 }
