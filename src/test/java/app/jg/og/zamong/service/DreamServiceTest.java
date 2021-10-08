@@ -1,9 +1,12 @@
 package app.jg.og.zamong.service;
 
+import app.jg.og.zamong.dto.request.dream.DreamTitleRequest;
 import app.jg.og.zamong.dto.request.dream.sharedream.ShareDreamQualityRequest;
 import app.jg.og.zamong.dto.request.dream.sharedream.ShareDreamRequest;
 import app.jg.og.zamong.dto.request.dream.sharedream.ShareDreamSleepDateTimeRequest;
 import app.jg.og.zamong.dto.response.ShareDreamResponse;
+import app.jg.og.zamong.entity.dream.Dream;
+import app.jg.og.zamong.entity.dream.DreamRepository;
 import app.jg.og.zamong.entity.dream.dreamtype.DreamTypeRepository;
 import app.jg.og.zamong.entity.dream.enums.DreamQuality;
 import app.jg.og.zamong.entity.dream.enums.DreamType;
@@ -13,6 +16,7 @@ import app.jg.og.zamong.entity.user.User;
 import app.jg.og.zamong.entity.user.UserRepository;
 import app.jg.og.zamong.service.dream.DreamServiceImpl;
 import app.jg.og.zamong.service.securitycontext.SecurityContextService;
+import app.jg.og.zamong.util.DreamBuilder;
 import app.jg.og.zamong.util.ShareDreamBuilder;
 import app.jg.og.zamong.util.UserBuilder;
 import org.junit.jupiter.api.Test;
@@ -47,6 +51,8 @@ public class DreamServiceTest {
     private UserRepository userRepository;
     @Mock
     private DreamTypeRepository dreamTypeRepository;
+    @Mock
+    private DreamRepository dreamRepository;
 
     @Test
     void 꿈_작성_성공() {
@@ -134,7 +140,7 @@ public class DreamServiceTest {
         LocalDateTime endDateTime = LocalDateTime.of(2021, 10, 7, endDateTimeHour, 37);
 
         ShareDream shareDream = ShareDreamBuilder.build(null);
-        given(shareDreamRepository.findById(shareDream.getUuid())).willReturn(Optional.of(shareDream));//when
+        given(shareDreamRepository.findById(shareDream.getUuid())).willReturn(Optional.of(shareDream));
 
         //when
         ShareDreamSleepDateTimeRequest request = ShareDreamSleepDateTimeRequest.builder()
@@ -146,5 +152,21 @@ public class DreamServiceTest {
         //then
         assertThat(shareDream.getSleepDateTime()).isEqualTo(beginDateTime);
         assertThat(shareDream.getSleepTime()).isEqualTo(endDateTimeHour - beginDateTimeHour);
+    }
+
+    @Test
+    void 꿈_제목_수정_성공() {
+        //given
+        Dream dream = DreamBuilder.build();
+        given(dreamRepository.findById(dream.getUuid())).willReturn(Optional.of(dream));
+
+        //when
+        String patchedTitle = "patchedTitle";
+        DreamTitleRequest request = DreamTitleRequest.builder()
+                .title(patchedTitle)
+                .build();
+        dreamService.patchDreamTitle(dream.getUuid().toString(), request);
+
+        assertThat(dream.getTitle()).isEqualTo(patchedTitle);
     }
 }
