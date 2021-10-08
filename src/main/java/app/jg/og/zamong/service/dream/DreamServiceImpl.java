@@ -1,6 +1,6 @@
 package app.jg.og.zamong.service.dream;
 
-import app.jg.og.zamong.dto.request.CreateShareDreamRequest;
+import app.jg.og.zamong.dto.request.ShareDreamRequest;
 import app.jg.og.zamong.dto.response.CreateShareDreamResponse;
 import app.jg.og.zamong.entity.dream.dreamtype.DreamType;
 import app.jg.og.zamong.entity.dream.dreamtype.DreamTypeRepository;
@@ -29,7 +29,7 @@ public class DreamServiceImpl implements DreamService {
 
     @Override
     @Transactional
-    public CreateShareDreamResponse createShareDream(CreateShareDreamRequest request) {
+    public CreateShareDreamResponse createShareDream(ShareDreamRequest request) {
         User user = userRepository.findByUuid(UUID.fromString(securityContextService.getName()))
                 .orElseThrow(() -> new UserNotFoundException("해당하는 유저를 찾을 수 없습니다"));
 

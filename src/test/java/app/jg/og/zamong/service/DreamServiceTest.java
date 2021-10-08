@@ -1,6 +1,6 @@
 package app.jg.og.zamong.service;
 
-import app.jg.og.zamong.dto.request.CreateShareDreamRequest;
+import app.jg.og.zamong.dto.request.ShareDreamRequest;
 import app.jg.og.zamong.dto.response.CreateShareDreamResponse;
 import app.jg.og.zamong.entity.dream.dreamtype.DreamTypeRepository;
 import app.jg.og.zamong.entity.dream.enums.DreamType;
@@ -57,7 +57,7 @@ public class DreamServiceTest {
 
         //when
         List<DreamType> dreamTypes = List.of(DreamType.LUCID_DREAM, DreamType.NIGHTMARE);
-        CreateShareDreamRequest request = CreateShareDreamRequest.builder()
+        ShareDreamRequest request = ShareDreamRequest.builder()
                 .title(shareDream.getTitle())
                 .content(shareDream.getContent())
                 .quality(shareDream.getQuality())
