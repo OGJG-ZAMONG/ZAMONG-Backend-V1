@@ -21,12 +21,14 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.BDDMockito.willDoNothing;
 
 @ExtendWith(MockitoExtension.class)
 @ActiveProfiles("test")
@@ -79,6 +81,7 @@ public class DreamServiceTest {
         ShareDream shareDream = ShareDreamBuilder.build(null);
 
         given(shareDreamRepository.findById(shareDream.getUuid())).willReturn(Optional.of(shareDream));
+        willDoNothing().given(dreamTypeRepository).deleteByDream(shareDream);
 
         //when
         String patchedTitle = "patchedTitle";
@@ -89,10 +92,11 @@ public class DreamServiceTest {
                 .title(patchedTitle)
                 .content(patchedContent)
                 .quality(pathedQuality)
+                .dreamTypes(Collections.emptyList())
                 .sleepBeginDatetime(LocalDateTime.now())
                 .sleepEndDatetime(LocalDateTime.now())
                 .build();
-        ShareDreamResponse response = dreamService.modifyShareDream(shareDream.getUuid().toString(), request);
+        dreamService.modifyShareDream(shareDream.getUuid().toString(), request);
 
         //then
         assertThat(shareDream.getTitle()).isEqualTo(patchedTitle);
