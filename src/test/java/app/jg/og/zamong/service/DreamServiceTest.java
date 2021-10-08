@@ -67,8 +67,8 @@ public class DreamServiceTest {
                 .content(shareDream.getContent())
                 .quality(shareDream.getQuality())
                 .dreamTypes(dreamTypes)
-                .sleepBeginDatetime(LocalDateTime.now())
-                .sleepEndDatetime(LocalDateTime.now())
+                .sleepBeginDateTime(LocalDateTime.now())
+                .sleepEndDateTime(LocalDateTime.now())
                 .build();
 
         ShareDreamResponse response = dreamService.createShareDream(request);
@@ -95,8 +95,8 @@ public class DreamServiceTest {
                 .content(patchedContent)
                 .quality(pathedQuality)
                 .dreamTypes(Collections.emptyList())
-                .sleepBeginDatetime(LocalDateTime.now())
-                .sleepEndDatetime(LocalDateTime.now())
+                .sleepBeginDateTime(LocalDateTime.now())
+                .sleepEndDateTime(LocalDateTime.now())
                 .build();
         dreamService.modifyShareDream(shareDream.getUuid().toString(), request);
 

@@ -42,8 +42,8 @@ public class DreamServiceImpl implements DreamService {
                 .user(user)
                 .quality(request.getQuality())
                 .isShared(false)
-                .sleepDateTime(request.getSleepBeginDatetime())
-                .sleepTime((int) ChronoUnit.HOURS.between(request.getSleepBeginDatetime(), request.getSleepEndDatetime()))
+                .sleepDateTime(request.getSleepBeginDateTime())
+                .sleepTime((int) ChronoUnit.HOURS.between(request.getSleepBeginDateTime(), request.getSleepEndDateTime()))
                 .build()
         );
 
@@ -69,8 +69,8 @@ public class DreamServiceImpl implements DreamService {
         shareDream.setTitle(request.getTitle());
         shareDream.setContent(request.getContent());
         shareDream.setQuality(request.getQuality());
-        shareDream.setSleepDateTime(request.getSleepBeginDatetime());
-        shareDream.setSleepTime((int) ChronoUnit.HOURS.between(request.getSleepBeginDatetime(), request.getSleepEndDatetime()));
+        shareDream.setSleepDateTime(request.getSleepBeginDateTime());
+        shareDream.setSleepTime((int) ChronoUnit.HOURS.between(request.getSleepBeginDateTime(), request.getSleepEndDateTime()));
 
         dreamTypeRepository.deleteByDream(shareDream);
 
