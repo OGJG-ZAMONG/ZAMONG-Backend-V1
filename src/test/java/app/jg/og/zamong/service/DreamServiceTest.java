@@ -2,6 +2,7 @@ package app.jg.og.zamong.service;
 
 import app.jg.og.zamong.dto.request.dream.sharedream.ShareDreamQualityRequest;
 import app.jg.og.zamong.dto.request.dream.sharedream.ShareDreamRequest;
+import app.jg.og.zamong.dto.request.dream.sharedream.ShareDreamSleepDateTimeRequest;
 import app.jg.og.zamong.dto.response.ShareDreamResponse;
 import app.jg.og.zamong.entity.dream.dreamtype.DreamTypeRepository;
 import app.jg.og.zamong.entity.dream.enums.DreamQuality;
@@ -122,5 +123,28 @@ public class DreamServiceTest {
 
         //then
         assertThat(shareDream.getQuality()).isEqualTo(pathedQuality);
+    }
+
+    @Test
+    void 공유꿈_꾼시각_수정_성공() {
+        //given
+        int beginDateTimeHour = 2;
+        int endDateTimeHour = 12;
+        LocalDateTime beginDateTime = LocalDateTime.of(2021, 10, 7, beginDateTimeHour, 37);
+        LocalDateTime endDateTime = LocalDateTime.of(2021, 10, 7, endDateTimeHour, 37);
+
+        ShareDream shareDream = ShareDreamBuilder.build(null);
+        given(shareDreamRepository.findById(shareDream.getUuid())).willReturn(Optional.of(shareDream));//when
+
+        //when
+        ShareDreamSleepDateTimeRequest request = ShareDreamSleepDateTimeRequest.builder()
+                .sleepBeginDatetime(beginDateTime)
+                .sleepEndDatetime(endDateTime)
+                .build();
+        dreamService.patchShareDreamSleepDateTime(shareDream.getUuid().toString(), request);
+
+        //then
+        assertThat(shareDream.getSleepDateTime()).isEqualTo(beginDateTime);
+        assertThat(shareDream.getSleepTime()).isEqualTo(endDateTimeHour - beginDateTimeHour);
     }
 }
