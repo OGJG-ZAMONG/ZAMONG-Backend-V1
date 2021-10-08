@@ -3,6 +3,7 @@ package app.jg.og.zamong.service;
 import app.jg.og.zamong.dto.request.ShareDreamRequest;
 import app.jg.og.zamong.dto.response.ShareDreamResponse;
 import app.jg.og.zamong.entity.dream.dreamtype.DreamTypeRepository;
+import app.jg.og.zamong.entity.dream.enums.DreamQuality;
 import app.jg.og.zamong.entity.dream.enums.DreamType;
 import app.jg.og.zamong.entity.dream.sharedream.ShareDream;
 import app.jg.og.zamong.entity.dream.sharedream.ShareDreamRepository;
@@ -70,5 +71,32 @@ public class DreamServiceTest {
 
         //when
         assertThat(response.getUuid()).isEqualTo(shareDream.getUuid());
+    }
+
+    @Test
+    void 꿈_수정_성공() {
+        //given
+        ShareDream shareDream = ShareDreamBuilder.build(null);
+
+        given(shareDreamRepository.findById(shareDream.getUuid())).willReturn(Optional.of(shareDream));
+
+        //when
+        String patchedTitle = "patchedTitle";
+        String patchedContent = "patchedContent";
+        DreamQuality pathedQuality = DreamQuality.WORST;
+
+        ShareDreamRequest request = ShareDreamRequest.builder()
+                .title(patchedTitle)
+                .content(patchedContent)
+                .quality(pathedQuality)
+                .sleepBeginDatetime(LocalDateTime.now())
+                .sleepEndDatetime(LocalDateTime.now())
+                .build();
+        ShareDreamResponse response = dreamService.modifyShareDream(shareDream.getUuid().toString(), request);
+
+        //then
+        assertThat(shareDream.getTitle()).isEqualTo(patchedTitle);
+        assertThat(shareDream.getContent()).isEqualTo(patchedContent);
+        assertThat(shareDream.getQuality()).isEqualTo(pathedQuality);
     }
 }
