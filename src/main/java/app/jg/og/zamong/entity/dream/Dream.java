@@ -29,9 +29,11 @@ public abstract class Dream {
     @Column(columnDefinition = "BINARY(16)")
     private UUID uuid;
 
+    @Setter
     @Column(length = 100)
     private String title;
 
+    @Setter
     @Column(columnDefinition = "text")
     private String content;
 
