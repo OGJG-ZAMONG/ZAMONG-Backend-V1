@@ -1,5 +1,6 @@
 package app.jg.og.zamong.service;
 
+import app.jg.og.zamong.dto.request.dream.DreamContentRequest;
 import app.jg.og.zamong.dto.request.dream.DreamTitleRequest;
 import app.jg.og.zamong.dto.request.dream.sharedream.ShareDreamQualityRequest;
 import app.jg.og.zamong.dto.request.dream.sharedream.ShareDreamRequest;
@@ -168,5 +169,21 @@ public class DreamServiceTest {
         dreamService.patchDreamTitle(dream.getUuid().toString(), request);
 
         assertThat(dream.getTitle()).isEqualTo(patchedTitle);
+    }
+
+    @Test
+    void 꿈_내용_수정_성공() {
+        //given
+        Dream dream = DreamBuilder.build();
+        given(dreamRepository.findById(dream.getUuid())).willReturn(Optional.of(dream));
+
+        //when
+        String patchedContent = "patchedContent";
+        DreamContentRequest request = DreamContentRequest.builder()
+                .content(patchedContent)
+                .build();
+        dreamService.patchDreamContent(dream.getUuid().toString(), request);
+
+        assertThat(dream.getContent()).isEqualTo(patchedContent);
     }
 }
