@@ -18,7 +18,7 @@ public class ShareDreamRequest {
 
     @NotNull(message = "제목을 반드시 입력해야 합니다")
     @Size(min = 1, max = 100, message = "제목은 100자 이하여야 합니다")
-    public String title;
+    private String title;
 
     @NotNull(message = "내용을 반드시 입력해야 합니다")
     private String content;
