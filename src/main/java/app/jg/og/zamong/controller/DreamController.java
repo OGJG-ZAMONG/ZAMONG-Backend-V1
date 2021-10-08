@@ -2,6 +2,7 @@ package app.jg.og.zamong.controller;
 
 import app.jg.og.zamong.dto.request.dream.sharedream.ShareDreamQualityRequest;
 import app.jg.og.zamong.dto.request.dream.sharedream.ShareDreamRequest;
+import app.jg.og.zamong.dto.request.dream.sharedream.ShareDreamSleepDateTimeRequest;
 import app.jg.og.zamong.dto.response.ResponseBody;
 import app.jg.og.zamong.service.dream.DreamService;
 import lombok.RequiredArgsConstructor;
@@ -31,5 +32,11 @@ public class DreamController {
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void quality(@PathVariable("dream-uuid") String uuid, @Valid @RequestBody ShareDreamQualityRequest request) {
         dreamService.patchShareDreamQuality(uuid, request);
+    }
+
+    @PatchMapping("/share/sleep-datetime/{dream-uuid}")
+    @ResponseStatus(value = HttpStatus.NO_CONTENT)
+    public void sleepDateTime(@PathVariable("dream-uuid") String uuid, @Valid @RequestBody ShareDreamSleepDateTimeRequest request) {
+        dreamService.patchShareDreamSleepDateTime(uuid, request);
     }
 }
