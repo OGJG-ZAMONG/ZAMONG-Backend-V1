@@ -1,6 +1,6 @@
 package app.jg.og.zamong.service.dream;
 
-import app.jg.og.zamong.dto.request.ShareDreamRequest;
+import app.jg.og.zamong.dto.request.dream.sharedream.ShareDreamRequest;
 import app.jg.og.zamong.dto.response.ShareDreamResponse;
 import app.jg.og.zamong.entity.dream.dreamtype.DreamType;
 import app.jg.og.zamong.entity.dream.dreamtype.DreamTypeRepository;
@@ -16,7 +16,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.temporal.ChronoUnit;
-import java.util.Collections;
 import java.util.UUID;
 
 @RequiredArgsConstructor

@@ -1,4 +1,4 @@
-package app.jg.og.zamong.dto.request;
+package app.jg.og.zamong.dto.request.dream.sharedream;
 
 import app.jg.og.zamong.entity.dream.enums.DreamQuality;
 import app.jg.og.zamong.entity.dream.enums.DreamType;

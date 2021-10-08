@@ -1,6 +1,6 @@
 package app.jg.og.zamong.service;
 
-import app.jg.og.zamong.dto.request.ShareDreamRequest;
+import app.jg.og.zamong.dto.request.dream.sharedream.ShareDreamRequest;
 import app.jg.og.zamong.dto.response.ShareDreamResponse;
 import app.jg.og.zamong.entity.dream.dreamtype.DreamTypeRepository;
 import app.jg.og.zamong.entity.dream.enums.DreamQuality;
