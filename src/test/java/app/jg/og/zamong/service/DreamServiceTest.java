@@ -138,8 +138,8 @@ public class DreamServiceTest {
 
         //when
         ShareDreamSleepDateTimeRequest request = ShareDreamSleepDateTimeRequest.builder()
-                .sleepBeginDatetime(beginDateTime)
-                .sleepEndDatetime(endDateTime)
+                .sleepBeginDateTime(beginDateTime)
+                .sleepEndDateTime(endDateTime)
                 .build();
         dreamService.patchShareDreamSleepDateTime(shareDream.getUuid().toString(), request);
 

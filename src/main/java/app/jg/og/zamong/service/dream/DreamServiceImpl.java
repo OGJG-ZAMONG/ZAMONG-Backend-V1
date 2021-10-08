@@ -100,7 +100,7 @@ public class DreamServiceImpl implements DreamService {
         ShareDream shareDream = shareDreamRepository.findById(UUID.fromString(uuid))
                 .orElseThrow(() -> new DreamNotFoundException("해당하는 꿈을 찾을 수 없습니다"));
 
-        shareDream.setSleepDateTime(request.getSleepBeginDatetime());
-        shareDream.setSleepTime((int) ChronoUnit.HOURS.between(request.getSleepBeginDatetime(), request.getSleepEndDatetime()));
+        shareDream.setSleepDateTime(request.getSleepBeginDateTime());
+        shareDream.setSleepTime((int) ChronoUnit.HOURS.between(request.getSleepBeginDateTime(), request.getSleepEndDateTime()));
     }
 }
