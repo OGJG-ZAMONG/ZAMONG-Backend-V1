@@ -2,6 +2,7 @@ package app.jg.og.zamong.controller;
 
 import app.jg.og.zamong.dto.request.dream.DreamContentRequest;
 import app.jg.og.zamong.dto.request.dream.DreamTitleRequest;
+import app.jg.og.zamong.dto.request.dream.DreamTypesRequest;
 import app.jg.og.zamong.dto.request.dream.sharedream.ShareDreamQualityRequest;
 import app.jg.og.zamong.dto.request.dream.sharedream.ShareDreamRequest;
 import app.jg.og.zamong.dto.request.dream.sharedream.ShareDreamSleepDateTimeRequest;
@@ -52,5 +53,11 @@ public class DreamController {
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void content(@PathVariable("dream-uuid") String uuid, @Valid @RequestBody DreamContentRequest request) {
         dreamService.patchDreamContent(uuid, request);
+    }
+
+    @PatchMapping("/dream-types/{dream-uuid}")
+    @ResponseStatus(value = HttpStatus.NO_CONTENT)
+    public void dreamTypes(@PathVariable("dream-uuid") String uuid, @Valid @RequestBody DreamTypesRequest request) {
+        dreamService.patchDreamTypes(uuid, request);
     }
 }
