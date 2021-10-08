@@ -1,5 +1,6 @@
 package app.jg.og.zamong.service;
 
+import app.jg.og.zamong.dto.request.dream.sharedream.ShareDreamQualityRequest;
 import app.jg.og.zamong.dto.request.dream.sharedream.ShareDreamRequest;
 import app.jg.og.zamong.dto.response.ShareDreamResponse;
 import app.jg.og.zamong.entity.dream.dreamtype.DreamTypeRepository;
@@ -101,6 +102,25 @@ public class DreamServiceTest {
         //then
         assertThat(shareDream.getTitle()).isEqualTo(patchedTitle);
         assertThat(shareDream.getContent()).isEqualTo(patchedContent);
+        assertThat(shareDream.getQuality()).isEqualTo(pathedQuality);
+    }
+
+    @Test
+    void 공유꿈_품질_수정_성공() {
+        //given
+        ShareDream shareDream = ShareDreamBuilder.build(null);
+
+        given(shareDreamRepository.findById(shareDream.getUuid())).willReturn(Optional.of(shareDream));
+
+        //when
+        DreamQuality pathedQuality = DreamQuality.WORST;
+
+        ShareDreamQualityRequest request = ShareDreamQualityRequest.builder()
+                .quality(pathedQuality)
+                .build();
+        dreamService.patchShareDreamQuality(shareDream.getUuid().toString(), request);
+
+        //then
         assertThat(shareDream.getQuality()).isEqualTo(pathedQuality);
     }
 }
