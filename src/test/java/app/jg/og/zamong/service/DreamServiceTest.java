@@ -1,8 +1,9 @@
 package app.jg.og.zamong.service;
 
-import app.jg.og.zamong.dto.request.CreateShareDreamRequest;
-import app.jg.og.zamong.dto.response.CreateShareDreamResponse;
+import app.jg.og.zamong.dto.request.ShareDreamRequest;
+import app.jg.og.zamong.dto.response.ShareDreamResponse;
 import app.jg.og.zamong.entity.dream.dreamtype.DreamTypeRepository;
+import app.jg.og.zamong.entity.dream.enums.DreamQuality;
 import app.jg.og.zamong.entity.dream.enums.DreamType;
 import app.jg.og.zamong.entity.dream.sharedream.ShareDream;
 import app.jg.og.zamong.entity.dream.sharedream.ShareDreamRepository;
@@ -20,12 +21,14 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.BDDMockito.willDoNothing;
 
 @ExtendWith(MockitoExtension.class)
 @ActiveProfiles("test")
@@ -57,7 +60,7 @@ public class DreamServiceTest {
 
         //when
         List<DreamType> dreamTypes = List.of(DreamType.LUCID_DREAM, DreamType.NIGHTMARE);
-        CreateShareDreamRequest request = CreateShareDreamRequest.builder()
+        ShareDreamRequest request = ShareDreamRequest.builder()
                 .title(shareDream.getTitle())
                 .content(shareDream.getContent())
                 .quality(shareDream.getQuality())
@@ -66,9 +69,38 @@ public class DreamServiceTest {
                 .sleepEndDatetime(LocalDateTime.now())
                 .build();
 
-        CreateShareDreamResponse response = dreamService.createShareDream(request);
+        ShareDreamResponse response = dreamService.createShareDream(request);
 
         //when
         assertThat(response.getUuid()).isEqualTo(shareDream.getUuid());
+    }
+
+    @Test
+    void 꿈_수정_성공() {
+        //given
+        ShareDream shareDream = ShareDreamBuilder.build(null);
+
+        given(shareDreamRepository.findById(shareDream.getUuid())).willReturn(Optional.of(shareDream));
+        willDoNothing().given(dreamTypeRepository).deleteByDream(shareDream);
+
+        //when
+        String patchedTitle = "patchedTitle";
+        String patchedContent = "patchedContent";
+        DreamQuality pathedQuality = DreamQuality.WORST;
+
+        ShareDreamRequest request = ShareDreamRequest.builder()
+                .title(patchedTitle)
+                .content(patchedContent)
+                .quality(pathedQuality)
+                .dreamTypes(Collections.emptyList())
+                .sleepBeginDatetime(LocalDateTime.now())
+                .sleepEndDatetime(LocalDateTime.now())
+                .build();
+        dreamService.modifyShareDream(shareDream.getUuid().toString(), request);
+
+        //then
+        assertThat(shareDream.getTitle()).isEqualTo(patchedTitle);
+        assertThat(shareDream.getContent()).isEqualTo(patchedContent);
+        assertThat(shareDream.getQuality()).isEqualTo(pathedQuality);
     }
 }
