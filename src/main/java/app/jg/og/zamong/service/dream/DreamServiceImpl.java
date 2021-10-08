@@ -1,5 +1,6 @@
 package app.jg.og.zamong.service.dream;
 
+import app.jg.og.zamong.dto.request.dream.DreamContentRequest;
 import app.jg.og.zamong.dto.request.dream.DreamTitleRequest;
 import app.jg.og.zamong.dto.request.dream.sharedream.ShareDreamQualityRequest;
 import app.jg.og.zamong.dto.request.dream.sharedream.ShareDreamRequest;
@@ -114,5 +115,13 @@ public class DreamServiceImpl implements DreamService {
                 .orElseThrow(() -> new DreamNotFoundException("해당하는 꿈을 찾을 수 없습니다"));
 
         dream.setTitle(request.getTitle());
+    }
+
+    @Override
+    public void patchDreamContent(String uuid, DreamContentRequest request) {
+        Dream dream = dreamRepository.findById(UUID.fromString(uuid))
+                .orElseThrow(() -> new DreamNotFoundException("해당하는 꿈을 찾을 수 없습니다"));
+
+        dream.setContent(request.getContent());
     }
 }
