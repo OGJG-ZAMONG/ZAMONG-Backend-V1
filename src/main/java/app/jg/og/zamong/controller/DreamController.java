@@ -1,6 +1,7 @@
 package app.jg.og.zamong.controller;
 
-import app.jg.og.zamong.dto.request.ShareDreamRequest;
+import app.jg.og.zamong.dto.request.dream.sharedream.ShareDreamQualityRequest;
+import app.jg.og.zamong.dto.request.dream.sharedream.ShareDreamRequest;
 import app.jg.og.zamong.dto.response.ResponseBody;
 import app.jg.og.zamong.service.dream.DreamService;
 import lombok.RequiredArgsConstructor;
@@ -24,5 +25,11 @@ public class DreamController {
     @PutMapping("/share/{dream-uuid}")
     public ResponseBody share(@PathVariable("dream-uuid") String uuid, @Valid @RequestBody ShareDreamRequest request) {
         return ResponseBody.of(dreamService.modifyShareDream(uuid, request), HttpStatus.OK.value());
+    }
+
+    @PatchMapping("/share/quality/{dream-uuid}")
+    @ResponseStatus(value = HttpStatus.NO_CONTENT)
+    public void quality(@PathVariable("dream-uuid") String uuid, @Valid @RequestBody ShareDreamQualityRequest request) {
+        dreamService.patchShareDreamQuality(uuid, request);
     }
 }
