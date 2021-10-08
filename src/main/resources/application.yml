@@ -25,6 +25,8 @@ spring:
             enable: true
   jackson:
     property-naming-strategy: SNAKE_CASE
+  lifecycle:
+    timeout-per-shutdown-phase: 20s
 auth:
   jwt:
     exp:
@@ -34,3 +36,4 @@ auth:
 server:
   servlet:
     context-path: /v1/api
+  shutdown: graceful
