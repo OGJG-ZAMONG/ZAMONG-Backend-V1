@@ -1,7 +1,7 @@
 package app.jg.og.zamong.service;
 
 import app.jg.og.zamong.dto.request.ShareDreamRequest;
-import app.jg.og.zamong.dto.response.CreateShareDreamResponse;
+import app.jg.og.zamong.dto.response.ShareDreamResponse;
 import app.jg.og.zamong.entity.dream.dreamtype.DreamTypeRepository;
 import app.jg.og.zamong.entity.dream.enums.DreamType;
 import app.jg.og.zamong.entity.dream.sharedream.ShareDream;
@@ -66,7 +66,7 @@ public class DreamServiceTest {
                 .sleepEndDatetime(LocalDateTime.now())
                 .build();
 
-        CreateShareDreamResponse response = dreamService.createShareDream(request);
+        ShareDreamResponse response = dreamService.createShareDream(request);
 
         //when
         assertThat(response.getUuid()).isEqualTo(shareDream.getUuid());

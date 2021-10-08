@@ -1,8 +1,8 @@
 package app.jg.og.zamong.service.dream;
 
 import app.jg.og.zamong.dto.request.ShareDreamRequest;
-import app.jg.og.zamong.dto.response.CreateShareDreamResponse;
+import app.jg.og.zamong.dto.response.ShareDreamResponse;
 
 public interface DreamService {
-    CreateShareDreamResponse createShareDream(ShareDreamRequest request);
+    ShareDreamResponse createShareDream(ShareDreamRequest request);
 }
