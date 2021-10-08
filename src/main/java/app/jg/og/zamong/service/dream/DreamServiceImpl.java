@@ -1,9 +1,12 @@
 package app.jg.og.zamong.service.dream;
 
+import app.jg.og.zamong.dto.request.dream.DreamTitleRequest;
 import app.jg.og.zamong.dto.request.dream.sharedream.ShareDreamQualityRequest;
 import app.jg.og.zamong.dto.request.dream.sharedream.ShareDreamRequest;
 import app.jg.og.zamong.dto.request.dream.sharedream.ShareDreamSleepDateTimeRequest;
 import app.jg.og.zamong.dto.response.ShareDreamResponse;
+import app.jg.og.zamong.entity.dream.Dream;
+import app.jg.og.zamong.entity.dream.DreamRepository;
 import app.jg.og.zamong.entity.dream.dreamtype.DreamType;
 import app.jg.og.zamong.entity.dream.dreamtype.DreamTypeRepository;
 import app.jg.og.zamong.entity.dream.sharedream.ShareDream;
@@ -29,6 +32,7 @@ public class DreamServiceImpl implements DreamService {
     private final ShareDreamRepository shareDreamRepository;
     private final UserRepository userRepository;
     private final DreamTypeRepository dreamTypeRepository;
+    private final DreamRepository dreamRepository;
 
     @Override
     @Transactional
@@ -102,5 +106,13 @@ public class DreamServiceImpl implements DreamService {
 
         shareDream.setSleepDateTime(request.getSleepBeginDateTime());
         shareDream.setSleepTime((int) ChronoUnit.HOURS.between(request.getSleepBeginDateTime(), request.getSleepEndDateTime()));
+    }
+
+    @Override
+    public void patchDreamTitle(String uuid, DreamTitleRequest request) {
+        Dream dream = dreamRepository.findById(UUID.fromString(uuid))
+                .orElseThrow(() -> new DreamNotFoundException("해당하는 꿈을 찾을 수 없습니다"));
+
+        dream.setTitle(request.getTitle());
     }
 }
