@@ -1,5 +1,6 @@
 package app.jg.og.zamong.entity.dream;
 
+import app.jg.og.zamong.entity.dream.attachment.AttachmentImage;
 import app.jg.og.zamong.entity.dream.dreamtype.DreamType;
 import app.jg.og.zamong.entity.user.User;
 import lombok.*;
@@ -51,4 +52,7 @@ public abstract class Dream {
 
     @OneToMany
     private List<DreamType> dreamTypes;
+
+    @OneToMany
+    private List<AttachmentImage> attachmentImages;
 }
