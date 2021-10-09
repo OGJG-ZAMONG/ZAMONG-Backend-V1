@@ -8,7 +8,7 @@ import java.util.UUID;
 
 @Builder
 @Getter
-public class ShareDreamResponse implements Response {
+public class CreateShareDreamResponse implements Response {
 
     private final UUID uuid;
 

@@ -6,7 +6,7 @@ import app.jg.og.zamong.dto.request.dream.DreamTypesRequest;
 import app.jg.og.zamong.dto.request.dream.sharedream.ShareDreamQualityRequest;
 import app.jg.og.zamong.dto.request.dream.sharedream.ShareDreamRequest;
 import app.jg.og.zamong.dto.request.dream.sharedream.ShareDreamSleepDateTimeRequest;
-import app.jg.og.zamong.dto.response.ShareDreamResponse;
+import app.jg.og.zamong.dto.response.CreateShareDreamResponse;
 import app.jg.og.zamong.entity.dream.Dream;
 import app.jg.og.zamong.entity.dream.DreamRepository;
 import app.jg.og.zamong.entity.dream.dreamtype.DreamType;
@@ -38,7 +38,7 @@ public class DreamServiceImpl implements DreamService {
 
     @Override
     @Transactional
-    public ShareDreamResponse createShareDream(ShareDreamRequest request) {
+    public CreateShareDreamResponse createShareDream(ShareDreamRequest request) {
         User user = userRepository.findByUuid(UUID.fromString(securityContextService.getName()))
                 .orElseThrow(() -> new UserNotFoundException("해당하는 유저를 찾을 수 없습니다"));
 
@@ -59,7 +59,7 @@ public class DreamServiceImpl implements DreamService {
                     .dream(shareDream)
                     .build()));
 
-        return ShareDreamResponse.builder()
+        return CreateShareDreamResponse.builder()
                 .uuid(shareDream.getUuid())
                 .createdAt(shareDream.getCreatedAt())
                 .updatedAt(shareDream.getUpdatedAt())
@@ -68,7 +68,7 @@ public class DreamServiceImpl implements DreamService {
 
     @Override
     @Transactional
-    public ShareDreamResponse modifyShareDream(String uuid, ShareDreamRequest request) {
+    public CreateShareDreamResponse modifyShareDream(String uuid, ShareDreamRequest request) {
         ShareDream shareDream = shareDreamRepository.findById(UUID.fromString(uuid))
                 .orElseThrow(() -> new DreamNotFoundException("해당하는 꿈을 찾을 수 없습니다"));
 
@@ -86,7 +86,7 @@ public class DreamServiceImpl implements DreamService {
                         .code(dt)
                         .build())));
 
-        return ShareDreamResponse.builder()
+        return CreateShareDreamResponse.builder()
                 .uuid(shareDream.getUuid())
                 .createdAt(shareDream.getCreatedAt())
                 .updatedAt(shareDream.getUpdatedAt())
