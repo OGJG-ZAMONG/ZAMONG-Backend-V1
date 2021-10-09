@@ -2,6 +2,7 @@ package app.jg.og.zamong.service;
 
 import app.jg.og.zamong.dto.request.dream.DreamContentRequest;
 import app.jg.og.zamong.dto.request.dream.DreamTitleRequest;
+import app.jg.og.zamong.dto.request.dream.DreamTypesRequest;
 import app.jg.og.zamong.dto.request.dream.sharedream.ShareDreamQualityRequest;
 import app.jg.og.zamong.dto.request.dream.sharedream.ShareDreamRequest;
 import app.jg.og.zamong.dto.request.dream.sharedream.ShareDreamSleepDateTimeRequest;
@@ -24,6 +25,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.context.ActiveProfiles;
 
@@ -185,5 +187,26 @@ public class DreamServiceTest {
         dreamService.patchDreamContent(dream.getUuid().toString(), request);
 
         assertThat(dream.getContent()).isEqualTo(patchedContent);
+    }
+
+    @Test
+    void 꿈_유형_수정_성공() {
+        //given
+        Dream dream = DreamBuilder.build();
+        given(dreamRepository.findById(dream.getUuid())).willReturn(Optional.of(dream));
+        willDoNothing().given(dreamTypeRepository).deleteByDream(dream);
+        given(dreamTypeRepository.save(any())).willReturn(null);
+
+        //when
+        DreamType patchedDreamType1 = DreamType.LUCID_DREAM;
+        DreamType patchedDreamType2 = DreamType.NIGHTMARE;
+        List<DreamType> dreamTypes = List.of(patchedDreamType1, patchedDreamType2);
+
+        DreamTypesRequest request = DreamTypesRequest.builder()
+                .dreamTypes(dreamTypes)
+                .build();
+        dreamService.patchDreamTypes(dream.getUuid().toString(), request);
+
+        Mockito.verify(dreamTypeRepository, Mockito.times(dreamTypes.size())).save(any());
     }
 }
