@@ -1,7 +1,8 @@
-package app.jg.og.zamong.dto.request;
+package app.jg.og.zamong.dto.request.dream.sharedream;
 
 import app.jg.og.zamong.entity.dream.enums.DreamQuality;
 import app.jg.og.zamong.entity.dream.enums.DreamType;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
 import javax.validation.constraints.NotNull;
@@ -17,7 +18,7 @@ public class ShareDreamRequest {
 
     @NotNull(message = "제목을 반드시 입력해야 합니다")
     @Size(min = 1, max = 100, message = "제목은 100자 이하여야 합니다")
-    public String title;
+    private String title;
 
     @NotNull(message = "내용을 반드시 입력해야 합니다")
     private String content;
@@ -29,8 +30,10 @@ public class ShareDreamRequest {
     private DreamQuality quality;
 
     @NotNull(message = "수면시작시각을 입력해주세요")
-    private LocalDateTime sleepBeginDatetime;
+    @JsonProperty("sleep_begin_datetime")
+    private LocalDateTime sleepBeginDateTime;
 
     @NotNull(message = "수면종료시각을 입력해주세요")
-    private LocalDateTime sleepEndDatetime;
+    @JsonProperty("sleep_end_datetime")
+    private LocalDateTime sleepEndDateTime;
 }
