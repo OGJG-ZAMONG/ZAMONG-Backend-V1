@@ -1,8 +1,8 @@
+name: Swagger
+
 on:
   push:
-    branches:
-      - main
-      - "feature/5-open-api-specification"
+    branches: [ main ]
 
 jobs:
   deploy-document:
