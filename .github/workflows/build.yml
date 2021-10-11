@@ -42,4 +42,4 @@ jobs:
         file: ./Dockerfile
         platforms: linux/amd64
         push: true
-        tags: jeongjiwoo0522/zamong-backend:latest
+        tags: jiwoourty/zamong-backend:latest
