@@ -13,8 +13,8 @@ import java.util.UUID;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Entity
 @Table(name = "attachment_image")
-@Entity()
 public class AttachmentImage {
 
     @Id
@@ -23,6 +23,7 @@ public class AttachmentImage {
     @Column(columnDefinition = "BINARY(16)")
     private UUID uuid;
 
+    @Column(columnDefinition = "tinyint")
     private Integer order;
 
     private String path;
@@ -30,9 +31,14 @@ public class AttachmentImage {
     private String host;
 
     @Convert(converter = DreamTagConverter.class)
+    @Column(columnDefinition = "char(4)")
     private DreamTag tag;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "dream_uuid")
     private Dream dream;
+
+    public String getUrl() {
+        return host + path;
+    }
 }

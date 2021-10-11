@@ -19,5 +19,5 @@ public interface DreamService {
     void patchDreamContent(String uuid, DreamContentRequest request);
     void patchDreamTypes(String uuid, DreamTypesRequest request);
 
-    ShareDreamGroupResponse queryShareDreams();
+    ShareDreamGroupResponse queryShareDreams(int page, int size);
 }

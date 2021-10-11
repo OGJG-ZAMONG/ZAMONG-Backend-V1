@@ -7,6 +7,8 @@ import app.jg.og.zamong.dto.request.dream.sharedream.ShareDreamQualityRequest;
 import app.jg.og.zamong.dto.request.dream.sharedream.ShareDreamRequest;
 import app.jg.og.zamong.dto.request.dream.sharedream.ShareDreamSleepDateTimeRequest;
 import app.jg.og.zamong.dto.response.CreateShareDreamResponse;
+import app.jg.og.zamong.dto.response.ShareDreamGroupResponse;
+import app.jg.og.zamong.dto.response.ShareDreamResponse;
 import app.jg.og.zamong.entity.dream.Dream;
 import app.jg.og.zamong.entity.dream.DreamRepository;
 import app.jg.og.zamong.entity.dream.dreamtype.DreamType;
@@ -19,11 +21,16 @@ import app.jg.og.zamong.exception.business.DreamNotFoundException;
 import app.jg.og.zamong.exception.business.UserNotFoundException;
 import app.jg.og.zamong.service.securitycontext.SecurityContextService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.temporal.ChronoUnit;
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -139,5 +146,31 @@ public class DreamServiceImpl implements DreamService {
                         .dream(dream)
                         .code(dt)
                         .build())));
+    }
+
+    @Override
+    public ShareDreamGroupResponse queryShareDreams(int page, int size) {
+        try {
+            List<ShareDreamResponse> shareDreamResponses = shareDreamRepository.findByIsSharedIsTrue(
+                    PageRequest.of(page, size, Sort.by("shareDateTime").descending()))
+                    .stream()
+                    .map(sd -> ShareDreamResponse.builder()
+                            .uuid(sd.getUuid())
+                            .title(sd.getTitle())
+                            .defaultPostingImage(sd.getAttachmentImages().get(0).getUrl())
+                            .profile(sd.getUser().getProfile())
+                            .isShared(sd.getIsShared())
+                            .dreamTypes(sd.getDreamTypes()
+                                    .stream()
+                                    .map(DreamType::getCode)
+                                    .collect(Collectors.toList()))
+                            .build())
+                    .collect(Collectors.toList()); return ShareDreamGroupResponse.builder()
+                    .shareDreams(shareDreamResponses)
+                    .build();
+        } catch (NullPointerException e ) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }

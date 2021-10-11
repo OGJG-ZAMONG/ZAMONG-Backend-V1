@@ -13,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.websocket.server.PathParam;
 
 @RequiredArgsConstructor
 @RestController
@@ -59,5 +60,10 @@ public class DreamController {
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void dreamTypes(@PathVariable("dream-uuid") String uuid, @Valid @RequestBody DreamTypesRequest request) {
         dreamService.patchDreamTypes(uuid, request);
+    }
+
+    @GetMapping("/share")
+    public ResponseBody share(@PathParam("page") int page, @PathParam("size") int size) {
+        return ResponseBody.of(dreamService.queryShareDreams(page, size), HttpStatus.OK.value());
     }
 }

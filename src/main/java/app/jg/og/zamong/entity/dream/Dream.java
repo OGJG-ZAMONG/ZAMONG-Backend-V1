@@ -50,9 +50,9 @@ public abstract class Dream {
     @JoinColumn(name = "user_uuid", nullable = false)
     private User user;
 
-    @OneToMany
+    @OneToMany(mappedBy = "dream")
     private List<DreamType> dreamTypes;
 
-    @OneToMany
+    @OneToMany(mappedBy = "dream")
     private List<AttachmentImage> attachmentImages;
 }
