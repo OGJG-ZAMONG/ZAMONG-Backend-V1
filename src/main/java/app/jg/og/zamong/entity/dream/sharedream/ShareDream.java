@@ -3,11 +3,13 @@ package app.jg.og.zamong.entity.dream.sharedream;
 import app.jg.og.zamong.entity.dream.Dream;
 import app.jg.og.zamong.entity.dream.enums.DreamQuality;
 import app.jg.og.zamong.entity.dream.sharedream.converter.DreamQualityConverter;
+import app.jg.og.zamong.entity.dream.sharedream.lucypoint.ShareDreamLucyPoint;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Setter
@@ -32,4 +34,11 @@ public class ShareDream extends Dream {
 
     @Column(name = "share_datetime", columnDefinition = "timestamp")
     private LocalDateTime shareDateTime;
+
+    @OneToMany(mappedBy = "shareDream")
+    private List<ShareDreamLucyPoint> shareDreamLucyPoints;
+
+    public Integer getLucyCount() {
+        return shareDreamLucyPoints.size();
+    }
 }
