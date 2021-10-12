@@ -154,20 +154,18 @@ public class DreamServiceImpl implements DreamService {
         Pageable request = PageRequest.of(page, size, Sort.by("shareDateTime").descending());
         Page<ShareDream> shareDreamPage = shareDreamRepository.findByIsSharedIsTrue(request);
 
-        List<ShareDreamResponse> shareDreamGroup = shareDreamPage.getContent().stream()
-                .map(sd -> ShareDreamResponse.builder()
-                        .uuid(sd.getUuid())
-                        .title(sd.getTitle())
-                        .defaultPostingImage(sd.getDefaultImage())
-                        .profile(sd.getUser().getProfile())
-                        .isShared(sd.getIsShared())
-                        .lucyCount(sd.getLucyCount())
-                        .dreamTypes(sd.getDreamTypes()
-                                .stream()
-                                .map(DreamType::getCode)
-                                .collect(Collectors.toList()))
-                        .build())
-                .collect(Collectors.toList());
+        List<ShareDreamResponse> shareDreamGroup = shareDreamPage.map(sd -> ShareDreamResponse.builder()
+                .uuid(sd.getUuid())
+                .title(sd.getTitle())
+                .profile(sd.getUser().getProfile())
+                .isShared(sd.getIsShared())
+                .lucyCount(sd.getLucyCount())
+                .dreamTypes(sd.getDreamTypes()
+                        .stream()
+                        .map(DreamType::getCode)
+                        .collect(Collectors.toList()))
+                .defaultPostingImage(sd.getDefaultImage())
+                .build()).toList();
 
         return ShareDreamGroupResponse.builder()
                 .shareDreams(shareDreamGroup)
