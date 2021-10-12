@@ -55,4 +55,8 @@ public abstract class Dream {
 
     @OneToMany(mappedBy = "dream")
     private List<AttachmentImage> attachmentImages;
+
+    public String getDefaultImage() {
+        return attachmentImages.get(0).getUrl();
+    }
 }
