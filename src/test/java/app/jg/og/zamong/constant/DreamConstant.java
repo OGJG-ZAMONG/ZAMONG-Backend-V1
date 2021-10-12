@@ -12,5 +12,7 @@ public class DreamConstant {
     public static final DreamQuality QUALITY = DreamQuality.SOSO;
     public static final Boolean IS_SHARED = false;
     public static final LocalDateTime SLEEP_DATE_TIME = LocalDateTime.now();
-    public static final Integer SLEEP_TIME = 4;
+
+    public static final String ATTACHMENT_HOST = "host";
+    public static final String ATTACHMENT_PATH =  "path";
 }
