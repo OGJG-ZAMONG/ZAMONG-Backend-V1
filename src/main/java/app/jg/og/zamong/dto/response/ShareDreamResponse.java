@@ -19,8 +19,6 @@ public class ShareDreamResponse {
 
     private final String title;
 
-    private final String content;
-
     private final Boolean isShared;
 
     private final Integer lucyCount;
