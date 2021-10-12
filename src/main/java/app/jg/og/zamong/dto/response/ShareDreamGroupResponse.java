@@ -11,5 +11,7 @@ public class ShareDreamGroupResponse implements Response {
 
     private final List<ShareDreamResponse> shareDreams;
 
-    private final Integer total_page;
+    private final Integer totalPage;
+
+    private final Long totalSize;
 }
