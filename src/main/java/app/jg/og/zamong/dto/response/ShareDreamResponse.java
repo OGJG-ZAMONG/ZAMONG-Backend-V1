@@ -1,18 +1,27 @@
 package app.jg.og.zamong.dto.response;
 
+import app.jg.og.zamong.entity.dream.enums.DreamType;
 import lombok.Builder;
 import lombok.Getter;
 
-import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @Builder
 @Getter
-public class ShareDreamResponse implements Response {
+public class ShareDreamResponse {
 
     private final UUID uuid;
 
-    private final LocalDateTime createdAt;
+    private final String defaultPostingImage;
 
-    private final LocalDateTime updatedAt;
+    private final String profile;
+
+    private final String title;
+
+    private final Boolean isShared;
+
+    private final Integer lucyCount;
+
+    private final List<DreamType> dreamTypes;
 }
