@@ -161,6 +161,7 @@ public class DreamServiceImpl implements DreamService {
                         .defaultPostingImage(sd.getDefaultImage())
                         .profile(sd.getUser().getProfile())
                         .isShared(sd.getIsShared())
+                        .lucyCount(sd.getLucyCount())
                         .dreamTypes(sd.getDreamTypes()
                                 .stream()
                                 .map(DreamType::getCode)
