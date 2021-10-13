@@ -2,7 +2,7 @@ package app.jg.og.zamong.controller;
 
 import app.jg.og.zamong.dto.request.*;
 import app.jg.og.zamong.dto.response.ResponseBody;
-import app.jg.og.zamong.service.auth.AuthService;
+import app.jg.og.zamong.service.user.auth.UserSignUpService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,30 +17,30 @@ import javax.validation.Valid;
 @RestController
 public class AuthController {
 
-    private final AuthService authService;
+    private final UserSignUpService userSignUpService;
 
     @PostMapping("/signup")
     public ResponseBody register(@Valid @RequestBody SignUpUserRequest request) {
-        return ResponseBody.of(authService.registerUser(request), HttpStatus.CREATED.value());
+        return ResponseBody.of(userSignUpService.registerUser(request), HttpStatus.CREATED.value());
     }
 
     @PostMapping("/login")
     public ResponseBody login(@Valid @RequestBody LoginUserRequest request) {
-        return ResponseBody.of(authService.loginUser(request), HttpStatus.OK.value());
+        return ResponseBody.of(userSignUpService.loginUser(request), HttpStatus.OK.value());
     }
 
     @PostMapping("/user-id/duplicate")
     public ResponseBody duplicate(@Valid @RequestBody CheckIdDuplicationRequest request) {
-        return ResponseBody.of(authService.checkIdDuplication(request), HttpStatus.OK.value());
+        return ResponseBody.of(userSignUpService.checkIdDuplication(request), HttpStatus.OK.value());
     }
 
     @PostMapping("/mail")
     public ResponseBody mail(@Valid @RequestBody EmailAuthenticationRequest request) {
-        return ResponseBody.of(authService.sendOutAuthenticationEmail(request), HttpStatus.OK.value());
+        return ResponseBody.of(userSignUpService.sendOutAuthenticationEmail(request), HttpStatus.OK.value());
     }
 
     @PostMapping("/refresh")
     public ResponseBody refresh(@Valid @RequestBody ReIssueTokenRequest request) {
-        return ResponseBody.of(authService.refreshToken(request), HttpStatus.OK.value());
+        return ResponseBody.of(userSignUpService.refreshToken(request), HttpStatus.OK.value());
     }
 }

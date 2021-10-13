@@ -14,7 +14,7 @@ import app.jg.og.zamong.entity.user.User;
 import app.jg.og.zamong.entity.user.UserRepository;
 import app.jg.og.zamong.entity.user.profile.ProfileRepository;
 import app.jg.og.zamong.security.JwtTokenProvider;
-import app.jg.og.zamong.service.auth.AuthServiceImpl;
+import app.jg.og.zamong.service.user.auth.UserSignUpServiceImpl;
 import app.jg.og.zamong.service.mail.MailService;
 import app.jg.og.zamong.util.UserBuilder;
 import org.junit.jupiter.api.BeforeAll;
@@ -35,10 +35,10 @@ import static org.mockito.BDDMockito.given;
 
 @ExtendWith(MockitoExtension.class)
 @ActiveProfiles("test")
-public class AuthServiceTest {
+public class UserSignUpServiceTest {
 
     @InjectMocks
-    private AuthServiceImpl authService;
+    private UserSignUpServiceImpl userSignUpService;
 
     @Mock
     private UserRepository userRepository;
@@ -73,7 +73,7 @@ public class AuthServiceTest {
         CheckIdDuplicationRequest request = CheckIdDuplicationRequest.builder()
                 .id(id)
                 .build();
-        StringResponse response = authService.checkIdDuplication(request);
+        StringResponse response = userSignUpService.checkIdDuplication(request);
 
         final String successMessage = "사용가능한 아이디입니다";
         assertThat(response.getMessage()).isEqualTo(successMessage);
@@ -102,7 +102,7 @@ public class AuthServiceTest {
                 .id(id)
                 .password(password)
                 .build();
-        SignUpUserResponse response = authService.registerUser(request);
+        SignUpUserResponse response = userSignUpService.registerUser(request);
 
         // then
         assertThat(response.getUuid()).isNotNull();
@@ -128,7 +128,7 @@ public class AuthServiceTest {
                 .userIdentity(identity)
                 .password(password)
                 .build();
-        IssueTokenResponse response = authService.loginUser(request);
+        IssueTokenResponse response = userSignUpService.loginUser(request);
 
         //then
         assertThat(response.getAccessToken()).isEqualTo(accessToken);
@@ -150,7 +150,7 @@ public class AuthServiceTest {
         ReIssueTokenRequest request = ReIssueTokenRequest.builder()
                 .refreshToken(refreshToken)
                 .build();
-        IssueTokenResponse response = authService.refreshToken(request);
+        IssueTokenResponse response = userSignUpService.refreshToken(request);
 
         //then
         assertThat(response.getAccessToken()).isEqualTo(accessToken);
@@ -160,7 +160,7 @@ public class AuthServiceTest {
     @Test
     void 이메일_전송_성공() {
         try {
-            authService.sendOutAuthenticationEmail(EmailAuthenticationRequest.builder()
+            userSignUpService.sendOutAuthenticationEmail(EmailAuthenticationRequest.builder()
                     .address(user.getEmail())
                     .build());
         } catch (Exception e) {
@@ -176,7 +176,7 @@ public class AuthServiceTest {
         //when
         Exception exception = null;
         try {
-            authService.sendOutAuthenticationEmail(EmailAuthenticationRequest.builder()
+            userSignUpService.sendOutAuthenticationEmail(EmailAuthenticationRequest.builder()
                     .address(user.getEmail())
                     .build());
         } catch (RuntimeException e) {

@@ -1,4 +1,4 @@
-package app.jg.og.zamong.service.auth;
+package app.jg.og.zamong.service.user.auth;
 
 import app.jg.og.zamong.dto.request.*;
 import app.jg.og.zamong.dto.response.IssueTokenResponse;
@@ -27,7 +27,7 @@ import java.util.Random;
 
 @RequiredArgsConstructor
 @Service
-public class AuthServiceImpl implements AuthService {
+public class UserSignUpServiceImpl implements UserSignUpService {
 
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenProvider jwtTokenProvider;
