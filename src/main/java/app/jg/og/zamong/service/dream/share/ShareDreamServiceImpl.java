@@ -1,14 +1,9 @@
 package app.jg.og.zamong.service.dream.share;
 
-import app.jg.og.zamong.dto.request.dream.DreamContentRequest;
-import app.jg.og.zamong.dto.request.dream.DreamTitleRequest;
-import app.jg.og.zamong.dto.request.dream.DreamTypesRequest;
 import app.jg.og.zamong.dto.request.dream.sharedream.ShareDreamQualityRequest;
 import app.jg.og.zamong.dto.request.dream.sharedream.ShareDreamRequest;
 import app.jg.og.zamong.dto.request.dream.sharedream.ShareDreamSleepDateTimeRequest;
 import app.jg.og.zamong.dto.response.CreateShareDreamResponse;
-import app.jg.og.zamong.entity.dream.Dream;
-import app.jg.og.zamong.entity.dream.DreamRepository;
 import app.jg.og.zamong.entity.dream.dreamtype.DreamType;
 import app.jg.og.zamong.entity.dream.dreamtype.DreamTypeRepository;
 import app.jg.og.zamong.entity.dream.sharedream.ShareDream;
