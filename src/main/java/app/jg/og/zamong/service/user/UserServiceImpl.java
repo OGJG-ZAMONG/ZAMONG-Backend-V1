@@ -39,20 +39,4 @@ public class UserServiceImpl implements UserService {
                 .lucyCount(user.getLucyCount())
                 .build();
    }
-
-    @Override
-    public FollowUserResponse followUser(String uuid, String followerUuid) {
-        User user = userRepository.findByUuid(UUID.fromString(uuid))
-                .orElseThrow(() -> new UserNotFoundException("해당하는 유저를 찾을 수 없습니다"));
-        User follower = userRepository.findByUuid(UUID.fromString(followerUuid))
-                .orElseThrow(() -> new UserNotFoundException("해당하는 유저를 찾을 수 없습니다"));
-        followRepository.save(Follow.builder()
-                .following(user)
-                .follower(follower)
-                .build());
-        return FollowUserResponse.builder()
-                .userId(user.getUuid())
-                .followerId(follower.getUuid())
-                .build();
-    }
 }
