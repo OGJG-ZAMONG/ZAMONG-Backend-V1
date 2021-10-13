@@ -25,7 +25,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 
-public class UserAuthenticationService extends UnitTest {
+public class UserAuthenticationServiceTest extends UnitTest {
 
     @InjectMocks
     private UserAuthenticationServiceImpl userAuthenticationService;
