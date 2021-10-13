@@ -7,9 +7,9 @@ import app.jg.og.zamong.dto.request.dream.sharedream.ShareDreamQualityRequest;
 import app.jg.og.zamong.dto.request.dream.sharedream.ShareDreamRequest;
 import app.jg.og.zamong.dto.request.dream.sharedream.ShareDreamSleepDateTimeRequest;
 import app.jg.og.zamong.dto.response.CreateShareDreamResponse;
-import app.jg.og.zamong.dto.response.ShareDreamGroupResponse;
 
 public interface DreamService {
+
     CreateShareDreamResponse createShareDream(ShareDreamRequest request);
     CreateShareDreamResponse modifyShareDream(String uuid, ShareDreamRequest request);
     void patchShareDreamQuality(String uuid, ShareDreamQualityRequest request);
@@ -18,6 +18,4 @@ public interface DreamService {
     void patchDreamTitle(String uuid, DreamTitleRequest request);
     void patchDreamContent(String uuid, DreamContentRequest request);
     void patchDreamTypes(String uuid, DreamTypesRequest request);
-
-    ShareDreamGroupResponse queryShareDreams(int page, int size);
 }

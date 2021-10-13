@@ -1,24 +1,19 @@
-package app.jg.og.zamong.service;
+package app.jg.og.zamong.service.dream;
 
 import app.jg.og.zamong.dto.request.dream.*;
 import app.jg.og.zamong.dto.request.dream.sharedream.*;
 import app.jg.og.zamong.dto.response.CreateShareDreamResponse;
-import app.jg.og.zamong.dto.response.ShareDreamGroupResponse;
 import app.jg.og.zamong.entity.dream.*;
 import app.jg.og.zamong.entity.dream.dreamtype.DreamTypeRepository;
 import app.jg.og.zamong.entity.dream.enums.*;
 import app.jg.og.zamong.entity.dream.sharedream.*;
 import app.jg.og.zamong.entity.user.User;
 import app.jg.og.zamong.entity.user.UserRepository;
-import app.jg.og.zamong.service.dream.DreamServiceImpl;
+import app.jg.og.zamong.service.UnitTest;
 import app.jg.og.zamong.service.securitycontext.SecurityContextService;
 import app.jg.og.zamong.util.*;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.*;
-import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.data.domain.*;
-import org.springframework.test.context.ActiveProfiles;
 
 import java.time.LocalDateTime;
 import java.util.*;
@@ -27,9 +22,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.*;
 
-@ExtendWith(MockitoExtension.class)
-@ActiveProfiles("test")
-public class DreamServiceTest {
+public class DreamServiceTest extends UnitTest {
 
     @InjectMocks
     private DreamServiceImpl dreamService;
@@ -196,26 +189,5 @@ public class DreamServiceTest {
         dreamService.patchDreamTypes(dream.getUuid().toString(), request);
 
         Mockito.verify(dreamTypeRepository, Mockito.times(dreamTypes.size())).save(any());
-    }
-
-    @Test
-    void 공유된_꿈_목록() {
-        //given
-        int page= 0;
-        int size = 1;
-
-        User user = UserBuilder.build();
-        ShareDream shareDream = ShareDreamBuilder.build(user);
-        Page<ShareDream> shareDreamPage = new PageImpl(List.of(shareDream));
-
-        given(shareDreamRepository.findByIsSharedIsTrue(any(Pageable.class))).willReturn(shareDreamPage);
-
-        //when
-        ShareDreamGroupResponse response = dreamService.queryShareDreams(page, size);
-
-        //then
-        assertThat(response.getShareDreams().size()).isEqualTo(size);
-        assertThat(response.getTotalPage()).isEqualTo(shareDreamPage.getTotalPages());
-        assertThat(response.getTotalSize()).isEqualTo(shareDreamPage.getTotalElements());
     }
 }
