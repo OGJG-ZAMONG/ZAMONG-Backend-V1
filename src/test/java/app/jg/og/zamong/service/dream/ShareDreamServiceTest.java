@@ -27,6 +27,8 @@ public class ShareDreamServiceTest extends UnitTest {
 
     @InjectMocks
     private ShareDreamServiceImpl shareDreamService;
+    @InjectMocks
+    private DreamServiceImpl dreamService;
 
     @Mock
     private SecurityContextService securityContextService;
@@ -150,7 +152,7 @@ public class ShareDreamServiceTest extends UnitTest {
         DreamTitleRequest request = DreamTitleRequest.builder()
                 .title(patchedTitle)
                 .build();
-        shareDreamService.patchDreamTitle(dream.getUuid().toString(), request);
+        dreamService.patchDreamTitle(dream.getUuid().toString(), request);
 
         assertThat(dream.getTitle()).isEqualTo(patchedTitle);
     }
@@ -166,7 +168,7 @@ public class ShareDreamServiceTest extends UnitTest {
         DreamContentRequest request = DreamContentRequest.builder()
                 .content(patchedContent)
                 .build();
-        shareDreamService.patchDreamContent(dream.getUuid().toString(), request);
+        dreamService.patchDreamContent(dream.getUuid().toString(), request);
 
         assertThat(dream.getContent()).isEqualTo(patchedContent);
     }
@@ -187,7 +189,7 @@ public class ShareDreamServiceTest extends UnitTest {
         DreamTypesRequest request = DreamTypesRequest.builder()
                 .dreamTypes(dreamTypes)
                 .build();
-        shareDreamService.patchDreamTypes(dream.getUuid().toString(), request);
+        dreamService.patchDreamTypes(dream.getUuid().toString(), request);
 
         Mockito.verify(dreamTypeRepository, Mockito.times(dreamTypes.size())).save(any());
     }

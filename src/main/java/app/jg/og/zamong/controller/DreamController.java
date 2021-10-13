@@ -7,6 +7,7 @@ import app.jg.og.zamong.dto.request.dream.sharedream.ShareDreamQualityRequest;
 import app.jg.og.zamong.dto.request.dream.sharedream.ShareDreamRequest;
 import app.jg.og.zamong.dto.request.dream.sharedream.ShareDreamSleepDateTimeRequest;
 import app.jg.og.zamong.dto.response.ResponseBody;
+import app.jg.og.zamong.service.dream.DreamService;
 import app.jg.og.zamong.service.dream.share.ShareDreamService;
 import app.jg.og.zamong.service.dream.find.DreamFindService;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +21,26 @@ import javax.websocket.server.PathParam;
 @RestController
 @RequestMapping("/dream")
 public class DreamController {
+
+    private final DreamService dreamService;
+
+    @PatchMapping("/title/{dream-uuid}")
+    @ResponseStatus(value = HttpStatus.NO_CONTENT)
+    public void title(@PathVariable("dream-uuid") String uuid, @Valid @RequestBody DreamTitleRequest request) {
+        dreamService.patchDreamTitle(uuid, request);
+    }
+
+    @PatchMapping("/content/{dream-uuid}")
+    @ResponseStatus(value = HttpStatus.NO_CONTENT)
+    public void content(@PathVariable("dream-uuid") String uuid, @Valid @RequestBody DreamContentRequest request) {
+        dreamService.patchDreamContent(uuid, request);
+    }
+
+    @PatchMapping("/dream-types/{dream-uuid}")
+    @ResponseStatus(value = HttpStatus.NO_CONTENT)
+    public void dreamTypes(@PathVariable("dream-uuid") String uuid, @Valid @RequestBody DreamTypesRequest request) {
+        dreamService.patchDreamTypes(uuid, request);
+    }
 
     private final DreamFindService dreamFindService;
 
@@ -50,23 +71,5 @@ public class DreamController {
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void sleepDateTime(@PathVariable("dream-uuid") String uuid, @Valid @RequestBody ShareDreamSleepDateTimeRequest request) {
         shareDreamService.patchShareDreamSleepDateTime(uuid, request);
-    }
-
-    @PatchMapping("/title/{dream-uuid}")
-    @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    public void title(@PathVariable("dream-uuid") String uuid, @Valid @RequestBody DreamTitleRequest request) {
-        shareDreamService.patchDreamTitle(uuid, request);
-    }
-
-    @PatchMapping("/content/{dream-uuid}")
-    @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    public void content(@PathVariable("dream-uuid") String uuid, @Valid @RequestBody DreamContentRequest request) {
-        shareDreamService.patchDreamContent(uuid, request);
-    }
-
-    @PatchMapping("/dream-types/{dream-uuid}")
-    @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    public void dreamTypes(@PathVariable("dream-uuid") String uuid, @Valid @RequestBody DreamTypesRequest request) {
-        shareDreamService.patchDreamTypes(uuid, request);
     }
 }
