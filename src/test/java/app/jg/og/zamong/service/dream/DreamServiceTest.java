@@ -1,4 +1,4 @@
-package app.jg.og.zamong.service;
+package app.jg.og.zamong.service.dream;
 
 import app.jg.og.zamong.dto.request.dream.*;
 import app.jg.og.zamong.dto.request.dream.sharedream.*;

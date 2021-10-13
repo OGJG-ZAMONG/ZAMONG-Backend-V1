@@ -1,4 +1,4 @@
-package app.jg.og.zamong.service;
+package app.jg.og.zamong.service.user;
 
 import app.jg.og.zamong.dto.response.FollowUserResponse;
 import app.jg.og.zamong.dto.response.UserInformationResponse;
