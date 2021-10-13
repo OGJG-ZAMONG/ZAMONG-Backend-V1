@@ -11,6 +11,7 @@ import app.jg.og.zamong.entity.dream.sharedream.*;
 import app.jg.og.zamong.entity.user.User;
 import app.jg.og.zamong.entity.user.UserRepository;
 import app.jg.og.zamong.service.UnitTest;
+import app.jg.og.zamong.service.dream.find.DreamFindService;
 import app.jg.og.zamong.service.securitycontext.SecurityContextService;
 import app.jg.og.zamong.util.*;
 import org.junit.jupiter.api.Test;
@@ -28,6 +29,8 @@ public class DreamServiceTest extends UnitTest {
 
     @InjectMocks
     private DreamServiceImpl dreamService;
+    @InjectMocks
+    private DreamFindService dreamFindService;
 
     @Mock
     private SecurityContextService securityContextService;
@@ -206,7 +209,7 @@ public class DreamServiceTest extends UnitTest {
         given(shareDreamRepository.findByIsSharedIsTrue(any(Pageable.class))).willReturn(shareDreamPage);
 
         //when
-        ShareDreamGroupResponse response = dreamService.queryShareDreams(page, size);
+        ShareDreamGroupResponse response = dreamFindService.queryShareDreams(page, size);
 
         //then
         assertThat(response.getShareDreams().size()).isEqualTo(size);
