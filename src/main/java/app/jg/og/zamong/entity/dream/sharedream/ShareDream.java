@@ -41,4 +41,9 @@ public class ShareDream extends Dream {
     public Integer getLucyCount() {
         return shareDreamLucyPoints.size();
     }
+
+    public void doShare() {
+        this.isShared = true;
+        this.shareDateTime = LocalDateTime.now();
+    }
 }
