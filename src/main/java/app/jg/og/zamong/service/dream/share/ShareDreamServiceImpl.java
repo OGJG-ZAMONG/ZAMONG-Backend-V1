@@ -4,6 +4,7 @@ import app.jg.og.zamong.dto.request.dream.sharedream.ShareDreamQualityRequest;
 import app.jg.og.zamong.dto.request.dream.sharedream.ShareDreamRequest;
 import app.jg.og.zamong.dto.request.dream.sharedream.ShareDreamSleepDateTimeRequest;
 import app.jg.og.zamong.dto.response.CreateShareDreamResponse;
+import app.jg.og.zamong.dto.response.DoShareDreamResponse;
 import app.jg.og.zamong.entity.dream.dreamtype.DreamType;
 import app.jg.og.zamong.entity.dream.dreamtype.DreamTypeRepository;
 import app.jg.og.zamong.entity.dream.sharedream.ShareDream;
@@ -102,5 +103,18 @@ public class ShareDreamServiceImpl implements ShareDreamService {
 
         shareDream.setSleepDateTime(request.getSleepBeginDateTime());
         shareDream.setSleepTime((int) ChronoUnit.HOURS.between(request.getSleepBeginDateTime(), request.getSleepEndDateTime()));
+    }
+
+    @Override
+    public DoShareDreamResponse doShareDream(String uuid) {
+        ShareDream shareDream = shareDreamRepository.findById(UUID.fromString(uuid))
+                .orElseThrow(() -> new DreamNotFoundException("해당하는 꿈을 찾을 수 없습니다"));
+
+        shareDream.doShare();;
+
+        return DoShareDreamResponse.builder()
+                .uuid(shareDream.getUuid())
+                .shareDateTime(shareDream.getShareDateTime())
+                .build();
     }
 }
