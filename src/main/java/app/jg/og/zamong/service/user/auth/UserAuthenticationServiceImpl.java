@@ -10,17 +10,19 @@ import app.jg.og.zamong.entity.user.UserRepository;
 import app.jg.og.zamong.exception.business.BadUserInformationException;
 import app.jg.og.zamong.exception.business.UnauthorizedTokenException;
 import app.jg.og.zamong.security.JwtTokenProvider;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class UserAuthenticationServiceImpl implements UserAuthenticationService {
 
-    JwtTokenProvider jwtTokenProvider;
-    PasswordEncoder passwordEncoder;
+    private final JwtTokenProvider jwtTokenProvider;
+    private final PasswordEncoder passwordEncoder;
 
-    RefreshTokenRepository refreshTokenRepository;
-    UserRepository userRepository;
+    private final RefreshTokenRepository refreshTokenRepository;
+    private final UserRepository userRepository;
 
     @Override
     public IssueTokenResponse loginUser(LoginUserRequest request) {

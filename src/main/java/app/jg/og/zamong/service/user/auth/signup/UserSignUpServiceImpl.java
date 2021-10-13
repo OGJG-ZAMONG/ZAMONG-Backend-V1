@@ -22,8 +22,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Random;
 
-@RequiredArgsConstructor
 @Service
+@RequiredArgsConstructor
 public class UserSignUpServiceImpl implements UserSignUpService {
 
     private final PasswordEncoder passwordEncoder;
