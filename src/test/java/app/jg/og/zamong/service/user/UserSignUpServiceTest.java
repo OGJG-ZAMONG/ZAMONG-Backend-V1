@@ -19,6 +19,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Optional;
 
@@ -40,6 +41,8 @@ public class UserSignUpServiceTest extends UnitTest {
     private MailService mailService;
     @Mock
     private ProfileRepository profileRepository;
+    @Mock
+    private PasswordEncoder passwordEncoder;
 
     static private User user;
 
@@ -79,6 +82,7 @@ public class UserSignUpServiceTest extends UnitTest {
         given(authenticationCodeRepository.findById(email)).willReturn(Optional.of(code));
         given(userRepository.save(any())).willReturn(UserBuilder.build());
         given(profileRepository.save(any())).willReturn(null);
+        given(passwordEncoder.encode(password)).willReturn(password);
 
         // when
         SignUpUserRequest request = SignUpUserRequest.builder()

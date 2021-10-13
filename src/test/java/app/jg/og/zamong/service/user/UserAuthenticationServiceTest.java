@@ -4,7 +4,6 @@ import app.jg.og.zamong.constant.SecurityConstant;
 import app.jg.og.zamong.dto.request.LoginUserRequest;
 import app.jg.og.zamong.dto.request.ReIssueTokenRequest;
 import app.jg.og.zamong.dto.response.IssueTokenResponse;
-import app.jg.og.zamong.entity.redis.authenticationcode.AuthenticationCodeRepository;
 import app.jg.og.zamong.entity.redis.refreshtoken.RefreshToken;
 import app.jg.og.zamong.entity.redis.refreshtoken.RefreshTokenRepository;
 import app.jg.og.zamong.entity.user.User;
@@ -36,8 +35,6 @@ public class UserAuthenticationServiceTest extends UnitTest {
     private PasswordEncoder passwordEncoder;
     @Mock
     private JwtTokenProvider jwtTokenProvider;
-    @Mock
-    private AuthenticationCodeRepository authenticationCodeRepository;
     @Mock
     private RefreshTokenRepository refreshTokenRepository;
 
