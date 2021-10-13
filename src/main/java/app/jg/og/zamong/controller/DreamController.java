@@ -56,6 +56,11 @@ public class DreamController {
         return ResponseBody.of(shareDreamService.createShareDream(request), HttpStatus.CREATED.value());
     }
 
+    @PostMapping("/share/{dream-uuid}")
+    public ResponseBody share(@PathVariable("dream-uuid") String uuid) {
+        return ResponseBody.of(shareDreamService.doShareDream(uuid), HttpStatus.OK.value());
+    }
+
     @PutMapping("/share/{dream-uuid}")
     public ResponseBody share(@PathVariable("dream-uuid") String uuid, @Valid @RequestBody ShareDreamRequest request) {
         return ResponseBody.of(shareDreamService.modifyShareDream(uuid, request), HttpStatus.OK.value());
