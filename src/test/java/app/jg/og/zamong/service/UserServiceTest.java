@@ -9,6 +9,7 @@ import app.jg.og.zamong.entity.follow.FollowRepository;
 import app.jg.og.zamong.entity.user.User;
 import app.jg.og.zamong.entity.user.UserRepository;
 import app.jg.og.zamong.service.user.UserServiceImpl;
+import app.jg.og.zamong.service.user.follow.UserFollowService;
 import app.jg.og.zamong.util.ShareDreamBuilder;
 import app.jg.og.zamong.util.UserBuilder;
 import org.junit.jupiter.api.BeforeAll;
@@ -33,6 +34,8 @@ public class UserServiceTest {
 
     @InjectMocks
     private UserServiceImpl userService;
+    @InjectMocks
+    private UserFollowService userFollowService;
 
     @Mock
     private UserRepository userRepository;
@@ -81,7 +84,7 @@ public class UserServiceTest {
                 .build());
 
         //when
-        FollowUserResponse response = userService.followUser(uuid.toString(), followerUuid.toString());
+        FollowUserResponse response = userFollowService.followUser(uuid.toString(), followerUuid.toString());
 
         //then
         assertThat(response.getUserId()).isEqualTo(uuid);

@@ -4,6 +4,7 @@ import app.jg.og.zamong.dto.request.FollowUserRequest;
 import app.jg.og.zamong.dto.response.ResponseBody;
 import app.jg.og.zamong.service.securitycontext.SecurityContextService;
 import app.jg.og.zamong.service.user.UserService;
+import app.jg.og.zamong.service.user.follow.UserFollowService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
@@ -18,6 +19,7 @@ import javax.validation.Valid;
 public class UserController {
 
     private final UserService userService;
+    private final UserFollowService userFollowService;
     private final SecurityContextService securityContextService;
 
     @GetMapping("/{user-uuid}")
@@ -35,6 +37,6 @@ public class UserController {
     public ResponseBody follow(@Valid @RequestBody FollowUserRequest request) {
         String userUuid = request.getUserUuid();
         String followerUuid = securityContextService.getName();
-        return ResponseBody.of(userService.followUser(userUuid, followerUuid), HttpStatus.OK.value());
+        return ResponseBody.of(userFollowService.followUser(userUuid, followerUuid), HttpStatus.OK.value());
     }
 }
