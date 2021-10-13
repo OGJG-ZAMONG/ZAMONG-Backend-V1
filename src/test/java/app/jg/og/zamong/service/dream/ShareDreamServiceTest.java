@@ -10,6 +10,7 @@ import app.jg.og.zamong.entity.dream.sharedream.*;
 import app.jg.og.zamong.entity.user.User;
 import app.jg.og.zamong.entity.user.UserRepository;
 import app.jg.og.zamong.service.UnitTest;
+import app.jg.og.zamong.service.dream.share.ShareDreamServiceImpl;
 import app.jg.og.zamong.service.securitycontext.SecurityContextService;
 import app.jg.og.zamong.util.*;
 import org.junit.jupiter.api.Test;

@@ -7,7 +7,7 @@ import app.jg.og.zamong.dto.request.dream.sharedream.ShareDreamQualityRequest;
 import app.jg.og.zamong.dto.request.dream.sharedream.ShareDreamRequest;
 import app.jg.og.zamong.dto.request.dream.sharedream.ShareDreamSleepDateTimeRequest;
 import app.jg.og.zamong.dto.response.ResponseBody;
-import app.jg.og.zamong.service.dream.ShareDreamService;
+import app.jg.og.zamong.service.dream.share.ShareDreamService;
 import app.jg.og.zamong.service.dream.find.DreamFindService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
