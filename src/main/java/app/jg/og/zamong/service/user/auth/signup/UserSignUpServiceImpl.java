@@ -8,14 +8,12 @@ import app.jg.og.zamong.dto.response.SignUpUserResponse;
 import app.jg.og.zamong.dto.response.StringResponse;
 import app.jg.og.zamong.entity.redis.authenticationcode.AuthenticationCode;
 import app.jg.og.zamong.entity.redis.authenticationcode.AuthenticationCodeRepository;
-import app.jg.og.zamong.entity.redis.refreshtoken.RefreshTokenRepository;
 import app.jg.og.zamong.entity.user.User;
 import app.jg.og.zamong.entity.user.UserRepository;
 import app.jg.og.zamong.entity.user.profile.Profile;
 import app.jg.og.zamong.entity.user.profile.ProfileRepository;
 import app.jg.og.zamong.exception.business.BadAuthenticationCodeException;
 import app.jg.og.zamong.exception.business.UserIdentityDuplicationException;
-import app.jg.og.zamong.security.JwtTokenProvider;
 import app.jg.og.zamong.service.mail.MailService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -29,11 +27,9 @@ import java.util.Random;
 public class UserSignUpServiceImpl implements UserSignUpService {
 
     private final PasswordEncoder passwordEncoder;
-    private final JwtTokenProvider jwtTokenProvider;
 
     private final UserRepository userRepository;
     private final AuthenticationCodeRepository authenticationCodeRepository;
-    private final RefreshTokenRepository refreshTokenRepository;
     private final ProfileRepository profileRepository;
 
     private final MailService mailService;

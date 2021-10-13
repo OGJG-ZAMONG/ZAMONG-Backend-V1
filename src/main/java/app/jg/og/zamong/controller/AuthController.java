@@ -19,17 +19,6 @@ import javax.validation.Valid;
 public class AuthController {
 
     private final UserSignUpService userSignUpService;
-    private final UserAuthenticationService userAuthenticationService;
-
-    @PostMapping("/signup")
-    public ResponseBody register(@Valid @RequestBody SignUpUserRequest request) {
-        return ResponseBody.of(userSignUpService.registerUser(request), HttpStatus.CREATED.value());
-    }
-
-    @PostMapping("/login")
-    public ResponseBody login(@Valid @RequestBody LoginUserRequest request) {
-        return ResponseBody.of(userAuthenticationService.loginUser(request), HttpStatus.OK.value());
-    }
 
     @PostMapping("/user-id/duplicate")
     public ResponseBody duplicate(@Valid @RequestBody CheckIdDuplicationRequest request) {
@@ -40,6 +29,19 @@ public class AuthController {
     public ResponseBody mail(@Valid @RequestBody EmailAuthenticationRequest request) {
         return ResponseBody.of(userSignUpService.sendOutAuthenticationEmail(request), HttpStatus.OK.value());
     }
+
+    @PostMapping("/signup")
+    public ResponseBody register(@Valid @RequestBody SignUpUserRequest request) {
+        return ResponseBody.of(userSignUpService.registerUser(request), HttpStatus.CREATED.value());
+    }
+
+    private final UserAuthenticationService userAuthenticationService;
+
+    @PostMapping("/login")
+    public ResponseBody login(@Valid @RequestBody LoginUserRequest request) {
+        return ResponseBody.of(userAuthenticationService.loginUser(request), HttpStatus.OK.value());
+    }
+
 
     @PostMapping("/refresh")
     public ResponseBody refresh(@Valid @RequestBody ReIssueTokenRequest request) {
