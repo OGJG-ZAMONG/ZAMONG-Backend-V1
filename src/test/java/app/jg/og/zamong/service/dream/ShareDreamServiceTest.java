@@ -2,6 +2,7 @@ package app.jg.og.zamong.service.dream;
 
 import app.jg.og.zamong.dto.request.dream.sharedream.*;
 import app.jg.og.zamong.dto.response.CreateShareDreamResponse;
+import app.jg.og.zamong.dto.response.DoShareDreamResponse;
 import app.jg.og.zamong.entity.dream.dreamtype.DreamTypeRepository;
 import app.jg.og.zamong.entity.dream.enums.*;
 import app.jg.og.zamong.entity.dream.sharedream.*;
@@ -133,5 +134,21 @@ public class ShareDreamServiceTest extends UnitTest {
         //then
         assertThat(shareDream.getSleepDateTime()).isEqualTo(beginDateTime);
         assertThat(shareDream.getSleepTime()).isEqualTo(endDateTimeHour - beginDateTimeHour);
+    }
+
+    @Test
+    void 꿈공유_성공() {
+        //given
+        ShareDream shareDream = ShareDreamBuilder.build(null);
+        LocalDateTime beforeShareDateTime = LocalDateTime.now().minusSeconds(3);
+
+        given(shareDreamRepository.findById(shareDream.getUuid())).willReturn(Optional.of(shareDream));
+
+        //when
+        DoShareDreamResponse response = shareDreamService.doShareDream(shareDream.getUuid().toString());
+
+        //then
+        assertThat(shareDream.getIsShared()).isTrue();
+        assertThat(response.getShareDateTime()).isAfter(beforeShareDateTime);
     }
 }
