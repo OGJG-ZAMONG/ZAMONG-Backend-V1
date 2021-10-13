@@ -10,15 +10,12 @@ import app.jg.og.zamong.entity.dream.enums.*;
 import app.jg.og.zamong.entity.dream.sharedream.*;
 import app.jg.og.zamong.entity.user.User;
 import app.jg.og.zamong.entity.user.UserRepository;
-import app.jg.og.zamong.service.dream.DreamServiceImpl;
+import app.jg.og.zamong.service.UnitTest;
 import app.jg.og.zamong.service.securitycontext.SecurityContextService;
 import app.jg.og.zamong.util.*;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.*;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.*;
-import org.springframework.test.context.ActiveProfiles;
 
 import java.time.LocalDateTime;
 import java.util.*;
@@ -27,9 +24,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.*;
 
-@ExtendWith(MockitoExtension.class)
-@ActiveProfiles("test")
-public class DreamServiceTest {
+public class DreamServiceTest extends UnitTest {
 
     @InjectMocks
     private DreamServiceImpl dreamService;

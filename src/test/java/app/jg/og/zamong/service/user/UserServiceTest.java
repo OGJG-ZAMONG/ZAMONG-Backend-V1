@@ -5,15 +5,13 @@ import app.jg.og.zamong.entity.dream.sharedream.ShareDream;
 import app.jg.og.zamong.entity.dream.sharedream.ShareDreamRepository;
 import app.jg.og.zamong.entity.user.User;
 import app.jg.og.zamong.entity.user.UserRepository;
+import app.jg.og.zamong.service.UnitTest;
 import app.jg.og.zamong.util.ShareDreamBuilder;
 import app.jg.og.zamong.util.UserBuilder;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.test.context.ActiveProfiles;
 
 import java.util.List;
 import java.util.Optional;
@@ -22,9 +20,7 @@ import java.util.UUID;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 
-@ExtendWith(MockitoExtension.class)
-@ActiveProfiles("test")
-public class UserServiceTest {
+public class UserServiceTest extends UnitTest {
 
     @InjectMocks
     private UserServiceImpl userService;

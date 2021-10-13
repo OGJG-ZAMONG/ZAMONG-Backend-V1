@@ -14,18 +14,16 @@ import app.jg.og.zamong.entity.user.User;
 import app.jg.og.zamong.entity.user.UserRepository;
 import app.jg.og.zamong.entity.user.profile.ProfileRepository;
 import app.jg.og.zamong.security.JwtTokenProvider;
+import app.jg.og.zamong.service.UnitTest;
 import app.jg.og.zamong.service.mail.MailService;
 import app.jg.og.zamong.service.user.auth.UserAuthenticationServiceImpl;
 import app.jg.og.zamong.service.user.auth.signup.UserSignUpServiceImpl;
 import app.jg.og.zamong.util.UserBuilder;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.test.context.ActiveProfiles;
 
 import java.util.Optional;
 
@@ -34,9 +32,7 @@ import static org.assertj.core.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 
-@ExtendWith(MockitoExtension.class)
-@ActiveProfiles("test")
-public class UserSignUpServiceTest {
+public class UserSignUpServiceTest extends UnitTest {
 
     @InjectMocks
     private UserSignUpServiceImpl userSignUpService;
