@@ -1,11 +1,7 @@
 package app.jg.og.zamong.service.user;
 
-import app.jg.og.zamong.dto.request.FollowUserRequest;
-import app.jg.og.zamong.dto.response.FollowUserResponse;
 import app.jg.og.zamong.dto.response.UserInformationResponse;
 import app.jg.og.zamong.entity.dream.sharedream.ShareDreamRepository;
-import app.jg.og.zamong.entity.follow.Follow;
-import app.jg.og.zamong.entity.follow.FollowRepository;
 import app.jg.og.zamong.entity.user.User;
 import app.jg.og.zamong.entity.user.UserRepository;
 import app.jg.og.zamong.exception.business.UserNotFoundException;
@@ -14,13 +10,12 @@ import org.springframework.stereotype.Service;
 
 import java.util.UUID;
 
-@Service
 @RequiredArgsConstructor
+@Service
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final ShareDreamRepository shareDreamRepository;
-    private final FollowRepository followRepository;
 
     @Override
     public UserInformationResponse queryUserInformation(String uuid) {
