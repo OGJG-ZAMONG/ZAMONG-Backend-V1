@@ -45,7 +45,7 @@ public class UserSignUpServiceImpl implements UserSignUpService {
 
     @Override
     @Transactional
-    public SignUpUserResponse registerUser(SignUpUserRequest request) {
+    public SignUpUserResponse doSignUpUser(SignUpUserRequest request) {
         userRepository.findByEmailOrId(request.getEmail(), request.getId())
                 .ifPresent((user) -> {
                     throw new UserIdentityDuplicationException("이미 사용중인 아이디 혹은 이메일입니다");

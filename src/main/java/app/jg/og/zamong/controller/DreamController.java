@@ -8,6 +8,7 @@ import app.jg.og.zamong.dto.request.dream.sharedream.ShareDreamRequest;
 import app.jg.og.zamong.dto.request.dream.sharedream.ShareDreamSleepDateTimeRequest;
 import app.jg.og.zamong.dto.response.ResponseBody;
 import app.jg.og.zamong.service.dream.DreamService;
+import app.jg.og.zamong.service.dream.share.ShareDreamService;
 import app.jg.og.zamong.service.dream.find.DreamFindService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -21,36 +22,7 @@ import javax.websocket.server.PathParam;
 @RequestMapping("/dream")
 public class DreamController {
 
-    private final DreamFindService dreamFindService;
-
-    @GetMapping("/share")
-    public ResponseBody share(@PathParam("page") int page, @PathParam("size") int size) {
-        return ResponseBody.of(dreamFindService.queryShareDreams(page, size), HttpStatus.OK.value());
-    }
-
     private final DreamService dreamService;
-
-    @PostMapping("/share")
-    public ResponseBody share(@Valid @RequestBody ShareDreamRequest request) {
-        return ResponseBody.of(dreamService.createShareDream(request), HttpStatus.CREATED.value());
-    }
-
-    @PutMapping("/share/{dream-uuid}")
-    public ResponseBody share(@PathVariable("dream-uuid") String uuid, @Valid @RequestBody ShareDreamRequest request) {
-        return ResponseBody.of(dreamService.modifyShareDream(uuid, request), HttpStatus.OK.value());
-    }
-
-    @PatchMapping("/share/quality/{dream-uuid}")
-    @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    public void quality(@PathVariable("dream-uuid") String uuid, @Valid @RequestBody ShareDreamQualityRequest request) {
-        dreamService.patchShareDreamQuality(uuid, request);
-    }
-
-    @PatchMapping("/share/sleep-datetime/{dream-uuid}")
-    @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    public void sleepDateTime(@PathVariable("dream-uuid") String uuid, @Valid @RequestBody ShareDreamSleepDateTimeRequest request) {
-        dreamService.patchShareDreamSleepDateTime(uuid, request);
-    }
 
     @PatchMapping("/title/{dream-uuid}")
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
@@ -68,5 +40,41 @@ public class DreamController {
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void dreamTypes(@PathVariable("dream-uuid") String uuid, @Valid @RequestBody DreamTypesRequest request) {
         dreamService.patchDreamTypes(uuid, request);
+    }
+
+    private final DreamFindService dreamFindService;
+
+    @GetMapping("/share")
+    public ResponseBody share(@PathParam("page") int page, @PathParam("size") int size) {
+        return ResponseBody.of(dreamFindService.queryShareDreams(page, size), HttpStatus.OK.value());
+    }
+
+    private final ShareDreamService shareDreamService;
+
+    @PostMapping("/share")
+    public ResponseBody share(@Valid @RequestBody ShareDreamRequest request) {
+        return ResponseBody.of(shareDreamService.createShareDream(request), HttpStatus.CREATED.value());
+    }
+
+    @PostMapping("/share/{dream-uuid}")
+    public ResponseBody share(@PathVariable("dream-uuid") String uuid) {
+        return ResponseBody.of(shareDreamService.doShareDream(uuid), HttpStatus.OK.value());
+    }
+
+    @PutMapping("/share/{dream-uuid}")
+    public ResponseBody share(@PathVariable("dream-uuid") String uuid, @Valid @RequestBody ShareDreamRequest request) {
+        return ResponseBody.of(shareDreamService.modifyShareDream(uuid, request), HttpStatus.OK.value());
+    }
+
+    @PatchMapping("/share/quality/{dream-uuid}")
+    @ResponseStatus(value = HttpStatus.NO_CONTENT)
+    public void quality(@PathVariable("dream-uuid") String uuid, @Valid @RequestBody ShareDreamQualityRequest request) {
+        shareDreamService.patchShareDreamQuality(uuid, request);
+    }
+
+    @PatchMapping("/share/sleep-datetime/{dream-uuid}")
+    @ResponseStatus(value = HttpStatus.NO_CONTENT)
+    public void sleepDateTime(@PathVariable("dream-uuid") String uuid, @Valid @RequestBody ShareDreamSleepDateTimeRequest request) {
+        shareDreamService.patchShareDreamSleepDateTime(uuid, request);
     }
 }
