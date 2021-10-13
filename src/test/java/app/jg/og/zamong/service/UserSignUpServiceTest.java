@@ -14,7 +14,7 @@ import app.jg.og.zamong.entity.user.User;
 import app.jg.og.zamong.entity.user.UserRepository;
 import app.jg.og.zamong.entity.user.profile.ProfileRepository;
 import app.jg.og.zamong.security.JwtTokenProvider;
-import app.jg.og.zamong.service.user.auth.UserSignUpServiceImpl;
+import app.jg.og.zamong.service.user.auth.signup.UserSignUpServiceImpl;
 import app.jg.og.zamong.service.mail.MailService;
 import app.jg.og.zamong.util.UserBuilder;
 import org.junit.jupiter.api.BeforeAll;

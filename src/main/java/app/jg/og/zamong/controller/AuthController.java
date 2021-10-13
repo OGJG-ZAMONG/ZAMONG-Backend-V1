@@ -2,7 +2,7 @@ package app.jg.og.zamong.controller;
 
 import app.jg.og.zamong.dto.request.*;
 import app.jg.og.zamong.dto.response.ResponseBody;
-import app.jg.og.zamong.service.user.auth.UserSignUpService;
+import app.jg.og.zamong.service.user.auth.signup.UserSignUpService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PostMapping;

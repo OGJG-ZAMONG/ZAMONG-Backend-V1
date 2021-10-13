@@ -1,4 +1,4 @@
-package app.jg.og.zamong.service.user.auth;
+package app.jg.og.zamong.service.user.auth.signup;
 
 import app.jg.og.zamong.dto.request.*;
 import app.jg.og.zamong.dto.response.IssueTokenResponse;

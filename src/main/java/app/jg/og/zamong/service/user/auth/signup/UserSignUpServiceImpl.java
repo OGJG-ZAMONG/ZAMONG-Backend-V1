@@ -1,9 +1,9 @@
-package app.jg.og.zamong.service.user.auth;
+package app.jg.og.zamong.service.user.auth.signup;
 
 import app.jg.og.zamong.dto.request.*;
 import app.jg.og.zamong.dto.response.IssueTokenResponse;
-import app.jg.og.zamong.dto.response.StringResponse;
 import app.jg.og.zamong.dto.response.SignUpUserResponse;
+import app.jg.og.zamong.dto.response.StringResponse;
 import app.jg.og.zamong.entity.redis.authenticationcode.AuthenticationCode;
 import app.jg.og.zamong.entity.redis.authenticationcode.AuthenticationCodeRepository;
 import app.jg.og.zamong.entity.redis.refreshtoken.RefreshToken;
