@@ -8,7 +8,7 @@ import app.jg.og.zamong.dto.request.dream.sharedream.ShareDreamRequest;
 import app.jg.og.zamong.dto.request.dream.sharedream.ShareDreamSleepDateTimeRequest;
 import app.jg.og.zamong.dto.response.CreateShareDreamResponse;
 
-public interface DreamService {
+public interface ShareDreamService {
 
     CreateShareDreamResponse createShareDream(ShareDreamRequest request);
     CreateShareDreamResponse modifyShareDream(String uuid, ShareDreamRequest request);

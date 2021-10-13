@@ -22,10 +22,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.*;
 
-public class DreamServiceTest extends UnitTest {
+public class ShareDreamServiceTest extends UnitTest {
 
     @InjectMocks
-    private DreamServiceImpl dreamService;
+    private ShareDreamServiceImpl shareDreamService;
 
     @Mock
     private SecurityContextService securityContextService;
@@ -61,7 +61,7 @@ public class DreamServiceTest extends UnitTest {
                 .sleepEndDateTime(LocalDateTime.now())
                 .build();
 
-        CreateShareDreamResponse response = dreamService.createShareDream(request);
+        CreateShareDreamResponse response = shareDreamService.createShareDream(request);
 
         //when
         assertThat(response.getUuid()).isEqualTo(shareDream.getUuid());
@@ -88,7 +88,7 @@ public class DreamServiceTest extends UnitTest {
                 .sleepBeginDateTime(LocalDateTime.now())
                 .sleepEndDateTime(LocalDateTime.now())
                 .build();
-        dreamService.modifyShareDream(shareDream.getUuid().toString(), request);
+        shareDreamService.modifyShareDream(shareDream.getUuid().toString(), request);
 
         //then
         assertThat(shareDream.getTitle()).isEqualTo(patchedTitle);
@@ -109,7 +109,7 @@ public class DreamServiceTest extends UnitTest {
         ShareDreamQualityRequest request = ShareDreamQualityRequest.builder()
                 .quality(pathedQuality)
                 .build();
-        dreamService.patchShareDreamQuality(shareDream.getUuid().toString(), request);
+        shareDreamService.patchShareDreamQuality(shareDream.getUuid().toString(), request);
 
         //then
         assertThat(shareDream.getQuality()).isEqualTo(pathedQuality);
@@ -131,7 +131,7 @@ public class DreamServiceTest extends UnitTest {
                 .sleepBeginDateTime(beginDateTime)
                 .sleepEndDateTime(endDateTime)
                 .build();
-        dreamService.patchShareDreamSleepDateTime(shareDream.getUuid().toString(), request);
+        shareDreamService.patchShareDreamSleepDateTime(shareDream.getUuid().toString(), request);
 
         //then
         assertThat(shareDream.getSleepDateTime()).isEqualTo(beginDateTime);
@@ -149,7 +149,7 @@ public class DreamServiceTest extends UnitTest {
         DreamTitleRequest request = DreamTitleRequest.builder()
                 .title(patchedTitle)
                 .build();
-        dreamService.patchDreamTitle(dream.getUuid().toString(), request);
+        shareDreamService.patchDreamTitle(dream.getUuid().toString(), request);
 
         assertThat(dream.getTitle()).isEqualTo(patchedTitle);
     }
@@ -165,7 +165,7 @@ public class DreamServiceTest extends UnitTest {
         DreamContentRequest request = DreamContentRequest.builder()
                 .content(patchedContent)
                 .build();
-        dreamService.patchDreamContent(dream.getUuid().toString(), request);
+        shareDreamService.patchDreamContent(dream.getUuid().toString(), request);
 
         assertThat(dream.getContent()).isEqualTo(patchedContent);
     }
@@ -186,7 +186,7 @@ public class DreamServiceTest extends UnitTest {
         DreamTypesRequest request = DreamTypesRequest.builder()
                 .dreamTypes(dreamTypes)
                 .build();
-        dreamService.patchDreamTypes(dream.getUuid().toString(), request);
+        shareDreamService.patchDreamTypes(dream.getUuid().toString(), request);
 
         Mockito.verify(dreamTypeRepository, Mockito.times(dreamTypes.size())).save(any());
     }

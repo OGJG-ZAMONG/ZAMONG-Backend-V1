@@ -27,7 +27,7 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
-public class DreamServiceImpl implements DreamService {
+public class ShareDreamServiceImpl implements ShareDreamService {
 
     private final SecurityContextService securityContextService;
 
