@@ -92,7 +92,7 @@ public class UserSignUpServiceTest extends UnitTest {
                 .id(id)
                 .password(password)
                 .build();
-        SignUpUserResponse response = userSignUpService.registerUser(request);
+        SignUpUserResponse response = userSignUpService.doSignUpUser(request);
 
         // then
         assertThat(response.getUuid()).isNotNull();

@@ -32,7 +32,7 @@ public class AuthController {
 
     @PostMapping("/signup")
     public ResponseBody register(@Valid @RequestBody SignUpUserRequest request) {
-        return ResponseBody.of(userSignUpService.registerUser(request), HttpStatus.CREATED.value());
+        return ResponseBody.of(userSignUpService.doSignUpUser(request), HttpStatus.CREATED.value());
     }
 
     private final UserAuthenticationService userAuthenticationService;
