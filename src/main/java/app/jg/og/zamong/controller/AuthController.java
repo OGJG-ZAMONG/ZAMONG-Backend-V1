@@ -2,6 +2,7 @@ package app.jg.og.zamong.controller;
 
 import app.jg.og.zamong.dto.request.*;
 import app.jg.og.zamong.dto.response.ResponseBody;
+import app.jg.og.zamong.service.user.auth.UserAuthenticationService;
 import app.jg.og.zamong.service.user.auth.signup.UserSignUpService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -18,6 +19,7 @@ import javax.validation.Valid;
 public class AuthController {
 
     private final UserSignUpService userSignUpService;
+    private final UserAuthenticationService userAuthenticationService;
 
     @PostMapping("/signup")
     public ResponseBody register(@Valid @RequestBody SignUpUserRequest request) {
@@ -26,7 +28,7 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseBody login(@Valid @RequestBody LoginUserRequest request) {
-        return ResponseBody.of(userSignUpService.loginUser(request), HttpStatus.OK.value());
+        return ResponseBody.of(userAuthenticationService.loginUser(request), HttpStatus.OK.value());
     }
 
     @PostMapping("/user-id/duplicate")
@@ -41,6 +43,6 @@ public class AuthController {
 
     @PostMapping("/refresh")
     public ResponseBody refresh(@Valid @RequestBody ReIssueTokenRequest request) {
-        return ResponseBody.of(userSignUpService.refreshToken(request), HttpStatus.OK.value());
+        return ResponseBody.of(userAuthenticationService.refreshToken(request), HttpStatus.OK.value());
     }
 }

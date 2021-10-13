@@ -14,8 +14,9 @@ import app.jg.og.zamong.entity.user.User;
 import app.jg.og.zamong.entity.user.UserRepository;
 import app.jg.og.zamong.entity.user.profile.ProfileRepository;
 import app.jg.og.zamong.security.JwtTokenProvider;
-import app.jg.og.zamong.service.user.auth.signup.UserSignUpServiceImpl;
 import app.jg.og.zamong.service.mail.MailService;
+import app.jg.og.zamong.service.user.auth.UserAuthenticationServiceImpl;
+import app.jg.og.zamong.service.user.auth.signup.UserSignUpServiceImpl;
 import app.jg.og.zamong.util.UserBuilder;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -39,6 +40,8 @@ public class UserSignUpServiceTest {
 
     @InjectMocks
     private UserSignUpServiceImpl userSignUpService;
+    @InjectMocks
+    private UserAuthenticationServiceImpl userAuthenticationService;
 
     @Mock
     private UserRepository userRepository;
@@ -128,12 +131,13 @@ public class UserSignUpServiceTest {
                 .userIdentity(identity)
                 .password(password)
                 .build();
-        IssueTokenResponse response = userSignUpService.loginUser(request);
+        IssueTokenResponse response = userAuthenticationService.loginUser(request);
 
         //then
         assertThat(response.getAccessToken()).isEqualTo(accessToken);
         assertThat(response.getRefreshToken()).isEqualTo(refreshToken);
-;    }
+        ;
+    }
 
     @Test
     void 토큰_재발급_성공() {
@@ -150,7 +154,7 @@ public class UserSignUpServiceTest {
         ReIssueTokenRequest request = ReIssueTokenRequest.builder()
                 .refreshToken(refreshToken)
                 .build();
-        IssueTokenResponse response = userSignUpService.refreshToken(request);
+        IssueTokenResponse response = userAuthenticationService.refreshToken(request);
 
         //then
         assertThat(response.getAccessToken()).isEqualTo(accessToken);
