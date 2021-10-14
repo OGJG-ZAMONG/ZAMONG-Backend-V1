@@ -3,6 +3,7 @@ package app.jg.og.zamong.service.dream;
 import app.jg.og.zamong.dto.request.dream.sharedream.*;
 import app.jg.og.zamong.dto.response.CreateShareDreamResponse;
 import app.jg.og.zamong.dto.response.DoShareDreamResponse;
+import app.jg.og.zamong.entity.dream.attachment.AttachmentImageRepository;
 import app.jg.og.zamong.entity.dream.dreamtype.DreamTypeRepository;
 import app.jg.og.zamong.entity.dream.enums.*;
 import app.jg.og.zamong.entity.dream.sharedream.*;
@@ -35,6 +36,8 @@ public class ShareDreamServiceTest extends UnitTest {
     private UserRepository userRepository;
     @Mock
     private DreamTypeRepository dreamTypeRepository;
+    @Mock
+    private AttachmentImageRepository attachmentImageRepository;
 
     @Test
     void 꿈_작성_성공() {
@@ -47,6 +50,7 @@ public class ShareDreamServiceTest extends UnitTest {
         given(userRepository.findByUuid(user.getUuid())).willReturn(Optional.of(user));
         given(shareDreamRepository.save(any(ShareDream.class))).willReturn(shareDream);
         given(dreamTypeRepository.save(any())).willReturn(null);
+        given(attachmentImageRepository.save(any())).willReturn(null);
 
         //when
         List<DreamType> dreamTypes = List.of(DreamType.LUCID_DREAM, DreamType.NIGHTMARE);

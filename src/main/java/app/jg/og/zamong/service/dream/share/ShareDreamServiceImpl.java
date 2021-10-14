@@ -5,8 +5,11 @@ import app.jg.og.zamong.dto.request.dream.sharedream.ShareDreamRequest;
 import app.jg.og.zamong.dto.request.dream.sharedream.ShareDreamSleepDateTimeRequest;
 import app.jg.og.zamong.dto.response.CreateShareDreamResponse;
 import app.jg.og.zamong.dto.response.DoShareDreamResponse;
+import app.jg.og.zamong.entity.dream.attachment.AttachmentImage;
+import app.jg.og.zamong.entity.dream.attachment.AttachmentImageRepository;
 import app.jg.og.zamong.entity.dream.dreamtype.DreamType;
 import app.jg.og.zamong.entity.dream.dreamtype.DreamTypeRepository;
+import app.jg.og.zamong.entity.dream.enums.DreamTag;
 import app.jg.og.zamong.entity.dream.sharedream.ShareDream;
 import app.jg.og.zamong.entity.dream.sharedream.ShareDreamRepository;
 import app.jg.og.zamong.entity.user.User;
@@ -30,6 +33,7 @@ public class ShareDreamServiceImpl implements ShareDreamService {
     private final ShareDreamRepository shareDreamRepository;
     private final UserRepository userRepository;
     private final DreamTypeRepository dreamTypeRepository;
+    private final AttachmentImageRepository attachmentImageRepository;
 
     @Override
     @Transactional
@@ -53,6 +57,12 @@ public class ShareDreamServiceImpl implements ShareDreamService {
                         .code(dt)
                         .dream(shareDream)
                         .build()));
+
+        attachmentImageRepository.save(AttachmentImage
+                .builder()
+                .tag(DreamTag.SHARE_DREAM)
+                .dream(shareDream)
+                .build());
 
         return CreateShareDreamResponse.builder()
                 .uuid(shareDream.getUuid())
