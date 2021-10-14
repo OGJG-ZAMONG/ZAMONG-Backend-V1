@@ -81,4 +81,18 @@ public class DreamServiceTest extends UnitTest {
 
         verify(dreamTypeRepository, times(dreamTypes.size())).save(any());
     }
+
+    @Test
+    void 꿈_삭제_성공() {
+        //given
+        Dream dream = DreamBuilder.build();
+
+        given(dreamRepository.findById(dream.getUuid())).willReturn(Optional.of(dream));
+
+        //when
+        dreamService.removeDream(dream.getUuid().toString());
+
+        //then
+        verify(dreamRepository, times(1)).delete(dream);
+    }
 }
