@@ -4,6 +4,7 @@ import app.jg.og.zamong.entity.dream.Dream;
 import app.jg.og.zamong.entity.dream.attachment.converter.DreamTagConverter;
 import app.jg.og.zamong.entity.dream.enums.DreamTag;
 import lombok.*;
+import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -13,6 +14,7 @@ import java.util.UUID;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@DynamicInsert
 @Entity
 @Table(name = "attachment_image")
 public class AttachmentImage {
