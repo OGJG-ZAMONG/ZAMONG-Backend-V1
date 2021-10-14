@@ -13,6 +13,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -44,11 +45,14 @@ public class UserFollowServiceTest extends UnitTest {
         UUID uuid = user.getUuid();
         UUID followerUuid = follower.getUuid();
 
+        LocalDateTime beforeFollow = LocalDateTime.now().minusSeconds(3);
+
         given(userRepository.findByUuid(uuid)).willReturn(Optional.of(user));
         given(userRepository.findByUuid(followerUuid)).willReturn(Optional.of(follower));
         given(followRepository.save(any(Follow.class))).willReturn(Follow.builder()
                 .following(user)
                 .follower(follower)
+                .followDateTime(LocalDateTime.now())
                 .build());
 
         //when
@@ -57,5 +61,6 @@ public class UserFollowServiceTest extends UnitTest {
         //then
         assertThat(response.getUserId()).isEqualTo(uuid);
         assertThat(response.getFollowerId()).isEqualTo(followerUuid);
+        assertThat(response.getFollowDateTime()).isAfter(beforeFollow);
     }
 }
