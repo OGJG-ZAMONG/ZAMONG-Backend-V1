@@ -37,6 +37,7 @@ public class DreamFindServiceImpl implements DreamFindService {
                         .map(DreamType::getCode)
                         .collect(Collectors.toList()))
                 .defaultPostingImage(sd.getDefaultImage())
+                .shareDateTime(sd.getShareDateTime())
                 .build()).toList();
 
         return ShareDreamGroupResponse.builder()
