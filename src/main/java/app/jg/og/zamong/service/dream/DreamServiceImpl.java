@@ -53,4 +53,13 @@ public class DreamServiceImpl implements DreamService {
                         .code(dt)
                         .build())));
     }
+
+    @Override
+    @Transactional
+    public void removeDream(String uuid) {
+        Dream dream = dreamRepository.findById(UUID.fromString(uuid))
+                .orElseThrow(() -> new DreamNotFoundException("해당하는 꿈을 찾을 수 없습니다"));
+
+        dreamRepository.delete(dream);
+    }
 }
