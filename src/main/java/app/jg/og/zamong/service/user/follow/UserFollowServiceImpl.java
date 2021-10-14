@@ -25,7 +25,7 @@ public class UserFollowServiceImpl implements UserFollowService {
         User follower = userRepository.findByUuid(UUID.fromString(followerUuid))
                 .orElseThrow(() -> new UserNotFoundException("해당하는 유저를 찾을 수 없습니다"));
 
-        followRepository.save(Follow.builder()
+        Follow follow = followRepository.save(Follow.builder()
                 .following(user)
                 .follower(follower)
                 .build());
@@ -33,6 +33,7 @@ public class UserFollowServiceImpl implements UserFollowService {
         return FollowUserResponse.builder()
                 .userId(user.getUuid())
                 .followerId(follower.getUuid())
+                .followDateTime(follow.getFollowDateTime())
                 .build();
     }
 }

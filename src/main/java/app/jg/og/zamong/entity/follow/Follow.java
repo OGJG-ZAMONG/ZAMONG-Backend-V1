@@ -5,6 +5,7 @@ import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Getter
@@ -27,4 +28,7 @@ public class Follow {
     @ManyToOne
     @JoinColumn(name = "follower_uuid", nullable = false)
     private User follower;
+
+    @Column(name = "follow_datetime", columnDefinition = "timestamp")
+    private LocalDateTime followDateTime;
 }
