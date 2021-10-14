@@ -42,6 +42,12 @@ public class DreamController {
         dreamService.patchDreamTypes(uuid, request);
     }
 
+    @DeleteMapping("/{dream-uuid}")
+    @ResponseStatus(value = HttpStatus.NO_CONTENT)
+    public void delete(@PathVariable("dream-uuid") String uuid) {
+        dreamService.removeDream(uuid);
+    }
+
     private final DreamFindService dreamFindService;
 
     @GetMapping("/share")

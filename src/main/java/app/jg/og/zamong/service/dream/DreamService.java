@@ -9,4 +9,6 @@ public interface DreamService {
     void patchDreamTitle(String uuid, DreamTitleRequest request);
     void patchDreamContent(String uuid, DreamContentRequest request);
     void patchDreamTypes(String uuid, DreamTypesRequest request);
+
+    void removeDream(String uuid);
 }

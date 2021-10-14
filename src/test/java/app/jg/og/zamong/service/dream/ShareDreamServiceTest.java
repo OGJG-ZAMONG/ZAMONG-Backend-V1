@@ -137,7 +137,7 @@ public class ShareDreamServiceTest extends UnitTest {
     }
 
     @Test
-    void 꿈공유_성공() {
+    void 꿈_공유_성공() {
         //given
         ShareDream shareDream = ShareDreamBuilder.build(null);
         LocalDateTime beforeShareDateTime = LocalDateTime.now().minusSeconds(3);

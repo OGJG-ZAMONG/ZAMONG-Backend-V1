@@ -89,6 +89,7 @@ public class ShareDreamServiceImpl implements ShareDreamService {
     }
 
     @Override
+    @Transactional
     public void patchShareDreamQuality(String uuid, ShareDreamQualityRequest request) {
         ShareDream shareDream = shareDreamRepository.findById(UUID.fromString(uuid))
                 .orElseThrow(() -> new DreamNotFoundException("해당하는 꿈을 찾을 수 없습니다"));
@@ -97,6 +98,7 @@ public class ShareDreamServiceImpl implements ShareDreamService {
     }
 
     @Override
+    @Transactional
     public void patchShareDreamSleepDateTime(String uuid, ShareDreamSleepDateTimeRequest request) {
         ShareDream shareDream = shareDreamRepository.findById(UUID.fromString(uuid))
                 .orElseThrow(() -> new DreamNotFoundException("해당하는 꿈을 찾을 수 없습니다"));
@@ -106,6 +108,7 @@ public class ShareDreamServiceImpl implements ShareDreamService {
     }
 
     @Override
+    @Transactional
     public DoShareDreamResponse doShareDream(String uuid) {
         ShareDream shareDream = shareDreamRepository.findById(UUID.fromString(uuid))
                 .orElseThrow(() -> new DreamNotFoundException("해당하는 꿈을 찾을 수 없습니다"));
