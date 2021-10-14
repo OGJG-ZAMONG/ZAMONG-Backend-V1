@@ -10,17 +10,14 @@ import app.jg.og.zamong.entity.dream.enums.DreamType;
 import app.jg.og.zamong.service.UnitTest;
 import app.jg.og.zamong.util.DreamBuilder;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.Mockito;
+import org.mockito.*;
 
 import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.BDDMockito.willDoNothing;
+import static org.mockito.BDDMockito.*;
 
 public class DreamServiceTest extends UnitTest {
 
@@ -82,6 +79,6 @@ public class DreamServiceTest extends UnitTest {
                 .build();
         dreamService.patchDreamTypes(dream.getUuid().toString(), request);
 
-        Mockito.verify(dreamTypeRepository, Mockito.times(dreamTypes.size())).save(any());
+        verify(dreamTypeRepository, times(dreamTypes.size())).save(any());
     }
 }
