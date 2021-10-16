@@ -2,7 +2,6 @@ package app.jg.og.zamong.controller;
 
 import app.jg.og.zamong.dto.request.FollowUserRequest;
 import app.jg.og.zamong.dto.response.ResponseBody;
-import app.jg.og.zamong.entity.user.User;
 import app.jg.og.zamong.service.securitycontext.SecurityContextService;
 import app.jg.og.zamong.service.user.UserService;
 import app.jg.og.zamong.service.user.follow.UserFollowService;
@@ -24,14 +23,12 @@ public class UserController {
 
     @GetMapping("/{user-uuid}")
     public ResponseBody userInformation(@PathVariable("user-uuid") String uuid) {
-        User user = userService.queryUser(uuid);
-        return ResponseBody.of(userService.queryUserInformation(user), HttpStatus.OK.value());
+        return ResponseBody.of(userService.queryUserInformation(uuid), HttpStatus.OK.value());
     }
 
     @GetMapping("/me")
     public ResponseBody myInformation() {
-        User user = securityContextService.getPrincipal().getUser();
-        return ResponseBody.of(userService.queryUserInformation(user), HttpStatus.OK.value());
+        return ResponseBody.of(userService.queryMyInformation(), HttpStatus.OK.value());
     }
 
     @PostMapping("/follow")
