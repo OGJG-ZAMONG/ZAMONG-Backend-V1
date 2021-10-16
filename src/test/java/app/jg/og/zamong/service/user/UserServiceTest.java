@@ -40,15 +40,13 @@ public class UserServiceTest extends UnitTest {
     @Test
     void 유저기본정보_가져오기_성공() {
         //given
-        String uuid = user.getUuid().toString();
         List<ShareDream> shareDreams = List.of(ShareDreamBuilder.build(user));
         Integer shareDreamCount = shareDreams.size();
 
-        given(userRepository.findById(UUID.fromString(uuid))).willReturn(Optional.of(user));
         given(shareDreamRepository.findByUser(user)).willReturn(shareDreams);
 
         //when
-        UserInformationResponse response = userService.queryUserInformation(uuid);
+        UserInformationResponse response = userService.queryUserInformation(user);
 
         //then
         assertThat(response.getEmail()).isEqualTo(user.getEmail());
