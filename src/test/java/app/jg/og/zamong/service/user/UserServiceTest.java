@@ -5,7 +5,9 @@ import app.jg.og.zamong.entity.dream.sharedream.ShareDream;
 import app.jg.og.zamong.entity.dream.sharedream.ShareDreamRepository;
 import app.jg.og.zamong.entity.user.User;
 import app.jg.og.zamong.entity.user.UserRepository;
+import app.jg.og.zamong.security.auth.AuthenticationDetails;
 import app.jg.og.zamong.service.UnitTest;
+import app.jg.og.zamong.service.securitycontext.SecurityContextService;
 import app.jg.og.zamong.util.ShareDreamBuilder;
 import app.jg.og.zamong.util.UserBuilder;
 import org.junit.jupiter.api.BeforeAll;
@@ -29,6 +31,8 @@ public class UserServiceTest extends UnitTest {
     private UserRepository userRepository;
     @Mock
     private ShareDreamRepository shareDreamRepository;
+    @Mock
+    private SecurityContextService securityContextService;
 
     static private User user;
 
@@ -40,13 +44,33 @@ public class UserServiceTest extends UnitTest {
     @Test
     void 유저기본정보_가져오기_성공() {
         //given
+        String uuid = user.getUuid().toString();
         List<ShareDream> shareDreams = List.of(ShareDreamBuilder.build(user));
         Integer shareDreamCount = shareDreams.size();
 
+        given(userRepository.findById(UUID.fromString(uuid))).willReturn(Optional.of(user));
         given(shareDreamRepository.findByUser(user)).willReturn(shareDreams);
 
         //when
-        UserInformationResponse response = userService.queryUserInformation(user);
+        UserInformationResponse response = userService.queryUserInformation(uuid);
+
+        //then
+        assertThat(response.getEmail()).isEqualTo(user.getEmail());
+        assertThat(response.getShareDreamCount()).isEqualTo(shareDreamCount);
+    }
+
+    @Test
+    void 내정보_가져오기_성공() {
+        //given
+        String uuid = user.getUuid().toString();
+        List<ShareDream> shareDreams = List.of(ShareDreamBuilder.build(user));
+        Integer shareDreamCount = shareDreams.size();
+
+        given(securityContextService.getPrincipal()).willReturn(new AuthenticationDetails(user));
+        given(shareDreamRepository.findByUser(user)).willReturn(shareDreams);
+
+        //when
+        UserInformationResponse response = userService.queryMyInformation();
 
         //then
         assertThat(response.getEmail()).isEqualTo(user.getEmail());
