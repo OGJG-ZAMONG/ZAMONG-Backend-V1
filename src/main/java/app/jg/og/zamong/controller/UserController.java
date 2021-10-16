@@ -2,13 +2,12 @@ package app.jg.og.zamong.controller;
 
 import app.jg.og.zamong.dto.request.FollowUserRequest;
 import app.jg.og.zamong.dto.response.ResponseBody;
+import app.jg.og.zamong.entity.user.User;
 import app.jg.og.zamong.service.securitycontext.SecurityContextService;
 import app.jg.og.zamong.service.user.UserService;
 import app.jg.og.zamong.service.user.follow.UserFollowService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -25,13 +24,14 @@ public class UserController {
 
     @GetMapping("/{user-uuid}")
     public ResponseBody userInformation(@PathVariable("user-uuid") String uuid) {
-        return ResponseBody.of(userService.queryUserInformation(uuid), HttpStatus.OK.value());
+        User user = userService.queryUser(uuid);
+        return ResponseBody.of(userService.queryUserInformation(user), HttpStatus.OK.value());
     }
 
     @GetMapping("/me")
     public ResponseBody myInformation() {
-        String uuid = securityContextService.getName();
-        return ResponseBody.of(userService.queryUserInformation(uuid), HttpStatus.OK.value());
+        User user = securityContextService.getPrincipal().getUser();
+        return ResponseBody.of(userService.queryUserInformation(user), HttpStatus.OK.value());
     }
 
     @PostMapping("/follow")
