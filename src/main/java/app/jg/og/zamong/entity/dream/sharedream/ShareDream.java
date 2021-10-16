@@ -4,6 +4,7 @@ import app.jg.og.zamong.entity.dream.Dream;
 import app.jg.og.zamong.entity.dream.enums.DreamQuality;
 import app.jg.og.zamong.entity.dream.sharedream.converter.DreamQualityConverter;
 import app.jg.og.zamong.entity.dream.sharedream.lucypoint.ShareDreamLucyPoint;
+import app.jg.og.zamong.exception.business.AlreadySharedException;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
@@ -43,7 +44,10 @@ public class ShareDream extends Dream {
     }
 
     public void doShare() {
-        this.isShared = true;
-        this.shareDateTime = LocalDateTime.now();
+        if(isShared) {
+            throw new AlreadySharedException("이미 공유한 꿈입니다");
+        }
+        isShared = true;
+        shareDateTime = LocalDateTime.now();
     }
 }
