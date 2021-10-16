@@ -12,7 +12,7 @@ import java.util.UUID;
 @Getter
 public class FollowerGroupResponse implements Response {
 
-    private final List<FollowerGroupResponse> followers;
+    private final List<FollowerResponse> followers;
 
     private final Integer totalPage;
 

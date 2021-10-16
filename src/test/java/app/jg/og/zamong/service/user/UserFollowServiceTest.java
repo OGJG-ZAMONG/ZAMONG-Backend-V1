@@ -1,6 +1,7 @@
 package app.jg.og.zamong.service.user;
 
 import app.jg.og.zamong.dto.response.FollowUserResponse;
+import app.jg.og.zamong.dto.response.FollowerGroupResponse;
 import app.jg.og.zamong.dto.response.FollowingGroupResponse;
 import app.jg.og.zamong.entity.follow.Follow;
 import app.jg.og.zamong.entity.follow.FollowRepository;
@@ -88,6 +89,28 @@ public class UserFollowServiceTest extends UnitTest {
         FollowingGroupResponse response = userFollowService.queryFollowings(uuid.toString(), page, size);
 
         assertThat(response.getFollowings().size()).isEqualTo(size);
+        assertThat(response.getTotalPage()).isEqualTo(followPage.getTotalPages());
+    }
+
+    @Test
+    void 팔로워_목록() {
+        //given
+        int page= 0;
+        int size = 1;
+        UUID uuid = user.getUuid();
+
+        Follow follow = Follow.builder()
+                .follower(user)
+                .build();
+        Page<Follow> followPage = new PageImpl(List.of(follow));
+
+        given(userRepository.findById(uuid)).willReturn(Optional.of(user));
+        given(followRepository.findAllByFollowing(any(), any())).willReturn(followPage);
+
+        //when
+        FollowerGroupResponse response = userFollowService.queryFollowers(uuid.toString(), page, size);
+
+        assertThat(response.getFollowers().size()).isEqualTo(size);
         assertThat(response.getTotalPage()).isEqualTo(followPage.getTotalPages());
     }
 }

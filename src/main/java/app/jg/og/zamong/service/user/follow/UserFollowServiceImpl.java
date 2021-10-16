@@ -1,6 +1,7 @@
 package app.jg.og.zamong.service.user.follow;
 
 import app.jg.og.zamong.dto.response.FollowUserResponse;
+import app.jg.og.zamong.dto.response.FollowerGroupResponse;
 import app.jg.og.zamong.dto.response.FollowingGroupResponse;
 import app.jg.og.zamong.entity.follow.Follow;
 import app.jg.og.zamong.entity.follow.FollowRepository;
@@ -56,17 +57,41 @@ public class UserFollowServiceImpl implements UserFollowService {
 
         List<FollowingGroupResponse.FollowingResponse> followingGroup = followPage
                 .getContent().stream()
-                .map((follow -> FollowingGroupResponse.FollowingResponse.builder()
+                .map(follow -> FollowingGroupResponse.FollowingResponse.builder()
                         .uuid(follow.getFollowing().getUuid())
                         .id(follow.getFollowing().getId())
                         .profile(follow.getFollowing().getProfile())
                         .followDateTime(follow.getFollowDateTime())
-                        .build()
-                ))
+                        .build())
                 .collect(Collectors.toList());
 
         return FollowingGroupResponse.builder()
                 .followings(followingGroup)
+                .totalPage(followPage.getTotalPages())
+                .totalSize(followPage.getTotalElements())
+                .build();
+    }
+
+    @Override
+    public FollowerGroupResponse queryFollowers(String uuid, int page, int size) {
+        User user = userRepository.findById(UUID.fromString(uuid))
+                .orElseThrow(() -> new UserNotFoundException("해당하는 유저를 찾을 수 없습니다"));
+
+        Pageable request = PageRequest.of(page, size, Sort.by("followDateTime").descending());
+        Page<Follow> followPage = followRepository.findAllByFollowing(user, request);
+
+        List<FollowerGroupResponse.FollowerResponse> followerGroup = followPage
+                .getContent().stream()
+                .map(follow -> FollowerGroupResponse.FollowerResponse.builder()
+                        .uuid(follow.getFollower().getUuid())
+                        .id(follow.getFollower().getId())
+                        .profile(follow.getFollower().getProfile())
+                        .followDateTime(follow.getFollowDateTime())
+                        .build())
+                .collect(Collectors.toList());
+
+        return FollowerGroupResponse.builder()
+                .followers(followerGroup)
                 .totalPage(followPage.getTotalPages())
                 .totalSize(followPage.getTotalElements())
                 .build();

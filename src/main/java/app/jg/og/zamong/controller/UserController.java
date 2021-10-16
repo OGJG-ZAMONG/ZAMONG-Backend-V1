@@ -45,4 +45,12 @@ public class UserController {
             @PathParam("size") int size) {
         return ResponseBody.of(userFollowService.queryFollowings(uuid, page, size), HttpStatus.OK.value());
     }
+
+    @GetMapping("/{user-uuid}/follower")
+    public ResponseBody follower(
+            @PathVariable("user-uuid") String uuid,
+            @PathParam("page") int page,
+            @PathParam("size") int size) {
+        return ResponseBody.listOf(userFollowService.queryFollowers(uuid, page, size), HttpStatus.OK.value());
+    }
 }

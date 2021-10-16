@@ -9,4 +9,5 @@ import java.util.UUID;
 
 public interface FollowRepository extends PagingAndSortingRepository<Follow, UUID> {
     Page<Follow> findAllByFollower(User user, Pageable pageable);
+    Page<Follow> findAllByFollowing(User user, Pageable pageable);
 }
