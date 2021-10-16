@@ -1,8 +1,10 @@
 package app.jg.og.zamong.service.user;
 
 import app.jg.og.zamong.dto.response.UserInformationResponse;
+import app.jg.og.zamong.entity.user.User;
 
 public interface UserService {
 
-    UserInformationResponse queryUserInformation(String uuid);
+    User queryUser(String uuid);
+    UserInformationResponse queryUserInformation(User user);
 }

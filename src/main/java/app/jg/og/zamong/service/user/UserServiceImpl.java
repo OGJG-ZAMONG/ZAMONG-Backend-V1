@@ -18,10 +18,7 @@ public class UserServiceImpl implements UserService {
     private final ShareDreamRepository shareDreamRepository;
 
     @Override
-    public UserInformationResponse queryUserInformation(String uuid) {
-        User user = userRepository.findById(UUID.fromString(uuid))
-                .orElseThrow(() -> new UserNotFoundException("해당하는 유저를 찾을 수 없습니다"));
-
+    public UserInformationResponse queryUserInformation(User user) {
         Integer shareDreamCount = shareDreamRepository.findByUser(user).size();
 
         return UserInformationResponse.builder()
@@ -34,4 +31,10 @@ public class UserServiceImpl implements UserService {
                 .lucyCount(user.getLucyCount())
                 .build();
    }
+
+    @Override
+    public User queryUser(String uuid) {
+        return userRepository.findById(UUID.fromString(uuid))
+                .orElseThrow(() -> new UserNotFoundException("해당하는 유저를 찾을 수 없습니다"));
+    }
 }
