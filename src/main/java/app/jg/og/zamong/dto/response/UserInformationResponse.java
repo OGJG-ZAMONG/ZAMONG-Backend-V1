@@ -23,4 +23,16 @@ public class UserInformationResponse implements Response {
     private Integer shareDreamCount;
 
     private Integer lucyCount;
+
+    public static UserInformationResponse of(User user, Integer shareDreamCount) {
+        return UserInformationResponse.builder()
+                .uuid(user.getUuid())
+                .name(user.getName())
+                .email(user.getEmail())
+                .id(user.getId())
+                .profile(user.getProfile())
+                .shareDreamCount(shareDreamCount)
+                .lucyCount(user.getLucyCount())
+                .build();
+    }
 }
