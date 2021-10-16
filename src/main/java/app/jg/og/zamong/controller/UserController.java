@@ -7,11 +7,10 @@ import app.jg.og.zamong.service.user.UserService;
 import app.jg.og.zamong.service.user.follow.UserFollowService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.websocket.server.PathParam;
 
 @RequiredArgsConstructor
 @RequestMapping("/user")
@@ -29,8 +28,7 @@ public class UserController {
 
     @GetMapping("/me")
     public ResponseBody myInformation() {
-        String uuid = securityContextService.getName();
-        return ResponseBody.of(userService.queryUserInformation(uuid), HttpStatus.OK.value());
+        return ResponseBody.of(userService.queryMyInformation(), HttpStatus.OK.value());
     }
 
     @PostMapping("/follow")
@@ -38,5 +36,13 @@ public class UserController {
         String userUuid = request.getUserUuid();
         String followerUuid = securityContextService.getName();
         return ResponseBody.of(userFollowService.followUser(userUuid, followerUuid), HttpStatus.OK.value());
+    }
+
+    @GetMapping("/{user-uuid}/following")
+    public ResponseBody following(
+            @PathVariable("user-uuid") String uuid,
+            @PathParam("page") int page,
+            @PathParam("size") int size) {
+        return ResponseBody.of(userFollowService.queryFollowings(uuid, page, size), HttpStatus.OK.value());
     }
 }

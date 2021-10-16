@@ -47,7 +47,7 @@ public class ShareDreamServiceTest extends UnitTest {
         ShareDream shareDream = ShareDreamBuilder.build(user);
 
         given(securityContextService.getName()).willReturn(userId);
-        given(userRepository.findByUuid(user.getUuid())).willReturn(Optional.of(user));
+        given(userRepository.findById(user.getUuid())).willReturn(Optional.of(user));
         given(shareDreamRepository.save(any(ShareDream.class))).willReturn(shareDream);
         given(dreamTypeRepository.save(any())).willReturn(null);
         given(attachmentImageRepository.save(any())).willReturn(null);
