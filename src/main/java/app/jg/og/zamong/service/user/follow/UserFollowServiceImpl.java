@@ -36,6 +36,7 @@ public class UserFollowServiceImpl implements UserFollowService {
         Follow follow = followRepository.save(Follow.builder()
                 .following(user)
                 .follower(follower)
+                .followDateTime(LocalDateTime.now())
                 .build());
 
         return FollowUserResponse.builder()
