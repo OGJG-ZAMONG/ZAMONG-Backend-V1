@@ -5,6 +5,7 @@ import app.jg.og.zamong.entity.dream.sharedream.ShareDreamRepository;
 import app.jg.og.zamong.entity.user.User;
 import app.jg.og.zamong.entity.user.UserRepository;
 import app.jg.og.zamong.exception.business.UserNotFoundException;
+import app.jg.og.zamong.service.securitycontext.SecurityContextService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -16,24 +17,25 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final ShareDreamRepository shareDreamRepository;
+    private final SecurityContextService securityContextService;
 
     @Override
-    public UserInformationResponse queryUserInformation(User user) {
+    public UserInformationResponse queryUserInformation(String uuid) {
+        User user = queryUser(uuid);
+
         Integer shareDreamCount = shareDreamRepository.findByUser(user).size();
-
-        return UserInformationResponse.builder()
-                .uuid(user.getUuid())
-                .name(user.getName())
-                .email(user.getEmail())
-                .id(user.getId())
-                .profile(user.getProfile())
-                .shareDreamCount(shareDreamCount)
-                .lucyCount(user.getLucyCount())
-                .build();
-   }
+        return UserInformationResponse.of(user, shareDreamCount);
+    }
 
     @Override
-    public User queryUser(String uuid) {
+    public UserInformationResponse queryMyInformation() {
+        User user = securityContextService.getPrincipal().getUser();
+
+        Integer shareDreamCount = shareDreamRepository.findByUser(user).size();
+        return UserInformationResponse.of(user, shareDreamCount);
+    }
+
+    private User queryUser(String uuid) {
         return userRepository.findById(UUID.fromString(uuid))
                 .orElseThrow(() -> new UserNotFoundException("해당하는 유저를 찾을 수 없습니다"));
     }
