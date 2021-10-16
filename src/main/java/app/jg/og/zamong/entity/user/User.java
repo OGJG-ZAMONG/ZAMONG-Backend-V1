@@ -46,7 +46,7 @@ public class User {
     private List<Follow> followings;
 
     @Getter(value = AccessLevel.NONE)
-    @OneToOne(mappedBy = "user", fetch = FetchType.EAGER)
+    @OneToOne(mappedBy = "user")
     @Delegate
     private Profile profile;
 }
