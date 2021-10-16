@@ -44,7 +44,7 @@ public class UserServiceTest extends UnitTest {
         List<ShareDream> shareDreams = List.of(ShareDreamBuilder.build(user));
         Integer shareDreamCount = shareDreams.size();
 
-        given(userRepository.findByUuid(UUID.fromString(uuid))).willReturn(Optional.of(user));
+        given(userRepository.findById(UUID.fromString(uuid))).willReturn(Optional.of(user));
         given(shareDreamRepository.findByUser(user)).willReturn(shareDreams);
 
         //when

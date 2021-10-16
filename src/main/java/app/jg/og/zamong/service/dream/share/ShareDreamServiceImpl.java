@@ -38,7 +38,7 @@ public class ShareDreamServiceImpl implements ShareDreamService {
     @Override
     @Transactional
     public CreateShareDreamResponse createShareDream(ShareDreamRequest request) {
-        User user = userRepository.findByUuid(UUID.fromString(securityContextService.getName()))
+        User user = userRepository.findById(UUID.fromString(securityContextService.getName()))
                 .orElseThrow(() -> new UserNotFoundException("해당하는 유저를 찾을 수 없습니다"));
 
         ShareDream shareDream = shareDreamRepository.save(ShareDream.builder()

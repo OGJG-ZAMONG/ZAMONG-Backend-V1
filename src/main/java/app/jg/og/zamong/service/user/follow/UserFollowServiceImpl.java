@@ -28,9 +28,9 @@ public class UserFollowServiceImpl implements UserFollowService {
 
     @Override
     public FollowUserResponse followUser(String uuid, String followerUuid) {
-        User user = userRepository.findByUuid(UUID.fromString(uuid))
+        User user = userRepository.findById(UUID.fromString(uuid))
                 .orElseThrow(() -> new UserNotFoundException("해당하는 유저를 찾을 수 없습니다"));
-        User follower = userRepository.findByUuid(UUID.fromString(followerUuid))
+        User follower = userRepository.findById(UUID.fromString(followerUuid))
                 .orElseThrow(() -> new UserNotFoundException("해당하는 유저를 찾을 수 없습니다"));
 
         Follow follow = followRepository.save(Follow.builder()
@@ -48,7 +48,7 @@ public class UserFollowServiceImpl implements UserFollowService {
 
     @Override
     public FollowingGroupResponse queryFollowings(String uuid, int page, int size) {
-        User user = userRepository.findByUuid(UUID.fromString(uuid))
+        User user = userRepository.findById(UUID.fromString(uuid))
                 .orElseThrow(() -> new UserNotFoundException("해당하는 유저를 찾을 수 없습니다"));
 
         Pageable request = PageRequest.of(page, size, Sort.by("followDateTime").descending());

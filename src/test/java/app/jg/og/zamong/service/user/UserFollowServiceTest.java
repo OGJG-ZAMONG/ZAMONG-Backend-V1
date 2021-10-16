@@ -47,8 +47,8 @@ public class UserFollowServiceTest extends UnitTest {
 
         LocalDateTime beforeFollow = LocalDateTime.now().minusSeconds(3);
 
-        given(userRepository.findByUuid(uuid)).willReturn(Optional.of(user));
-        given(userRepository.findByUuid(followerUuid)).willReturn(Optional.of(follower));
+        given(userRepository.findById(uuid)).willReturn(Optional.of(user));
+        given(userRepository.findById(followerUuid)).willReturn(Optional.of(follower));
         given(followRepository.save(any(Follow.class))).willReturn(Follow.builder()
                 .following(user)
                 .follower(follower)

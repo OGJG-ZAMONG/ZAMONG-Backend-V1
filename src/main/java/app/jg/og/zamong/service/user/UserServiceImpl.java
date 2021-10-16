@@ -19,7 +19,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserInformationResponse queryUserInformation(String uuid) {
-        User user = userRepository.findByUuid(UUID.fromString(uuid))
+        User user = userRepository.findById(UUID.fromString(uuid))
                 .orElseThrow(() -> new UserNotFoundException("해당하는 유저를 찾을 수 없습니다"));
 
         Integer shareDreamCount = shareDreamRepository.findByUser(user).size();
