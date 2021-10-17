@@ -88,6 +88,7 @@ public class UserFollowServiceTest extends UnitTest {
         //when
         FollowingGroupResponse response = userFollowService.queryFollowings(uuid.toString(), page, size);
 
+        assertThat(response.getFollowings().get(0).getIsFollowing()).isTrue();
         assertThat(response.getFollowings().size()).isEqualTo(size);
         assertThat(response.getTotalPage()).isEqualTo(followPage.getTotalPages());
     }
@@ -106,10 +107,12 @@ public class UserFollowServiceTest extends UnitTest {
 
         given(userRepository.findById(uuid)).willReturn(Optional.of(user));
         given(followRepository.findAllByFollowing(any(), any())).willReturn(followPage);
+        given(followRepository.existsByFollowingAndFollower(any(), any())).willReturn(true);
 
         //when
         FollowerGroupResponse response = userFollowService.queryFollowers(uuid.toString(), page, size);
 
+        assertThat(response.getFollowers().get(0).getIsFollowing()).isTrue();
         assertThat(response.getFollowers().size()).isEqualTo(size);
         assertThat(response.getTotalPage()).isEqualTo(followPage.getTotalPages());
     }
