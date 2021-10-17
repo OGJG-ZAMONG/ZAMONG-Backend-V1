@@ -30,5 +30,7 @@ public class FollowerGroupResponse implements Response {
 
         @JsonProperty("follow_datetime")
         private final LocalDateTime followDateTime;
+
+        private final Boolean isFollowing;
     }
 }
