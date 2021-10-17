@@ -5,7 +5,7 @@ import app.jg.og.zamong.entity.dream.sharedream.ShareDream;
 import app.jg.og.zamong.entity.dream.sharedream.ShareDreamRepository;
 import app.jg.og.zamong.entity.user.User;
 import app.jg.og.zamong.service.UnitTest;
-import app.jg.og.zamong.service.dream.find.DreamFindServiceImpl;
+import app.jg.og.zamong.service.dream.find.ShareDreamFindServiceImpl;
 import app.jg.og.zamong.util.ShareDreamBuilder;
 import app.jg.og.zamong.util.UserBuilder;
 import org.junit.jupiter.api.Test;
@@ -21,10 +21,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 
-public class DreamFindServiceTest extends UnitTest {
+public class ShareDreamFindServiceTest extends UnitTest {
 
     @InjectMocks
-    private DreamFindServiceImpl dreamFindService;
+    private ShareDreamFindServiceImpl dreamFindService;
 
     @Mock
     private ShareDreamRepository shareDreamRepository;

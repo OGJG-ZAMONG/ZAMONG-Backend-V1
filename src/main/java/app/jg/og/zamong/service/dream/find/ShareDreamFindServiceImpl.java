@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class DreamFindServiceImpl implements DreamFindService {
+public class ShareDreamFindServiceImpl implements ShareDreamFindService {
 
     private final ShareDreamRepository shareDreamRepository;
 
