@@ -6,6 +6,8 @@ import app.jg.og.zamong.exception.business.NotSharedException;
 import app.jg.og.zamong.util.ShareDreamBuilder;
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalDateTime;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
 
@@ -22,6 +24,19 @@ public class ShareDreamTest {
         } catch (BusinessException e) {
             assertThat(e).isInstanceOf(AlreadySharedException.class);
         }
+    }
+
+    @Test
+    void 꿈_공유_성공() {
+        LocalDateTime now = LocalDateTime.now().minusSeconds(3);
+        ShareDream shareDream = ShareDreamBuilder.build(null);
+        shareDream.setIsShared(false);
+        shareDream.setShareDateTime(now);
+
+        shareDream.doShare();
+
+        assertThat(shareDream.getIsShared()).isTrue();
+        assertThat(shareDream.getShareDateTime()).isAfter(now);
     }
 
     @Test()
