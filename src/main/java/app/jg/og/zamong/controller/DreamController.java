@@ -9,7 +9,7 @@ import app.jg.og.zamong.dto.request.dream.sharedream.ShareDreamSleepDateTimeRequ
 import app.jg.og.zamong.dto.response.ResponseBody;
 import app.jg.og.zamong.service.dream.DreamService;
 import app.jg.og.zamong.service.dream.share.ShareDreamService;
-import app.jg.og.zamong.service.dream.find.DreamFindService;
+import app.jg.og.zamong.service.dream.find.ShareDreamFindService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
@@ -51,13 +51,20 @@ public class DreamController {
         dreamService.removeDream(uuid);
     }
 
-    private final DreamFindService dreamFindService;
+    private final ShareDreamFindService shareDreamFindService;
 
     @GetMapping("/share")
     public ResponseBody share(
             @PathParam("page") int page,
             @Max(50) @PathParam("size") int size) {
-        return ResponseBody.of(dreamFindService.queryShareDreams(page, size), HttpStatus.OK.value());
+        return ResponseBody.listOf(shareDreamFindService.queryShareDreams(page, size), HttpStatus.OK.value());
+    }
+
+    @GetMapping("/share/me")
+    public ResponseBody myShareDream(
+            @PathParam("page") int page,
+            @Max(50) @PathParam("size") int size) {
+        return ResponseBody.listOf(shareDreamFindService.queryMyShareDreams(page, size), HttpStatus.OK.value());
     }
 
     private final ShareDreamService shareDreamService;

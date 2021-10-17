@@ -19,7 +19,6 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -65,7 +64,6 @@ public class UserFollowServiceImpl implements UserFollowService {
         Page<Follow> followPage = followRepository.findAllByFollower(user, request);
 
         List<FollowingGroupResponse.FollowingResponse> followingGroup = followPage
-                .getContent().stream()
                 .map(follow -> FollowingGroupResponse.FollowingResponse.builder()
                         .uuid(follow.getFollowing().getUuid())
                         .id(follow.getFollowing().getId())
@@ -73,7 +71,7 @@ public class UserFollowServiceImpl implements UserFollowService {
                         .followDateTime(follow.getFollowDateTime())
                         .isFollowing(true)
                         .build())
-                .collect(Collectors.toList());
+                .toList();
 
         return FollowingGroupResponse.builder()
                 .followings(followingGroup)
@@ -91,7 +89,6 @@ public class UserFollowServiceImpl implements UserFollowService {
         Page<Follow> followPage = followRepository.findAllByFollowing(user, request);
 
         List<FollowerGroupResponse.FollowerResponse> followerGroup = followPage
-                .getContent().stream()
                 .map(follow -> FollowerGroupResponse.FollowerResponse.builder()
                         .uuid(follow.getFollower().getUuid())
                         .id(follow.getFollower().getId())
@@ -99,7 +96,7 @@ public class UserFollowServiceImpl implements UserFollowService {
                         .followDateTime(follow.getFollowDateTime())
                         .isFollowing(followRepository.existsByFollowingAndFollower(follow.getFollower(), user))
                         .build())
-                .collect(Collectors.toList());
+                .toList();
 
         return FollowerGroupResponse.builder()
                 .followers(followerGroup)
