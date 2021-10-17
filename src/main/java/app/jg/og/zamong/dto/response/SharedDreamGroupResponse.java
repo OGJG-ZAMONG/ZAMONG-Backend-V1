@@ -7,7 +7,7 @@ import java.util.List;
 
 @Builder
 @Getter
-public class ShareDreamGroupResponse implements Response {
+public class SharedDreamGroupResponse implements Response {
 
     private final List<SharedDreamResponse> shareDreams;
 

@@ -1,6 +1,6 @@
 package app.jg.og.zamong.service.dream.find;
 
-import app.jg.og.zamong.dto.response.ShareDreamGroupResponse;
+import app.jg.og.zamong.dto.response.SharedDreamGroupResponse;
 import app.jg.og.zamong.dto.response.SharedDreamResponse;
 import app.jg.og.zamong.entity.dream.sharedream.ShareDream;
 import app.jg.og.zamong.entity.dream.sharedream.ShareDreamRepository;
@@ -23,14 +23,14 @@ public class ShareDreamFindServiceImpl implements ShareDreamFindService {
     private final SecurityContextService securityContextService;
 
     @Override
-    public ShareDreamGroupResponse queryShareDreams(int page, int size) {
+    public SharedDreamGroupResponse queryShareDreams(int page, int size) {
         Pageable request = PageRequest.of(page, size, Sort.by("shareDateTime").descending());
         Page<ShareDream> shareDreamPage = shareDreamRepository.findByIsSharedIsTrue(request);
 
         List<SharedDreamResponse> shareDreamGroup = shareDreamPage
                 .map(SharedDreamResponse::of).toList();
 
-        return ShareDreamGroupResponse.builder()
+        return SharedDreamGroupResponse.builder()
                 .shareDreams(shareDreamGroup)
                 .totalPage(shareDreamPage.getTotalPages())
                 .totalSize(shareDreamPage.getTotalElements())

@@ -1,6 +1,6 @@
 package app.jg.og.zamong.service.dream;
 
-import app.jg.og.zamong.dto.response.ShareDreamGroupResponse;
+import app.jg.og.zamong.dto.response.SharedDreamGroupResponse;
 import app.jg.og.zamong.entity.dream.sharedream.ShareDream;
 import app.jg.og.zamong.entity.dream.sharedream.ShareDreamRepository;
 import app.jg.og.zamong.entity.user.User;
@@ -42,7 +42,7 @@ public class ShareDreamFindServiceTest extends UnitTest {
         given(shareDreamRepository.findByIsSharedIsTrue(any(Pageable.class))).willReturn(shareDreamPage);
 
         //when
-        ShareDreamGroupResponse response = dreamFindService.queryShareDreams(page, size);
+        SharedDreamGroupResponse response = dreamFindService.queryShareDreams(page, size);
 
         //then
         assertThat(response.getShareDreams().size()).isEqualTo(size);
