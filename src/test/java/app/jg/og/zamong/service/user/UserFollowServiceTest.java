@@ -7,6 +7,7 @@ import app.jg.og.zamong.entity.follow.Follow;
 import app.jg.og.zamong.entity.follow.FollowRepository;
 import app.jg.og.zamong.entity.user.User;
 import app.jg.og.zamong.entity.user.UserRepository;
+import app.jg.og.zamong.exception.business.CantFollowUserException;
 import app.jg.og.zamong.service.UnitTest;
 import app.jg.og.zamong.service.user.follow.UserFollowServiceImpl;
 import app.jg.og.zamong.util.UserBuilder;
@@ -16,7 +17,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -24,6 +24,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 
@@ -42,6 +43,28 @@ public class UserFollowServiceTest extends UnitTest {
     @BeforeAll
     static void setUp() {
         user = UserBuilder.build();
+    }
+
+    @Test
+    void 유저_팔로우_실패() {
+        //given
+        User follower = User.builder().uuid(UUID.randomUUID()).build();
+        UUID uuid = user.getUuid();
+        UUID followerUuid = follower.getUuid();
+
+
+        given(userRepository.findById(uuid)).willReturn(Optional.of(user));
+        given(userRepository.findById(followerUuid)).willReturn(Optional.of(follower));
+        given(followRepository.save(any(Follow.class))).willThrow(new RuntimeException(""));
+
+        try {
+            //when
+            userFollowService.followUser(uuid.toString(), followerUuid.toString());
+            fail("No Error");
+        } catch (RuntimeException e) {
+            //then
+            assertThat(e).isInstanceOf(CantFollowUserException.class);
+        }
     }
 
     @Test
