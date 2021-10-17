@@ -12,13 +12,16 @@ import app.jg.og.zamong.service.dream.share.ShareDreamService;
 import app.jg.og.zamong.service.dream.find.DreamFindService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Max;
 import javax.websocket.server.PathParam;
 
 @RequiredArgsConstructor
 @RestController
+@Validated
 @RequestMapping("/dream")
 public class DreamController {
 
@@ -51,7 +54,9 @@ public class DreamController {
     private final DreamFindService dreamFindService;
 
     @GetMapping("/share")
-    public ResponseBody share(@PathParam("page") int page, @PathParam("size") int size) {
+    public ResponseBody share(
+            @PathParam("page") int page,
+            @Max(50) @PathParam("size") int size) {
         return ResponseBody.of(dreamFindService.queryShareDreams(page, size), HttpStatus.OK.value());
     }
 
