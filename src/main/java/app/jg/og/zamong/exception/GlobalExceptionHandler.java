@@ -9,6 +9,8 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import javax.validation.ConstraintViolationException;
+
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
@@ -40,6 +42,24 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(ExternalInfraException.class)
     public ResponseEntity<ErrorResponse> handleExternalInfraException(ExternalInfraException e) {
         ErrorCode errorCode = e.getErrorCode();
+        String errorDescription = e.getMessage();
+        ErrorResponse response = ErrorResponse.of(errorCode, errorDescription);
+
+        return new ResponseEntity<>(response, HttpStatus.valueOf(errorCode.getStatus()));
+    }
+
+    @ExceptionHandler(ConstraintViolationException.class)
+    public ResponseEntity<ErrorResponse> handleConstraintViolationException(ConstraintViolationException e) {
+        ErrorCode errorCode = ErrorCode.INVALID_PARAMETER;
+        String errorDescription = e.getMessage();
+        ErrorResponse response = ErrorResponse.of(errorCode, errorDescription);
+
+        return new ResponseEntity<>(response, HttpStatus.valueOf(errorCode.getStatus()));
+    }
+
+    @ExceptionHandler(IllegalStateException.class)
+    public ResponseEntity<ErrorResponse> handleIllegalStateException(IllegalStateException e) {
+        ErrorCode errorCode = ErrorCode.INVALID_PARAMETER;
         String errorDescription = e.getMessage();
         ErrorResponse response = ErrorResponse.of(errorCode, errorDescription);
 
