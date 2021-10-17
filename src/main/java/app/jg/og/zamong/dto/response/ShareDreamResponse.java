@@ -23,8 +23,6 @@ public class ShareDreamResponse {
 
     private final String title;
 
-    private final Boolean isShared;
-
     private final Integer lucyCount;
 
     private final List<DreamType> dreamTypes;
@@ -37,7 +35,6 @@ public class ShareDreamResponse {
                 .uuid(shareDream.getUuid())
                 .title(shareDream.getTitle())
                 .profile(shareDream.getUser().getProfile())
-                .isShared(shareDream.getIsShared())
                 .lucyCount(shareDream.getLucyCount())
                 .dreamTypes(shareDream.getDreamTypes()
                         .stream()
