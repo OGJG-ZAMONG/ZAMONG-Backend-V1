@@ -11,4 +11,5 @@ import java.util.UUID;
 public interface ShareDreamRepository extends PagingAndSortingRepository<ShareDream, UUID> {
     List<ShareDream> findByUser(User user);
     Page<ShareDream> findByIsSharedIsTrue(Pageable pageable);
+    Page<ShareDream> findByUser(User user, Pageable pageable);
 }
