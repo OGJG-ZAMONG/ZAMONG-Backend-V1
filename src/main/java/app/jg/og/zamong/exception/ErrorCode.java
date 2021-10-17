@@ -15,6 +15,7 @@ public enum ErrorCode {
     BAD_USER_INFORMATION(400, "Bad User Information"),
     UNAUTHORIZED_TOKEN(401, "Unauthorized Token"),
     ALREADY_SHARED(403, "Already Shared Dream"),
+    NOT_SHARED(403, "Not Shared Dream"),
 
     MAIL_SEND_FAILED(400, "Mail Send Failed"),
     ATTRIBUTE_CONVERT_FAILED(400, "Attribute Convert Failed"),
