@@ -7,6 +7,7 @@ import app.jg.og.zamong.entity.follow.Follow;
 import app.jg.og.zamong.entity.follow.FollowRepository;
 import app.jg.og.zamong.entity.user.User;
 import app.jg.og.zamong.entity.user.UserRepository;
+import app.jg.og.zamong.exception.business.CantFollowUserException;
 import app.jg.og.zamong.exception.business.UserNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -29,6 +30,14 @@ public class UserFollowServiceImpl implements UserFollowService {
 
     @Override
     public FollowUserResponse followUser(String uuid, String followerUuid) {
+        try {
+            return doFollowUser(uuid, followerUuid);
+        } catch (RuntimeException e) {
+            throw new CantFollowUserException("팔로우할 수 없는 유저입니다");
+        }
+    }
+
+    private FollowUserResponse doFollowUser(String uuid, String followerUuid) {
         User user = userRepository.findById(UUID.fromString(uuid))
                 .orElseThrow(() -> new UserNotFoundException("해당하는 유저를 찾을 수 없습니다"));
         User follower = userRepository.findById(UUID.fromString(followerUuid))
