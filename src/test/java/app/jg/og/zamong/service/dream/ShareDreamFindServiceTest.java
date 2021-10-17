@@ -73,5 +73,7 @@ public class ShareDreamFindServiceTest extends UnitTest {
 
         //then
         assertThat(response.getShareDreams().size()).isEqualTo(size);
+        assertThat(response.getTotalPage()).isEqualTo(shareDreamPage.getTotalPages());
+        assertThat(response.getTotalSize()).isEqualTo(shareDreamPage.getTotalElements());
     }
 }
