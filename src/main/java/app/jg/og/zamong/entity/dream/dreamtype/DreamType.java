@@ -28,4 +28,8 @@ public class DreamType {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "dream_uuid", nullable = false)
     private Dream dream;
+
+    public app.jg.og.zamong.entity.dream.enums.DreamType toCode() {
+        return code;
+    }
 }
