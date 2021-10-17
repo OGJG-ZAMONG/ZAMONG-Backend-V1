@@ -57,7 +57,14 @@ public class DreamController {
     public ResponseBody share(
             @PathParam("page") int page,
             @Max(50) @PathParam("size") int size) {
-        return ResponseBody.of(shareDreamFindService.queryShareDreams(page, size), HttpStatus.OK.value());
+        return ResponseBody.listOf(shareDreamFindService.queryShareDreams(page, size), HttpStatus.OK.value());
+    }
+
+    @GetMapping("/share/me")
+    public ResponseBody myShareDream(
+            @PathParam("page") int page,
+            @Max(50) @PathParam("size") int size) {
+        return ResponseBody.listOf(shareDreamFindService.queryMyShareDreams(page, size), HttpStatus.OK.value());
     }
 
     private final ShareDreamService shareDreamService;
