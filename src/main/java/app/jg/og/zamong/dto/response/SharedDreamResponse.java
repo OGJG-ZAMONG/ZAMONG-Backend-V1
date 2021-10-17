@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 
 @Builder
 @Getter
-public class ShareDreamResponse {
+public class SharedDreamResponse {
 
     private final UUID uuid;
 
@@ -30,8 +30,8 @@ public class ShareDreamResponse {
     @JsonProperty("share_datetime")
     private final LocalDateTime shareDateTime;
 
-    public static ShareDreamResponse of(ShareDream shareDream) {
-        return ShareDreamResponse.builder()
+    public static SharedDreamResponse of(ShareDream shareDream) {
+        return SharedDreamResponse.builder()
                 .uuid(shareDream.getUuid())
                 .title(shareDream.getTitle())
                 .profile(shareDream.getUser().getProfile())

@@ -9,7 +9,7 @@ import java.util.List;
 @Getter
 public class ShareDreamGroupResponse implements Response {
 
-    private final List<ShareDreamResponse> shareDreams;
+    private final List<SharedDreamResponse> shareDreams;
 
     private final Integer totalPage;
 

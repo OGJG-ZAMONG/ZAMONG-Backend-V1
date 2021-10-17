@@ -5,4 +5,5 @@ import app.jg.og.zamong.dto.response.ShareDreamGroupResponse;
 public interface ShareDreamFindService {
 
     ShareDreamGroupResponse queryShareDreams(int page, int size);
+    ShareDreamGroupResponse queryMyShareDreams(int page, int size);
 }
