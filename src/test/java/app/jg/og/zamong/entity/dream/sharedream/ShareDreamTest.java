@@ -51,4 +51,15 @@ public class ShareDreamTest {
             assertThat(e).isInstanceOf(NotSharedException.class);
         }
     }
+
+    @Test
+    void 꿈_공유_취소_성공() {
+        ShareDream shareDream = ShareDreamBuilder.build(null);
+        shareDream.setIsShared(true);
+
+        shareDream.cancelShare();
+
+        assertThat(shareDream.getIsShared()).isFalse();
+        assertThat(shareDream.getShareDateTime()).isNull();
+    }
 }
