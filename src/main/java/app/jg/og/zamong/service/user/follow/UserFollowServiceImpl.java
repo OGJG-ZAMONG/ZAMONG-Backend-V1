@@ -62,6 +62,7 @@ public class UserFollowServiceImpl implements UserFollowService {
                         .id(follow.getFollowing().getId())
                         .profile(follow.getFollowing().getProfile())
                         .followDateTime(follow.getFollowDateTime())
+                        .isFollowing(true)
                         .build())
                 .collect(Collectors.toList());
 
