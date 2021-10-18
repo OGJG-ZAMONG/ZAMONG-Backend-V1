@@ -1,6 +1,7 @@
 package app.jg.og.zamong.service.dream;
 
 import app.jg.og.zamong.dto.response.ShareDreamGroupResponse;
+import app.jg.og.zamong.dto.response.ShareDreamTimeTableResponse;
 import app.jg.og.zamong.dto.response.SharedDreamGroupResponse;
 import app.jg.og.zamong.entity.dream.sharedream.ShareDream;
 import app.jg.og.zamong.entity.dream.sharedream.ShareDreamRepository;
@@ -18,6 +19,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -75,5 +77,22 @@ public class ShareDreamFindServiceTest extends UnitTest {
         assertThat(response.getShareDreams().size()).isEqualTo(size);
         assertThat(response.getTotalPage()).isEqualTo(shareDreamPage.getTotalPages());
         assertThat(response.getTotalSize()).isEqualTo(shareDreamPage.getTotalElements());
+    }
+
+    @Test
+    void 날짜별_꿈_목록() {
+        //given
+        User user = UserBuilder.build();
+        ShareDream shareDream = ShareDreamBuilder.build(user);
+
+        int year = shareDream.getSleepDateTime().getYear();
+        int month = shareDream.getSleepDateTime().getMonthValue();
+
+        given(securityContextService.getPrincipal()).willReturn(new AuthenticationDetails(user));
+        given(shareDreamRepository.findByUserAndSleepDateTimeBetween(any(User.class), any(LocalDateTime.class), any(LocalDateTime.class))).willReturn(List.of(shareDream));
+
+        ShareDreamTimeTableResponse response = dreamFindService.queryMyShareDreamTimeTable(year, month);
+
+        assertThat(response.getTimetables().get(shareDream.getSleepDateTime().toLocalDate()).size()).isEqualTo(1);
     }
 }
