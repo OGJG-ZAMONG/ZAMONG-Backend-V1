@@ -22,7 +22,7 @@ public class Profile {
     private String path;
 
     @MapsId("uuid")
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "uuid", nullable = false)
     private User user;
 
