@@ -1,9 +1,6 @@
 package app.jg.og.zamong.service.dream.find;
 
-import app.jg.og.zamong.dto.response.ShareDreamGroupResponse;
-import app.jg.og.zamong.dto.response.ShareDreamResponse;
-import app.jg.og.zamong.dto.response.SharedDreamGroupResponse;
-import app.jg.og.zamong.dto.response.SharedDreamResponse;
+import app.jg.og.zamong.dto.response.*;
 import app.jg.og.zamong.entity.dream.sharedream.ShareDream;
 import app.jg.og.zamong.entity.dream.sharedream.ShareDreamRepository;
 import app.jg.og.zamong.entity.user.User;
@@ -15,7 +12,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.time.Month;
+import java.util.Hashtable;
 import java.util.List;
+import java.util.Vector;
 
 @Service
 @RequiredArgsConstructor
@@ -61,5 +62,28 @@ public class ShareDreamFindServiceImpl implements ShareDreamFindService {
                 .totalPage(shareDreamPage.getTotalPages())
                 .totalSize(shareDreamPage.getTotalElements())
                 .build();
+    }
+
+    @Override
+    public ShareDreamTimeTableResponse queryMyShareDreamTimeTable(int year, int month) {
+        LocalDateTime start = LocalDateTime.of(year, month, 1, 0, 0);
+        LocalDateTime end = LocalDateTime.of(year, month, Month.of(month).maxLength(), 0, 0);
+
+        User user = securityContextService.getPrincipal().getUser();
+        List<ShareDream> shareDreams = shareDreamRepository.findByUserAndSleepDateTimeBetween(user, start, end);
+
+        ShareDreamTimeTableResponse response = ShareDreamTimeTableResponse.builder().timetables(new Hashtable<>()).build();
+
+        shareDreams.parallelStream()
+                .forEach(shareDream -> {
+                    response.getTimetables().computeIfAbsent(shareDream.getSleepDateTime().toLocalDate(), k -> new Vector<>());
+                    response.getTimetables().get(shareDream.getSleepDateTime().toLocalDate()).add(ShareDreamResponse.builder()
+                            .uuid(shareDream.getUuid())
+                            .isShared(shareDream.getIsShared())
+                            .title(shareDream.getTitle())
+                            .defaultPostingImage(shareDream.getDefaultImage())
+                            .build());
+                });
+        return response;
     }
 }

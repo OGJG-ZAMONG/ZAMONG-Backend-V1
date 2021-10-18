@@ -3,7 +3,13 @@ package app.jg.og.zamong.entity.dream;
 import app.jg.og.zamong.entity.dream.enums.DreamType;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.json.JSONObject;
 import org.junit.jupiter.api.Test;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -44,5 +50,18 @@ public class DreamTypeTest {
         public DreamType getDreamType() {
             return dreamType;
         }
+    }
+
+    @Test
+    void MAP_JSON_MAPPING() throws JsonProcessingException {
+        ObjectMapper mapper = new ObjectMapper();
+
+        Map<LocalDate, Object> map = new HashMap<>();
+        LocalDate toDay = LocalDate.now();
+
+        map.put(toDay, "Hello");
+
+        String json = mapper.writeValueAsString(map);
+        assertThat(json).isEqualTo("{\"" + toDay + "\":\"" + "Hello" + "\"}");
     }
 }

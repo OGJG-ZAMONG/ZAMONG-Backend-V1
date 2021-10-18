@@ -11,6 +11,7 @@ import app.jg.og.zamong.service.dream.DreamService;
 import app.jg.og.zamong.service.dream.share.ShareDreamService;
 import app.jg.og.zamong.service.dream.find.ShareDreamFindService;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.validator.constraints.Range;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -65,6 +66,14 @@ public class DreamController {
             @PathParam("page") int page,
             @Max(50) @PathParam("size") int size) {
         return ResponseBody.listOf(shareDreamFindService.queryMyShareDreams(page, size), HttpStatus.OK.value());
+    }
+
+    @GetMapping("/share/timetable")
+    public ResponseBody shareDreamTimeTable(
+            @Range(min = 2000, max = 3000) @PathParam("year") int year,
+            @Range(min = 1, max = 12) @PathParam("month") int month
+    ) {
+        return ResponseBody.of(shareDreamFindService.queryMyShareDreamTimeTable(year, month), HttpStatus.OK.value());
     }
 
     private final ShareDreamService shareDreamService;
