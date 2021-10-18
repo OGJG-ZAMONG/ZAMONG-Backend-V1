@@ -26,6 +26,7 @@ public class ShareDreamBuilder {
                 .quality(DreamConstant.QUALITY)
                 .isShared(DreamConstant.IS_SHARED)
                 .shareDateTime(DreamConstant.SLEEP_DATE_TIME)
+                .sleepDateTime(DreamConstant.SLEEP_DATE_TIME)
                 .sleepTime(5)
                 .build();
     }
