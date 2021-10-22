@@ -35,12 +35,3 @@ jobs:
           platforms: linux/amd64
           push: true
           tags: jiwoourty/zamong-backend:latest
-
-      - name: execute remote ssh command
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.HOST }}
-          username: ${{ secrets.USERNAME }}
-          password: ${{ secrets.PASSWORD }}
-          port: ${{ secrets.PORT }}
-          script: sh /home/hong/projects/ZAMONG/deploy.sh
