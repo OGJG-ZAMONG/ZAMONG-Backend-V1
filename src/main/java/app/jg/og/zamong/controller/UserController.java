@@ -9,10 +9,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Max;
-import javax.validation.constraints.Size;
 import javax.websocket.server.PathParam;
 
 @RequiredArgsConstructor
@@ -56,5 +56,11 @@ public class UserController {
             @PathParam("page") int page,
             @Max(50) @PathParam("size") int size) {
         return ResponseBody.listOf(userFollowService.queryFollowers(uuid, page, size), HttpStatus.OK.value());
+    }
+
+    @PatchMapping("/profile")
+    @ResponseStatus(value = HttpStatus.NO_CONTENT)
+    public void profile(@RequestParam("file") MultipartFile file) {
+        userService.modifyProfile(file);
     }
 }
