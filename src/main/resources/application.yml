@@ -33,6 +33,10 @@ auth:
       refresh: ${JWT_EXP_REFRESH}
       access: ${JWT_EXP_ACCESS}
     secret: ${JWT_SECRET_KEY}
+file:
+  local:
+    host: ${HOST_NAME}
+    path: ${LOCAL_FILE_PATH}
 server:
   servlet:
     context-path: /v1/api
