@@ -33,6 +33,7 @@ public class User {
     @Column(length = 16)
     private String id;
 
+    @Setter
     private String password;
 
     private Integer lucyCount;
