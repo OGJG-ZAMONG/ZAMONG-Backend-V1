@@ -77,6 +77,7 @@ public class UserServiceImpl implements UserService {
                 });
 
         user.setId(request.getId());
+        userRepository.save(user);
     }
 
     @Override

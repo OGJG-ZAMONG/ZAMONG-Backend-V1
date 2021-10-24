@@ -127,6 +127,7 @@ public class UserServiceTest extends UnitTest {
 
         //then
         assertThat(user.getId()).isEqualTo(modifiedId);
+        verify(userRepository, times(1)).save(any());
     }
 
     @Test
