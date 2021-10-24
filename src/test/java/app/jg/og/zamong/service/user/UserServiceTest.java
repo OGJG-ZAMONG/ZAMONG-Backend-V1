@@ -1,6 +1,7 @@
 package app.jg.og.zamong.service.user;
 
 import app.jg.og.zamong.constant.UserConstant;
+import app.jg.og.zamong.dto.request.ChangePasswordRequest;
 import app.jg.og.zamong.dto.request.CheckIdDuplicationRequest;
 import app.jg.og.zamong.dto.response.UserInformationResponse;
 import app.jg.og.zamong.entity.dream.sharedream.ShareDream;
@@ -19,6 +20,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.nio.charset.StandardCharsets;
@@ -47,6 +49,8 @@ public class UserServiceTest extends UnitTest {
     private FileSaveService fileSaveService;
     @Mock
     private ProfileRepository profileRepository;
+    @Mock
+    private PasswordEncoder passwordEncoder;
 
     static private User user;
 
@@ -123,5 +127,27 @@ public class UserServiceTest extends UnitTest {
 
         //then
         assertThat(user.getId()).isEqualTo(modifiedId);
+    }
+
+    @Test
+    void 유저비밀번호_수정_성공() {
+        //given
+        String oldPassword = user.getPassword();
+        String newPassword = "NewPassword";
+
+        given(securityContextService.getPrincipal()).willReturn(new AuthenticationDetails(user));
+        given(passwordEncoder.matches(oldPassword, user.getPassword())).willReturn(true);
+        given(passwordEncoder.encode(newPassword)).willReturn(newPassword);
+
+        //when
+        ChangePasswordRequest request = ChangePasswordRequest.builder()
+                .oldPassword(oldPassword)
+                .newPassword(newPassword)
+                .build();
+        userService.modifyPassword(request);
+
+        //then
+        assertThat(user.getPassword()).isEqualTo(newPassword);
+        verify(userRepository, times(1)).save(any());
     }
 }
