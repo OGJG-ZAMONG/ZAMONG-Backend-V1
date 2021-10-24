@@ -12,7 +12,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 public class AuthControllerTest extends IntegrationTest {
@@ -45,5 +44,19 @@ public class AuthControllerTest extends IntegrationTest {
                 .content(objectMapper.writeValueAsString(request))
                 .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(status().isOk());
+    }
+
+    @Test
+    @Transactional
+    void 아이디중복확인_실패() throws Exception {
+        userRepository.save(user);
+        CheckIdDuplicationRequest request = CheckIdDuplicationRequest.builder()
+                .id(user.getId())
+                .build();
+
+        mockMvc.perform(post("/auth/user-id/duplicate")
+                .content(objectMapper.writeValueAsString(request))
+                .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(status().isBadRequest());
     }
 }
