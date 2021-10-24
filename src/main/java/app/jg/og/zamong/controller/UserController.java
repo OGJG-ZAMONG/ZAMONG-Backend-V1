@@ -1,5 +1,6 @@
 package app.jg.og.zamong.controller;
 
+import app.jg.og.zamong.dto.request.ChangePasswordRequest;
 import app.jg.og.zamong.dto.request.CheckIdDuplicationRequest;
 import app.jg.og.zamong.dto.request.FollowUserRequest;
 import app.jg.og.zamong.dto.response.ResponseBody;
@@ -69,5 +70,11 @@ public class UserController {
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void userId(@Valid @RequestBody CheckIdDuplicationRequest request) {
         userService.modifyUserId(request);
+    }
+
+    @PatchMapping("/password")
+    @ResponseStatus(value = HttpStatus.NO_CONTENT)
+    public void password(@Valid @RequestBody ChangePasswordRequest request) {
+        userService.modifyPassword(request);
     }
 }
