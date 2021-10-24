@@ -9,7 +9,7 @@ import app.jg.og.zamong.entity.dream.sharedream.ShareDreamRepository;
 import app.jg.og.zamong.entity.user.User;
 import app.jg.og.zamong.entity.user.UserRepository;
 import app.jg.og.zamong.entity.user.profile.ProfileRepository;
-import app.jg.og.zamong.exception.business.BadUserInformationException;
+import app.jg.og.zamong.exception.business.*;
 import app.jg.og.zamong.security.auth.AuthenticationDetails;
 import app.jg.og.zamong.service.UnitTest;
 import app.jg.og.zamong.service.file.FileSaveService;
@@ -133,6 +133,27 @@ public class UserServiceTest extends UnitTest {
     }
 
     @Test
+    void 유저아이디_수정_실패() {
+        //given
+        String modifiedId = "NewId";
+        given(userRepository.findById(modifiedId)).willReturn(Optional.of(user));
+        given(securityContextService.getPrincipal()).willReturn(new AuthenticationDetails(user));
+
+        //when
+        try {
+            CheckIdDuplicationRequest request = CheckIdDuplicationRequest.builder()
+                    .id(modifiedId).build();
+            userService.modifyUserId(request);
+
+            fail("No Error");
+        } catch (BusinessException e) {
+            //then
+            assertThat(e).isInstanceOf(UserIdentityDuplicationException.class);
+            verify(userRepository, times(0)).save(any());
+        }
+    }
+
+    @Test
     void 유저비밀번호_수정_성공() {
         //given
         String oldPassword = user.getPassword();
@@ -172,8 +193,9 @@ public class UserServiceTest extends UnitTest {
             userService.modifyPassword(request);
 
             fail("No Error");
-        } catch (BadUserInformationException e) {
-            //then 
+        } catch (BusinessException e) {
+            //then
+            assertThat(e).isInstanceOf(BadUserInformationException.class);
             verify(userRepository, times(0)).save(any());
         }
     }
