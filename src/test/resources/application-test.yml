@@ -22,6 +22,13 @@ spring:
           auth: true
           starttls:
             enable: true
+file:
+  local:
+    host: http://localhost:8080
+    path: /static/file
+server:
+  servlet:
+    context-path: /v1/api
 auth:
   jwt:
     exp:
