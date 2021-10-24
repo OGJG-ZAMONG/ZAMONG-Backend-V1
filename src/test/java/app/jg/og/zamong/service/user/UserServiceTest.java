@@ -1,6 +1,7 @@
 package app.jg.og.zamong.service.user;
 
 import app.jg.og.zamong.constant.UserConstant;
+import app.jg.og.zamong.dto.request.CheckIdDuplicationRequest;
 import app.jg.og.zamong.dto.response.UserInformationResponse;
 import app.jg.og.zamong.entity.dream.sharedream.ShareDream;
 import app.jg.og.zamong.entity.dream.sharedream.ShareDreamRepository;
@@ -106,5 +107,21 @@ public class UserServiceTest extends UnitTest {
 
         //then
         verify(profileRepository, times(1)).save(any());
+    }
+
+    @Test
+    void 유저아이디_수정_성공() {
+        //given
+        String modifiedId = "NewId";
+        given(userRepository.findById(modifiedId)).willReturn(Optional.empty());
+        given(securityContextService.getPrincipal()).willReturn(new AuthenticationDetails(user));
+
+        //when
+        CheckIdDuplicationRequest request = CheckIdDuplicationRequest.builder()
+                .id(modifiedId).build();
+        userService.modifyUserId(request);
+
+        //then
+        assertThat(user.getId()).isEqualTo(modifiedId);
     }
 }
