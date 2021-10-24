@@ -1,5 +1,7 @@
 package app.jg.og.zamong.controller;
 
+import app.jg.og.zamong.dto.request.ChangePasswordRequest;
+import app.jg.og.zamong.dto.request.CheckIdDuplicationRequest;
 import app.jg.og.zamong.dto.request.FollowUserRequest;
 import app.jg.og.zamong.dto.response.ResponseBody;
 import app.jg.og.zamong.service.securitycontext.SecurityContextService;
@@ -9,10 +11,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Max;
-import javax.validation.constraints.Size;
 import javax.websocket.server.PathParam;
 
 @RequiredArgsConstructor
@@ -56,5 +58,23 @@ public class UserController {
             @PathParam("page") int page,
             @Max(50) @PathParam("size") int size) {
         return ResponseBody.listOf(userFollowService.queryFollowers(uuid, page, size), HttpStatus.OK.value());
+    }
+
+    @PatchMapping("/profile")
+    @ResponseStatus(value = HttpStatus.NO_CONTENT)
+    public void profile(@RequestParam("file") MultipartFile file) {
+        userService.modifyProfile(file);
+    }
+
+    @PatchMapping("/user-id")
+    @ResponseStatus(value = HttpStatus.NO_CONTENT)
+    public void userId(@Valid @RequestBody CheckIdDuplicationRequest request) {
+        userService.modifyUserId(request);
+    }
+
+    @PatchMapping("/password")
+    @ResponseStatus(value = HttpStatus.NO_CONTENT)
+    public void password(@Valid @RequestBody ChangePasswordRequest request) {
+        userService.modifyPassword(request);
     }
 }

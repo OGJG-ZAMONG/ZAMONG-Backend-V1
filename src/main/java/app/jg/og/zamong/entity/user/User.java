@@ -29,9 +29,11 @@ public class User {
 
     private String email;
 
+    @Setter
     @Column(length = 16)
     private String id;
 
+    @Setter
     private String password;
 
     private Integer lucyCount;

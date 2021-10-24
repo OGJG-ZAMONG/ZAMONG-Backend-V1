@@ -20,6 +20,7 @@ public enum ErrorCode {
 
     MAIL_SEND_FAILED(400, "Mail Send Failed"),
     ATTRIBUTE_CONVERT_FAILED(400, "Attribute Convert Failed"),
+    FILE_SAVE_FAILED(400, "File Save Failed"),
 
     INTERNAL_SERVER_ERROR(500, "Internal Server Error");
 
