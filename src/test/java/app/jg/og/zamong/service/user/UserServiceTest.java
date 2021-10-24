@@ -9,6 +9,7 @@ import app.jg.og.zamong.entity.dream.sharedream.ShareDreamRepository;
 import app.jg.og.zamong.entity.user.User;
 import app.jg.og.zamong.entity.user.UserRepository;
 import app.jg.og.zamong.entity.user.profile.ProfileRepository;
+import app.jg.og.zamong.exception.business.BadUserInformationException;
 import app.jg.og.zamong.security.auth.AuthenticationDetails;
 import app.jg.og.zamong.service.UnitTest;
 import app.jg.og.zamong.service.file.FileSaveService;
@@ -29,6 +30,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.times;
@@ -150,5 +152,29 @@ public class UserServiceTest extends UnitTest {
         //then
         assertThat(user.getPassword()).isEqualTo(newPassword);
         verify(userRepository, times(1)).save(any());
+    }
+
+    @Test
+    void 유저비밀번호_수정_실패() {
+        //given
+        String oldPassword = user.getPassword();
+        String newPassword = "NewPassword";
+
+        given(securityContextService.getPrincipal()).willReturn(new AuthenticationDetails(user));
+        given(passwordEncoder.matches(oldPassword, user.getPassword())).willReturn(false);
+
+        //when
+        try {
+            ChangePasswordRequest request = ChangePasswordRequest.builder()
+                    .oldPassword(oldPassword)
+                    .newPassword(newPassword)
+                    .build();
+            userService.modifyPassword(request);
+
+            fail("No Error");
+        } catch (BadUserInformationException e) {
+            //then 
+            verify(userRepository, times(0)).save(any());
+        }
     }
 }
