@@ -1,5 +1,6 @@
 package app.jg.og.zamong.controller;
 
+import app.jg.og.zamong.dto.request.CheckIdDuplicationRequest;
 import app.jg.og.zamong.dto.request.FollowUserRequest;
 import app.jg.og.zamong.dto.response.ResponseBody;
 import app.jg.og.zamong.service.securitycontext.SecurityContextService;
@@ -62,5 +63,11 @@ public class UserController {
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void profile(@RequestParam("file") MultipartFile file) {
         userService.modifyProfile(file);
+    }
+
+    @PatchMapping("/user-id")
+    @ResponseStatus(value = HttpStatus.NO_CONTENT)
+    public void userId(@Valid @RequestBody CheckIdDuplicationRequest request) {
+        userService.modifyUserId(request);
     }
 }
