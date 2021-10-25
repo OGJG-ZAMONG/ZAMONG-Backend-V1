@@ -2,6 +2,7 @@ package app.jg.og.zamong.controller;
 
 import app.jg.og.zamong.constant.UserConstant;
 import app.jg.og.zamong.dto.request.CheckIdDuplicationRequest;
+import app.jg.og.zamong.dto.request.EmailAuthenticationRequest;
 import app.jg.og.zamong.dto.request.SignUpUserRequest;
 import app.jg.og.zamong.entity.redis.authenticationcode.AuthenticationCode;
 import app.jg.og.zamong.entity.redis.authenticationcode.AuthenticationCodeRepository;
@@ -9,9 +10,11 @@ import app.jg.og.zamong.entity.user.User;
 import app.jg.og.zamong.entity.user.UserRepository;
 import app.jg.og.zamong.entity.user.profile.ProfileRepository;
 import app.jg.og.zamong.exception.ErrorCode;
+import app.jg.og.zamong.service.mail.MailService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
@@ -97,7 +100,6 @@ public class AuthControllerTest extends IntegrationTest {
         ).andExpect(status().isBadRequest()).andExpect(jsonPath("message").value(ErrorCode.USER_IDENTITY_DUPLICATION.getMessage()));
     }
 
-
     @Test
     @Transactional
     void auth_signup_200() throws Exception {
@@ -123,5 +125,22 @@ public class AuthControllerTest extends IntegrationTest {
         ).andExpect(status().isOk());
 
         assertThat(profileRepository.findAll().iterator().hasNext()).isTrue();
+    }
+
+    @MockBean
+    private MailService mailService;
+
+    @Test
+    @Transactional
+    void auth_mail_200() throws Exception {
+        String email = "newzamong1234@gmail.com";
+        EmailAuthenticationRequest request = EmailAuthenticationRequest.builder()
+                .address(email)
+                .build();
+
+        mockMvc.perform(post("/auth/mail")
+                .content(objectMapper.writeValueAsString(request))
+                .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(status().isOk());
     }
 }
