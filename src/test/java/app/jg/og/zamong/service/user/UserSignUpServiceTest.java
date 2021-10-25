@@ -100,6 +100,7 @@ public class UserSignUpServiceTest extends UnitTest {
 
     @Test
     void 이메일_전송_성공() {
+        given(userRepository.findByEmail(user.getEmail())).willReturn(Optional.empty());
         try {
             userSignUpService.sendOutAuthenticationEmail(EmailAuthenticationRequest.builder()
                     .address(user.getEmail())
@@ -113,6 +114,7 @@ public class UserSignUpServiceTest extends UnitTest {
     void 이메일_전송_실패() {
         //given
         given(mailService.sendEmail(any())).willThrow(new RuntimeException());
+        given(userRepository.findByEmail(user.getEmail())).willReturn(Optional.empty());
 
         //when
         Exception exception = null;
