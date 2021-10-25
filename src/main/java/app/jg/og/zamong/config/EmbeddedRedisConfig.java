@@ -1,6 +1,5 @@
 package app.jg.og.zamong.config;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
@@ -13,19 +12,23 @@ import javax.annotation.PreDestroy;
 @Configuration
 public class EmbeddedRedisConfig {
 
-    private RedisServer redisServer;
+    @Value("${spring.redis.port:6378}")
+    private int redisPort;
 
-    public EmbeddedRedisConfig(@Value("${spring.redis.port}") Integer port) {
-        redisServer = new RedisServer(port);
-    }
+    private static RedisServer redisServer = null;
 
     @PostConstruct
     public void startRedis() {
-        redisServer.start();
+        if (redisServer == null || !redisServer.isActive()) {
+            redisServer = new RedisServer(redisPort);
+            redisServer.start();
+        }
     }
 
     @PreDestroy
     public void stopRedis() {
-        redisServer.stop();
+        if (redisServer != null) {
+            redisServer.stop();
+        }
     }
 }

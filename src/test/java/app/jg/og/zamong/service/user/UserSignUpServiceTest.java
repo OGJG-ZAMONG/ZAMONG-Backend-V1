@@ -11,6 +11,8 @@ import app.jg.og.zamong.entity.redis.authenticationcode.AuthenticationCodeReposi
 import app.jg.og.zamong.entity.user.User;
 import app.jg.og.zamong.entity.user.UserRepository;
 import app.jg.og.zamong.entity.user.profile.ProfileRepository;
+import app.jg.og.zamong.exception.business.BadUserInformationException;
+import app.jg.og.zamong.exception.business.BusinessException;
 import app.jg.og.zamong.service.UnitTest;
 import app.jg.og.zamong.service.mail.MailService;
 import app.jg.og.zamong.service.user.auth.signup.UserSignUpServiceImpl;
@@ -100,6 +102,7 @@ public class UserSignUpServiceTest extends UnitTest {
 
     @Test
     void 이메일_전송_성공() {
+        given(userRepository.findByEmail(user.getEmail())).willReturn(Optional.empty());
         try {
             userSignUpService.sendOutAuthenticationEmail(EmailAuthenticationRequest.builder()
                     .address(user.getEmail())
@@ -110,9 +113,23 @@ public class UserSignUpServiceTest extends UnitTest {
     }
 
     @Test
+    void 이미_회원가입한_이메일() {
+        given(userRepository.findByEmail(user.getEmail())).willReturn(Optional.of(user));
+        try {
+            userSignUpService.sendOutAuthenticationEmail(EmailAuthenticationRequest.builder()
+                    .address(user.getEmail())
+                    .build());
+            fail("No Error");
+        } catch (BusinessException e) {
+            assertThat(e).isInstanceOf(BadUserInformationException.class);
+        }
+    }
+
+    @Test
     void 이메일_전송_실패() {
         //given
         given(mailService.sendEmail(any())).willThrow(new RuntimeException());
+        given(userRepository.findByEmail(user.getEmail())).willReturn(Optional.empty());
 
         //when
         Exception exception = null;
