@@ -25,19 +25,21 @@ public class AuthControllerTest extends IntegrationTest {
 
     @BeforeEach
     void setUp() {
-        user = User.builder()
+        user = userRepository.save(User.builder()
                 .name(UserConstant.NAME)
                 .email(UserConstant.EMAIL)
                 .id(UserConstant.ID)
                 .password(passwordEncoder.encode(UserConstant.PASSWORD))
-                .build();
+                .build());
     }
 
     @Test
     @Transactional
-    void 아이디중복확인_성공() throws Exception {
+    void auth_userid_duplicate_200() throws Exception {
+        String userId = "New_User_Id";
+
         CheckIdDuplicationRequest request = CheckIdDuplicationRequest.builder()
-                .id(user.getId())
+                .id(userId)
                 .build();
 
         mockMvc.perform(post("/auth/user-id/duplicate")
@@ -48,10 +50,11 @@ public class AuthControllerTest extends IntegrationTest {
 
     @Test
     @Transactional
-    void 아이디중복확인_실패() throws Exception {
-        userRepository.save(user);
+    void auth_userid_duplicate_400() throws Exception {
+        String userId = user.getId();
+
         CheckIdDuplicationRequest request = CheckIdDuplicationRequest.builder()
-                .id(user.getId())
+                .id(userId)
                 .build();
 
         mockMvc.perform(post("/auth/user-id/duplicate")
