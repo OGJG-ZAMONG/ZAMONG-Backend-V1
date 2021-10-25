@@ -11,6 +11,7 @@ import app.jg.og.zamong.entity.user.UserRepository;
 import app.jg.og.zamong.entity.user.profile.ProfileRepository;
 import app.jg.og.zamong.exception.ErrorCode;
 import app.jg.og.zamong.service.mail.MailService;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,6 +46,13 @@ public class AuthControllerTest extends IntegrationTest {
                 .id(UserConstant.ID)
                 .password(passwordEncoder.encode(UserConstant.PASSWORD))
                 .build());
+    }
+
+    @AfterEach
+    void deleteAl() {
+        userRepository.deleteAll();
+        authenticationCodeRepository.deleteAll();
+        profileRepository.deleteAll();
     }
 
     @Test
