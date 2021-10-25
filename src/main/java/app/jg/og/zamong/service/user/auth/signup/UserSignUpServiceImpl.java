@@ -13,6 +13,7 @@ import app.jg.og.zamong.entity.user.UserRepository;
 import app.jg.og.zamong.entity.user.profile.Profile;
 import app.jg.og.zamong.entity.user.profile.ProfileRepository;
 import app.jg.og.zamong.exception.business.BadAuthenticationCodeException;
+import app.jg.og.zamong.exception.business.BadUserInformationException;
 import app.jg.og.zamong.exception.business.UserIdentityDuplicationException;
 import app.jg.og.zamong.service.mail.MailService;
 import lombok.RequiredArgsConstructor;
@@ -77,6 +78,12 @@ public class UserSignUpServiceImpl implements UserSignUpService {
         String authenticationCode = createAuthenticationCode();
         String emailAddress = request.getAddress();
         authenticationCodeRepository.save(new AuthenticationCode(emailAddress, authenticationCode));
+
+        userRepository.findByEmail(emailAddress)
+                .ifPresent(user -> {
+                    throw new BadUserInformationException("이미 회원가입한 이메일입니다");
+                });
+
         mailService.sendEmail(SendMailRequest.builder()
                 .address(emailAddress)
                 .authenticationCode(authenticationCode)
