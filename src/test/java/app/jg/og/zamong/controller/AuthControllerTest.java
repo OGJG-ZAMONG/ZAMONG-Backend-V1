@@ -7,6 +7,7 @@ import app.jg.og.zamong.entity.redis.authenticationcode.AuthenticationCode;
 import app.jg.og.zamong.entity.redis.authenticationcode.AuthenticationCodeRepository;
 import app.jg.og.zamong.entity.user.User;
 import app.jg.og.zamong.entity.user.UserRepository;
+import app.jg.og.zamong.entity.user.profile.ProfileRepository;
 import app.jg.og.zamong.exception.ErrorCode;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -15,6 +16,7 @@ import org.springframework.http.MediaType;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -29,6 +31,8 @@ public class AuthControllerTest extends IntegrationTest {
     private PasswordEncoder passwordEncoder;
     @Autowired
     private AuthenticationCodeRepository authenticationCodeRepository;
+    @Autowired
+    private ProfileRepository profileRepository;
 
     @BeforeEach
     void setUp() {
@@ -91,5 +95,33 @@ public class AuthControllerTest extends IntegrationTest {
                 .content(objectMapper.writeValueAsString(request))
                 .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(status().isBadRequest()).andExpect(jsonPath("message").value(ErrorCode.USER_IDENTITY_DUPLICATION.getMessage()));
+    }
+
+
+    @Test
+    @Transactional
+    void auth_signup_200() throws Exception {
+        String name = "정지우";
+        String id = "new_zamong_id";
+        String email = "newzamong1234@gmail.com";
+        String password = "NewPassword@1";
+        String authenticationCode = "000000";
+
+        authenticationCodeRepository.save(new AuthenticationCode(email, authenticationCode));
+
+        SignUpUserRequest request = SignUpUserRequest.builder()
+                .name(name)
+                .id(id)
+                .email(email)
+                .password(password)
+                .authenticationCode(authenticationCode)
+                .build();
+
+        mockMvc.perform(post("/auth/signup")
+                .content(objectMapper.writeValueAsString(request))
+                .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(status().isOk());
+
+        assertThat(profileRepository.findAll().iterator().hasNext()).isTrue();
     }
 }
