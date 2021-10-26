@@ -1,15 +1,16 @@
 package app.jg.og.zamong.controller;
 
 import app.jg.og.zamong.constant.UserConstant;
-import app.jg.og.zamong.dto.request.CheckIdDuplicationRequest;
-import app.jg.og.zamong.dto.request.EmailAuthenticationRequest;
-import app.jg.og.zamong.dto.request.SignUpUserRequest;
+import app.jg.og.zamong.dto.request.*;
 import app.jg.og.zamong.entity.redis.authenticationcode.AuthenticationCode;
 import app.jg.og.zamong.entity.redis.authenticationcode.AuthenticationCodeRepository;
+import app.jg.og.zamong.entity.redis.refreshtoken.RefreshToken;
+import app.jg.og.zamong.entity.redis.refreshtoken.RefreshTokenRepository;
 import app.jg.og.zamong.entity.user.User;
 import app.jg.og.zamong.entity.user.UserRepository;
 import app.jg.og.zamong.entity.user.profile.ProfileRepository;
 import app.jg.og.zamong.exception.ErrorCode;
+import app.jg.og.zamong.security.JwtTokenProvider;
 import app.jg.og.zamong.service.mail.MailService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -20,7 +21,10 @@ import org.springframework.http.MediaType;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -130,7 +134,7 @@ public class AuthControllerTest extends IntegrationTest {
         mockMvc.perform(post("/auth/signup")
                 .content(objectMapper.writeValueAsString(request))
                 .contentType(MediaType.APPLICATION_JSON)
-        ).andExpect(status().isOk());
+        ).andExpect(status().isCreated());
 
         assertThat(profileRepository.findAll().iterator().hasNext()).isTrue();
     }
@@ -147,6 +151,44 @@ public class AuthControllerTest extends IntegrationTest {
                 .build();
 
         mockMvc.perform(post("/auth/mail")
+                .content(objectMapper.writeValueAsString(request))
+                .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(status().isOk());
+    }
+
+    @Test
+    @Transactional
+    void login_200() throws Exception {
+        LoginUserRequest request = LoginUserRequest.builder()
+                .userIdentity(user.getEmail())
+                .password(UserConstant.PASSWORD)
+                .build();
+
+        mockMvc.perform(post("/auth/login")
+                .content(objectMapper.writeValueAsString(request))
+                .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(status().isOk());
+    }
+
+    @MockBean
+    private RefreshTokenRepository refreshTokenRepository;
+    @MockBean
+    private JwtTokenProvider jwtTokenProvider;
+
+    @Test
+    @Transactional
+    void refresh_200() throws Exception {
+        String refreshToken = "refreshToken";
+        String userId = "user-uuid";
+
+        given(jwtTokenProvider.getUserUuid(refreshToken)).willReturn(userId);
+        given(refreshTokenRepository.findById(userId)).willReturn(Optional.of(new RefreshToken(userId, refreshToken)));
+
+        ReIssueTokenRequest request = ReIssueTokenRequest.builder()
+                .refreshToken(refreshToken)
+                .build();
+
+        mockMvc.perform(post("/auth/refresh")
                 .content(objectMapper.writeValueAsString(request))
                 .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(status().isOk());
