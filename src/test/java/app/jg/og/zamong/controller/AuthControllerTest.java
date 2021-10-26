@@ -139,6 +139,9 @@ public class AuthControllerTest extends IntegrationTest {
         assertThat(profileRepository.findAll().iterator().hasNext()).isTrue();
     }
 
+    @MockBean
+    private MailService mailService;
+
     @Test
     @Transactional
     void auth_mail_200() throws Exception {
