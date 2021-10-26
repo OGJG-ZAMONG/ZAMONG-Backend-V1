@@ -1,6 +1,7 @@
 package app.jg.og.zamong.entity.dream;
 
 import app.jg.og.zamong.entity.dream.attachment.AttachmentImage;
+import app.jg.og.zamong.entity.dream.comment.Comment;
 import app.jg.og.zamong.entity.dream.dreamtype.DreamType;
 import app.jg.og.zamong.entity.user.User;
 import lombok.*;
@@ -55,6 +56,9 @@ public abstract class Dream {
 
     @OneToMany(mappedBy = "dream")
     private List<AttachmentImage> attachmentImages;
+
+    @OneToMany(mappedBy = "dream")
+    private List<Comment> comments;
 
     public String getDefaultImage() {
         return attachmentImages.get(0).getUrl();
