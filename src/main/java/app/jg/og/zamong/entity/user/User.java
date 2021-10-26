@@ -47,6 +47,7 @@ public class User {
     @OneToMany(mappedBy = "follower")
     private List<Follow> followings;
 
+    @Setter
     @Getter(value = AccessLevel.NONE)
     @OneToOne(mappedBy = "user", optional = false)
     @Delegate
