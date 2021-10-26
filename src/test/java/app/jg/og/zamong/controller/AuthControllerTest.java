@@ -166,4 +166,28 @@ public class AuthControllerTest extends IntegrationTest {
                 .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(status().isOk());
     }
+
+    @MockBean
+    private RefreshTokenRepository refreshTokenRepository;
+    @MockBean
+    private JwtTokenProvider jwtTokenProvider;
+
+    @Test
+    @Transactional
+    void refresh_200() throws Exception {
+        String refreshToken = "refreshToken";
+        String userId = "user-uuid";
+
+        given(jwtTokenProvider.getUserUuid(refreshToken)).willReturn(userId);
+        given(refreshTokenRepository.findById(userId)).willReturn(Optional.of(new RefreshToken(userId, refreshToken)));
+
+        ReIssueTokenRequest request = ReIssueTokenRequest.builder()
+                .refreshToken(refreshToken)
+                .build();
+
+        mockMvc.perform(post("/auth/refresh")
+                .content(objectMapper.writeValueAsString(request))
+                .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(status().isOk());
+    }
 }
