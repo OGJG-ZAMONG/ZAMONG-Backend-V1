@@ -32,6 +32,8 @@ public class Comment {
     @Column(name = "datetime", columnDefinition = "timestamp")
     private LocalDateTime dateTime;
 
+    private Integer depth;
+
     @OneToMany(mappedBy = "pComment")
     private List<Comment> comments;
 
