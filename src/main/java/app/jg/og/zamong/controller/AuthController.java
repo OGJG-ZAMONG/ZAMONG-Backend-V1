@@ -6,10 +6,7 @@ import app.jg.og.zamong.service.user.auth.UserAuthenticationService;
 import app.jg.og.zamong.service.user.auth.signup.UserSignUpService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -31,6 +28,7 @@ public class AuthController {
     }
 
     @PostMapping("/signup")
+    @ResponseStatus(HttpStatus.CREATED)
     public ResponseBody register(@Valid @RequestBody SignUpUserRequest request) {
         return ResponseBody.of(userSignUpService.doSignUpUser(request), HttpStatus.CREATED.value());
     }

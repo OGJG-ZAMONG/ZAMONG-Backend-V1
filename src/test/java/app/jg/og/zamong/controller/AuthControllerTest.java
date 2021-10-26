@@ -3,6 +3,7 @@ package app.jg.og.zamong.controller;
 import app.jg.og.zamong.constant.UserConstant;
 import app.jg.og.zamong.dto.request.CheckIdDuplicationRequest;
 import app.jg.og.zamong.dto.request.EmailAuthenticationRequest;
+import app.jg.og.zamong.dto.request.LoginUserRequest;
 import app.jg.og.zamong.dto.request.SignUpUserRequest;
 import app.jg.og.zamong.entity.redis.authenticationcode.AuthenticationCode;
 import app.jg.og.zamong.entity.redis.authenticationcode.AuthenticationCodeRepository;
@@ -130,7 +131,7 @@ public class AuthControllerTest extends IntegrationTest {
         mockMvc.perform(post("/auth/signup")
                 .content(objectMapper.writeValueAsString(request))
                 .contentType(MediaType.APPLICATION_JSON)
-        ).andExpect(status().isOk());
+        ).andExpect(status().isCreated());
 
         assertThat(profileRepository.findAll().iterator().hasNext()).isTrue();
     }
