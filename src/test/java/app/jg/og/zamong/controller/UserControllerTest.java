@@ -50,10 +50,7 @@ public class UserControllerTest extends IntegrationTest {
     @Test
     @Transactional
     void user_me_200() throws Exception {
-        String accessToken = userAuthenticationService.loginUser(LoginUserRequest.builder()
-                .userIdentity(user.getEmail())
-                .password(UserConstant.PASSWORD)
-                .build()).getAccessToken();
+        String accessToken = loginUser();
 
         mockMvc.perform(get("/user/me")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -64,14 +61,18 @@ public class UserControllerTest extends IntegrationTest {
     @Test
     @Transactional
     void user_200() throws Exception {
-        String accessToken = userAuthenticationService.loginUser(LoginUserRequest.builder()
-                .userIdentity(user.getEmail())
-                .password(UserConstant.PASSWORD)
-                .build()).getAccessToken();
+        String accessToken = loginUser();
 
         mockMvc.perform(get("/user/" + user.getUuid())
                 .contentType(MediaType.APPLICATION_JSON)
                 .header("Authorization", "Bearer " + accessToken)
         ).andExpect(status().isOk());
+    }
+
+    private String loginUser() {
+        return userAuthenticationService.loginUser(LoginUserRequest.builder()
+                .userIdentity(user.getEmail())
+                .password(UserConstant.PASSWORD)
+                .build()).getAccessToken();
     }
 }
