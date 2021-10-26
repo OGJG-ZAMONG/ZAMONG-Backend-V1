@@ -58,6 +58,20 @@ public class UserControllerTest extends IntegrationTest {
         mockMvc.perform(get("/user/me")
                 .contentType(MediaType.APPLICATION_JSON)
                 .header("Authorization", "Bearer " + accessToken)
-        ).andDo(print()).andExpect(status().isOk());
+        ).andExpect(status().isOk());
+    }
+
+    @Test
+    @Transactional
+    void user_200() throws Exception {
+        String accessToken = userAuthenticationService.loginUser(LoginUserRequest.builder()
+                .userIdentity(user.getEmail())
+                .password(UserConstant.PASSWORD)
+                .build()).getAccessToken();
+
+        mockMvc.perform(get("/user/" + user.getUuid())
+                .contentType(MediaType.APPLICATION_JSON)
+                .header("Authorization", "Bearer " + accessToken)
+        ).andExpect(status().isOk());
     }
 }
