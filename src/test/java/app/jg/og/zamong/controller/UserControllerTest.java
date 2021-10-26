@@ -14,8 +14,8 @@ import org.springframework.http.MediaType;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 
+import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 public class UserControllerTest extends IntegrationTest {
@@ -54,7 +54,7 @@ public class UserControllerTest extends IntegrationTest {
 
         mockMvc.perform(get("/user/me")
                 .contentType(MediaType.APPLICATION_JSON)
-                .header("Authorization", createBearerToken(accessToken))
+                .header(AUTHORIZATION, createBearerToken(accessToken))
         ).andExpect(status().isOk());
     }
 
@@ -65,7 +65,7 @@ public class UserControllerTest extends IntegrationTest {
 
         mockMvc.perform(get("/user/" + user.getUuid())
                 .contentType(MediaType.APPLICATION_JSON)
-                .header("Authorization", createBearerToken(accessToken))
+                .header(AUTHORIZATION, createBearerToken(accessToken))
         ).andExpect(status().isOk());
     }
 
