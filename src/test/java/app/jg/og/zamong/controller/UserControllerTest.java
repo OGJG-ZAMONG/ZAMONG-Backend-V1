@@ -54,7 +54,7 @@ public class UserControllerTest extends IntegrationTest {
 
         mockMvc.perform(get("/user/me")
                 .contentType(MediaType.APPLICATION_JSON)
-                .header("Authorization", "Bearer " + accessToken)
+                .header("Authorization", createBearerToken(accessToken))
         ).andExpect(status().isOk());
     }
 
@@ -65,7 +65,7 @@ public class UserControllerTest extends IntegrationTest {
 
         mockMvc.perform(get("/user/" + user.getUuid())
                 .contentType(MediaType.APPLICATION_JSON)
-                .header("Authorization", "Bearer " + accessToken)
+                .header("Authorization", createBearerToken(accessToken))
         ).andExpect(status().isOk());
     }
 
@@ -74,5 +74,9 @@ public class UserControllerTest extends IntegrationTest {
                 .userIdentity(user.getEmail())
                 .password(UserConstant.PASSWORD)
                 .build()).getAccessToken();
+    }
+
+    private String createBearerToken(String token) {
+        return "Bearer " + token;
     }
 }
