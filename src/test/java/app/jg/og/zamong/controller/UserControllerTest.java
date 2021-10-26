@@ -1,6 +1,7 @@
 package app.jg.og.zamong.controller;
 
 import app.jg.og.zamong.constant.UserConstant;
+import app.jg.og.zamong.dto.request.CheckIdDuplicationRequest;
 import app.jg.og.zamong.dto.request.LoginUserRequest;
 import app.jg.og.zamong.entity.user.User;
 import app.jg.og.zamong.entity.user.UserRepository;
@@ -14,8 +15,10 @@ import org.springframework.http.MediaType;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 public class UserControllerTest extends IntegrationTest {
@@ -67,6 +70,25 @@ public class UserControllerTest extends IntegrationTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .header(AUTHORIZATION, createBearerToken(accessToken))
         ).andExpect(status().isOk());
+    }
+
+    @Test
+    @Transactional
+    void user_id_200() throws Exception {
+        String accessToken = loginUser();
+        String newId = "newUserId";
+
+        CheckIdDuplicationRequest request = CheckIdDuplicationRequest.builder()
+                .id(newId)
+                .build();
+
+        mockMvc.perform(patch("/user/user-id")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(request))
+                .header(AUTHORIZATION, createBearerToken(accessToken))
+        ).andExpect(status().isNoContent());
+
+        assertThat(user.getId()).isEqualTo(newId);
     }
 
     private String loginUser() {
