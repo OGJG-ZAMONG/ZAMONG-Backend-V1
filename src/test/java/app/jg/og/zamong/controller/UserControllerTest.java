@@ -1,6 +1,7 @@
 package app.jg.og.zamong.controller;
 
 import app.jg.og.zamong.constant.UserConstant;
+import app.jg.og.zamong.dto.request.ChangePasswordRequest;
 import app.jg.og.zamong.dto.request.CheckIdDuplicationRequest;
 import app.jg.og.zamong.dto.request.LoginUserRequest;
 import app.jg.og.zamong.entity.user.User;
@@ -74,7 +75,7 @@ public class UserControllerTest extends IntegrationTest {
 
     @Test
     @Transactional
-    void user_id_200() throws Exception {
+    void user_id_204() throws Exception {
         String accessToken = loginUser();
         String newId = "newUserId";
 
@@ -89,6 +90,24 @@ public class UserControllerTest extends IntegrationTest {
         ).andExpect(status().isNoContent());
 
         assertThat(user.getId()).isEqualTo(newId);
+    }
+
+    @Test
+    @Transactional
+    void password_204() throws Exception {
+        String accessToken = loginUser();
+        String newPassword = "newUserPassword12!";
+
+        ChangePasswordRequest request = ChangePasswordRequest.builder()
+                .oldPassword(UserConstant.PASSWORD)
+                .newPassword(newPassword)
+                .build();
+
+        mockMvc.perform(patch("/user/password")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(request))
+                .header(AUTHORIZATION, createBearerToken(accessToken))
+        ).andExpect(status().isNoContent());
     }
 
     private String loginUser() {
