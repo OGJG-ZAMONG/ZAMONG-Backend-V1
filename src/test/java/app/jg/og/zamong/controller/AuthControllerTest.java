@@ -1,16 +1,16 @@
 package app.jg.og.zamong.controller;
 
 import app.jg.og.zamong.constant.UserConstant;
-import app.jg.og.zamong.dto.request.CheckIdDuplicationRequest;
-import app.jg.og.zamong.dto.request.EmailAuthenticationRequest;
-import app.jg.og.zamong.dto.request.LoginUserRequest;
-import app.jg.og.zamong.dto.request.SignUpUserRequest;
+import app.jg.og.zamong.dto.request.*;
 import app.jg.og.zamong.entity.redis.authenticationcode.AuthenticationCode;
 import app.jg.og.zamong.entity.redis.authenticationcode.AuthenticationCodeRepository;
+import app.jg.og.zamong.entity.redis.refreshtoken.RefreshToken;
+import app.jg.og.zamong.entity.redis.refreshtoken.RefreshTokenRepository;
 import app.jg.og.zamong.entity.user.User;
 import app.jg.og.zamong.entity.user.UserRepository;
 import app.jg.og.zamong.entity.user.profile.ProfileRepository;
 import app.jg.og.zamong.exception.ErrorCode;
+import app.jg.og.zamong.security.JwtTokenProvider;
 import app.jg.og.zamong.service.mail.MailService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -21,7 +21,10 @@ import org.springframework.http.MediaType;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -136,9 +139,6 @@ public class AuthControllerTest extends IntegrationTest {
         assertThat(profileRepository.findAll().iterator().hasNext()).isTrue();
     }
 
-    @MockBean
-    private MailService mailService;
-
     @Test
     @Transactional
     void auth_mail_200() throws Exception {
@@ -148,6 +148,20 @@ public class AuthControllerTest extends IntegrationTest {
                 .build();
 
         mockMvc.perform(post("/auth/mail")
+                .content(objectMapper.writeValueAsString(request))
+                .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(status().isOk());
+    }
+
+    @Test
+    @Transactional
+    void login_200() throws Exception {
+        LoginUserRequest request = LoginUserRequest.builder()
+                .userIdentity(user.getEmail())
+                .password(UserConstant.PASSWORD)
+                .build();
+
+        mockMvc.perform(post("/auth/login")
                 .content(objectMapper.writeValueAsString(request))
                 .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(status().isOk());
