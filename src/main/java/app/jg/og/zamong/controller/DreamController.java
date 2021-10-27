@@ -1,5 +1,6 @@
 package app.jg.og.zamong.controller;
 
+import app.jg.og.zamong.dto.request.dream.DreamCommentRequest;
 import app.jg.og.zamong.dto.request.dream.DreamContentRequest;
 import app.jg.og.zamong.dto.request.dream.DreamTitleRequest;
 import app.jg.og.zamong.dto.request.dream.DreamTypesRequest;
@@ -8,6 +9,7 @@ import app.jg.og.zamong.dto.request.dream.sharedream.ShareDreamRequest;
 import app.jg.og.zamong.dto.request.dream.sharedream.ShareDreamSleepDateTimeRequest;
 import app.jg.og.zamong.dto.response.ResponseBody;
 import app.jg.og.zamong.service.dream.DreamService;
+import app.jg.og.zamong.service.dream.comment.DreamCommentService;
 import app.jg.og.zamong.service.dream.share.ShareDreamService;
 import app.jg.og.zamong.service.dream.find.ShareDreamFindService;
 import lombok.RequiredArgsConstructor;
@@ -103,5 +105,13 @@ public class DreamController {
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void sleepDateTime(@PathVariable("dream-uuid") String uuid, @Valid @RequestBody ShareDreamSleepDateTimeRequest request) {
         shareDreamService.patchShareDreamSleepDateTime(uuid, request);
+    }
+
+    private final DreamCommentService dreamCommentService;
+
+    @PostMapping("/{dream-uuid}/comment")
+    @ResponseStatus(value = HttpStatus.CREATED)
+    public ResponseBody comment(@PathVariable("dream-uuid") String uuid, @Valid @RequestBody DreamCommentRequest request) {
+        return ResponseBody.of(dreamCommentService.createDream(uuid, request), HttpStatus.CREATED.value());
     }
 }
