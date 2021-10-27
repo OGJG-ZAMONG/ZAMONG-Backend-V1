@@ -38,7 +38,7 @@ public class Comment {
     private List<Comment> comments;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "comment_uuid", nullable = false)
+    @JoinColumn(name = "comment_uuid")
     private Comment pComment;
 
     @ManyToOne(fetch = FetchType.LAZY)
