@@ -60,6 +60,25 @@ public class DreamControllerTest extends IntegrationTest {
         commentRepository.deleteAll();
     }
 
+    @Test
+    @Transactional
+    void dream_comment_200() throws Exception {
+        String content = "comment content";
+        String accessToken = loginUser();
+
+        Dream dream = dreamRepository.save(ShareDreamBuilder.build(user));
+
+        DreamCommentRequest request = DreamCommentRequest.builder()
+                .pComment(null)
+                .content(content).build();
+
+        mockMvc.perform(post("/dream/" + dream.getUuid() + "/comment")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(request))
+                .header(AUTHORIZATION, createBearerToken(accessToken))
+        ).andExpect(status().isCreated());
+    }
+
     private String loginUser() {
         return userAuthenticationService.loginUser(LoginUserRequest.builder()
                 .userIdentity(user.getEmail())
