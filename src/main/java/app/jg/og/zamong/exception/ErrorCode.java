@@ -10,6 +10,7 @@ public enum ErrorCode {
 
     USER_NOT_FOUND(400, "User Not Found"),
     DREAM_NOT_FOUND(400, "Dream Not Found"),
+    COMMENT_NOT_FOUND(400, "Comment Not Found"),
     USER_IDENTITY_DUPLICATION(400, "User Identity is Duplication"),
     BAD_AUTHENTICATION_CODE(400, "Bad Authentication Code"),
     BAD_USER_INFORMATION(400, "Bad User Information"),
