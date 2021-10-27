@@ -9,6 +9,7 @@ import app.jg.og.zamong.entity.dream.comment.CommentRepository;
 import app.jg.og.zamong.entity.user.User;
 import app.jg.og.zamong.entity.user.UserRepository;
 import app.jg.og.zamong.entity.user.profile.Profile;
+import app.jg.og.zamong.entity.user.profile.ProfileRepository;
 import app.jg.og.zamong.service.user.auth.UserAuthenticationService;
 import app.jg.og.zamong.util.ShareDreamBuilder;
 import org.junit.jupiter.api.AfterEach;
@@ -36,6 +37,8 @@ public class DreamControllerTest extends IntegrationTest {
     @Autowired
     private CommentRepository commentRepository;
     @Autowired
+    private ProfileRepository profileRepository;
+    @Autowired
     private UserAuthenticationService userAuthenticationService;
 
     @BeforeEach
@@ -55,9 +58,9 @@ public class DreamControllerTest extends IntegrationTest {
 
     @AfterEach
     void deleteAl() {
-        userRepository.deleteAll();
         dreamRepository.deleteAll();
         commentRepository.deleteAll();
+        userRepository.deleteAll();
     }
 
     @Test
