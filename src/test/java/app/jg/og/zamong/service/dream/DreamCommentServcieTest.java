@@ -95,5 +95,6 @@ public class DreamCommentServcieTest extends UnitTest {
 
         //then
         assertThat(response.getContent()).isEqualTo(content);
+        assertThat(response.getDepth()).isEqualTo(0);
     }
 }
