@@ -7,6 +7,9 @@ import app.jg.og.zamong.entity.dream.DreamRepository;
 import app.jg.og.zamong.entity.dream.comment.Comment;
 import app.jg.og.zamong.entity.dream.comment.CommentRepository;
 import app.jg.og.zamong.entity.user.User;
+import app.jg.og.zamong.exception.business.BusinessException;
+import app.jg.og.zamong.exception.business.CommentNotFoundException;
+import app.jg.og.zamong.exception.business.DreamNotFoundException;
 import app.jg.og.zamong.security.auth.AuthenticationDetails;
 import app.jg.og.zamong.service.UnitTest;
 import app.jg.og.zamong.service.dream.comment.DreamCommentServiceImpl;
@@ -35,6 +38,39 @@ public class DreamCommentServcieTest extends UnitTest {
     private CommentRepository commentRepository;
     @Mock
     private SecurityContextService securityContextService;
+
+    @Test
+    void 댓글작성_실패() {
+        //given
+        User user = UserBuilder.build();
+        Dream dream = DreamBuilder.build();
+
+        String pCommentId = UUID.randomUUID().toString();
+        String content = "comment content";
+
+        given(securityContextService.getPrincipal()).willReturn(new AuthenticationDetails(user));
+        given(dreamRepository.findById(dream.getUuid())).willReturn(Optional.of(dream));
+        given(commentRepository.findById(UUID.fromString(pCommentId))).willReturn(Optional.empty());
+
+        //when
+        DreamCommentRequest request = DreamCommentRequest.builder()
+                .content(content)
+                .pComment(pCommentId)
+                .build();
+
+        try {
+            dreamCommentService.createDream(dream.getUuid().toString(), request);
+        } catch (BusinessException e) {
+            assertThat(e).isInstanceOf(CommentNotFoundException.class);
+        }
+
+        try {
+            String invalidDreamId = UUID.randomUUID().toString();
+            dreamCommentService.createDream(invalidDreamId, request);
+        } catch (BusinessException e) {
+            assertThat(e).isInstanceOf(DreamNotFoundException.class);
+        }
+    }
 
     @Test
     void 댓글작성_성공() {
