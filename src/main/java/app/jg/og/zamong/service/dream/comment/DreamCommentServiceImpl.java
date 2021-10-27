@@ -57,6 +57,7 @@ public class DreamCommentServiceImpl implements DreamCommentService {
                         .name(user.getName())
                         .profile(user.getProfile())
                         .build())
+                .depth(depth)
                 .build();
     }
 }
