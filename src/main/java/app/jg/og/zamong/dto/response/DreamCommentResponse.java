@@ -14,4 +14,6 @@ public class DreamCommentResponse implements Response {
     private final String content;
 
     private final UserInformationResponse user;
+
+    private final Integer depth;
 }
