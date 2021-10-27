@@ -35,5 +35,29 @@ public class DreamCommentServcieTest extends UnitTest {
     private CommentRepository commentRepository;
     @Mock
     private SecurityContextService securityContextService;
-    
+
+    @Test
+    void 댓글작성_성공() {
+        //given
+        User user = UserBuilder.build();
+        Dream dream = DreamBuilder.build();
+        String content = "comment content";
+
+        given(securityContextService.getPrincipal()).willReturn(new AuthenticationDetails(user));
+        given(dreamRepository.findById(dream.getUuid())).willReturn(Optional.of(dream));
+        given(commentRepository.save(any())).willReturn(Comment.builder()
+                .uuid(UUID.randomUUID())
+                .content(content)
+                .build());
+
+        //when
+        DreamCommentRequest request = DreamCommentRequest.builder()
+                .content(content)
+                .pComment(null)
+                .build();
+        DreamCommentResponse response = dreamCommentService.createDream(dream.getUuid().toString(), request);
+
+        //then
+        assertThat(response.getContent()).isEqualTo(content);
+    }
 }
