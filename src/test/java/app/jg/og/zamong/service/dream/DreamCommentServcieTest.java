@@ -97,4 +97,37 @@ public class DreamCommentServcieTest extends UnitTest {
         assertThat(response.getContent()).isEqualTo(content);
         assertThat(response.getDepth()).isEqualTo(0);
     }
+
+    @Test
+    void 대댓글작성_성공() {
+        //given
+        User user = UserBuilder.build();
+        Dream dream = DreamBuilder.build();
+        String content = "comment content";
+        int commentDepth = 10;
+        String pCommentId = UUID.randomUUID().toString();
+
+        given(securityContextService.getPrincipal()).willReturn(new AuthenticationDetails(user));
+        given(dreamRepository.findById(dream.getUuid())).willReturn(Optional.of(dream));
+        given(commentRepository.findById(UUID.fromString(pCommentId))).willReturn(Optional.of(Comment.builder()
+                .uuid(UUID.randomUUID())
+                .content(content)
+                .depth(commentDepth)
+                .build()));
+        given(commentRepository.save(any())).willReturn(Comment.builder()
+                .uuid(UUID.randomUUID())
+                .content(content)
+                .build());
+
+        //when
+        DreamCommentRequest request = DreamCommentRequest.builder()
+                .content(content)
+                .pComment(pCommentId)
+                .build();
+        DreamCommentResponse response = dreamCommentService.createDream(dream.getUuid().toString(), request);
+
+        //then
+        assertThat(response.getContent()).isEqualTo(content);
+        assertThat(response.getDepth()).isEqualTo(commentDepth + 1);
+    }
 }
