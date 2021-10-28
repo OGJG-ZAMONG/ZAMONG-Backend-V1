@@ -70,6 +70,11 @@ public class DreamController {
         return ResponseBody.listOf(shareDreamFindService.queryMyShareDreams(page, size), HttpStatus.OK.value());
     }
 
+    @GetMapping("/share/{dream-uuid}")
+    public ResponseBody shareDreamInformation(@PathVariable("dream-uuid") String uuid) {
+        return ResponseBody.of(shareDreamFindService.queryShareDreamInformation(uuid), HttpStatus.OK.value());
+    }
+
     @GetMapping("/share/timetable")
     public ResponseBody shareDreamTimeTable(
             @Range(min = 2000, max = 3000) @PathParam("year") int year,
