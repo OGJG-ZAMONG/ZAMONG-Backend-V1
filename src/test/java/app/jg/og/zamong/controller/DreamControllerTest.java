@@ -85,6 +85,20 @@ public class DreamControllerTest extends IntegrationTest {
 
     @Test
     @Transactional
+    void share_dream_timetable_v2_200() throws Exception {
+        ShareDream dream = shareDreamRepository.save(ShareDreamBuilder.build(user));
+
+        int year = dream.getSleepDateTime().getYear();
+        int month = dream.getSleepDateTime().getMonthValue();
+
+        mockMvc.perform(get("/dream/share/timetable/v2")
+                .queryParam("year", Integer.toString(year)).queryParam("month", Integer.toString(month))
+                .header(AUTHORIZATION, createBearerToken(loginUser()))
+        ).andExpect(status().isOk());
+    }
+
+    @Test
+    @Transactional
     void dream_comment_200() throws Exception {
         String content = "comment content";
         String accessToken = loginUser();
