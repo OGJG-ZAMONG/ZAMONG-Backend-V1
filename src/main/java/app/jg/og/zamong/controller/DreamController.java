@@ -78,6 +78,14 @@ public class DreamController {
         return ResponseBody.of(shareDreamFindService.queryMyShareDreamTimeTable(year, month), HttpStatus.OK.value());
     }
 
+    @GetMapping("/share/timetable/v2")
+    public ResponseBody shareDreamTimeTableV2(
+            @Range(min = 2000, max = 3000) @PathParam("year") int year,
+            @Range(min = 1, max = 12) @PathParam("month") int month
+    ) {
+        return ResponseBody.of(shareDreamFindService.queryShareDreamTimeTableV2(year, month), HttpStatus.OK.value());
+    }
+
     private final ShareDreamService shareDreamService;
 
     @PostMapping("/share")

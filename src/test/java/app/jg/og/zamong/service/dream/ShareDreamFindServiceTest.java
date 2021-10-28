@@ -2,6 +2,7 @@ package app.jg.og.zamong.service.dream;
 
 import app.jg.og.zamong.dto.response.ShareDreamGroupResponse;
 import app.jg.og.zamong.dto.response.ShareDreamTimeTableResponse;
+import app.jg.og.zamong.dto.response.ShareDreamTimeTableResponseV2;
 import app.jg.og.zamong.dto.response.SharedDreamGroupResponse;
 import app.jg.og.zamong.entity.dream.sharedream.ShareDream;
 import app.jg.og.zamong.entity.dream.sharedream.ShareDreamRepository;
@@ -94,5 +95,22 @@ public class ShareDreamFindServiceTest extends UnitTest {
         ShareDreamTimeTableResponse response = dreamFindService.queryMyShareDreamTimeTable(year, month);
 
         assertThat(response.getTimetables().get(shareDream.getSleepDateTime().toLocalDate()).size()).isEqualTo(1);
+    }
+
+    @Test
+    void 날짜별_꿈_목록_V2() {
+        //given
+        User user = UserBuilder.build();
+        ShareDream shareDream = ShareDreamBuilder.build(user);
+
+        int year = shareDream.getSleepDateTime().getYear();
+        int month = shareDream.getSleepDateTime().getMonthValue();
+
+        given(securityContextService.getPrincipal()).willReturn(new AuthenticationDetails(user));
+        given(shareDreamRepository.findByUserAndSleepDateTimeBetween(any(User.class), any(LocalDateTime.class), any(LocalDateTime.class))).willReturn(List.of(shareDream));
+
+        ShareDreamTimeTableResponseV2 response = dreamFindService.queryShareDreamTimeTableV2(year, month);
+
+        assertThat(response.getTimetables().size()).isEqualTo(1);
     }
 }

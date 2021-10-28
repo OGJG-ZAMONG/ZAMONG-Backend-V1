@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.time.Month;
+import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Vector;
@@ -84,6 +85,28 @@ public class ShareDreamFindServiceImpl implements ShareDreamFindService {
                             .defaultPostingImage(shareDream.getDefaultImage())
                             .build());
                 });
+        return response;
+    }
+
+    @Override
+    public ShareDreamTimeTableResponseV2 queryShareDreamTimeTableV2(int year, int month) {
+        LocalDateTime start = LocalDateTime.of(year, month, 1, 0, 0);
+        LocalDateTime end = LocalDateTime.of(year, month, Month.of(month).maxLength(), 0, 0);
+
+        User user = securityContextService.getPrincipal().getUser();
+        List<ShareDream> shareDreams = shareDreamRepository.findByUserAndSleepDateTimeBetween(user, start, end);
+
+        ShareDreamTimeTableResponseV2 response = ShareDreamTimeTableResponseV2.builder().timetables(new ArrayList<>()).build();
+
+        shareDreams.forEach(shareDream -> response.getTimetables().add(ShareDreamTimeTableResponseV2.ShareDreamResponse.builder()
+                .uuid(shareDream.getUuid())
+                .date(shareDream.getSleepDateTime().toLocalDate())
+                .isShared(shareDream.getIsShared())
+                .title(shareDream.getTitle())
+                .createdAt(shareDream.getCreatedAt())
+                .defaultPostingImage(shareDream.getDefaultImage())
+                .build()));
+
         return response;
     }
 }
