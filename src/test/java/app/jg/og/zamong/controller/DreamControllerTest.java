@@ -63,9 +63,9 @@ public class DreamControllerTest extends IntegrationTest {
 
     @AfterEach
     void deleteAl() {
-        dreamRepository.deleteAll();
-        shareDreamRepository.deleteAll();
         commentRepository.deleteAll();
+        shareDreamRepository.deleteAll();
+        dreamRepository.deleteAll();
         userRepository.deleteAll();
     }
 
