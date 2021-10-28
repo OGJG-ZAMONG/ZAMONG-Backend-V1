@@ -99,6 +99,16 @@ public class DreamControllerTest extends IntegrationTest {
 
     @Test
     @Transactional
+    void share_dream_information_200() throws Exception {
+        ShareDream dream = shareDreamRepository.save(ShareDreamBuilder.build(user));
+
+        mockMvc.perform(get("/dream/share/" + dream.getUuid())
+                .header(AUTHORIZATION, createBearerToken(loginUser()))
+        ).andExpect(status().isOk());
+    }
+
+    @Test
+    @Transactional
     void dream_comment_200() throws Exception {
         String content = "comment content";
         String accessToken = loginUser();

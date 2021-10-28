@@ -1,9 +1,11 @@
 package app.jg.og.zamong.service.dream.find;
 
 import app.jg.og.zamong.dto.response.*;
+import app.jg.og.zamong.entity.dream.dreamtype.DreamType;
 import app.jg.og.zamong.entity.dream.sharedream.ShareDream;
 import app.jg.og.zamong.entity.dream.sharedream.ShareDreamRepository;
 import app.jg.og.zamong.entity.user.User;
+import app.jg.og.zamong.exception.business.DreamNotFoundException;
 import app.jg.og.zamong.service.securitycontext.SecurityContextService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -14,10 +16,8 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.time.Month;
-import java.util.ArrayList;
-import java.util.Hashtable;
-import java.util.List;
-import java.util.Vector;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -25,6 +25,34 @@ public class ShareDreamFindServiceImpl implements ShareDreamFindService {
 
     private final ShareDreamRepository shareDreamRepository;
     private final SecurityContextService securityContextService;
+
+    @Override
+    public ShareDreamInformationResponse queryShareDreamInformation(String uuid) {
+        ShareDream shareDream = shareDreamRepository.findById(UUID.fromString(uuid))
+                .orElseThrow(() -> new DreamNotFoundException("해당하는 꿈을 찾을 수 없습니다"));
+        User user = shareDream.getUser();
+
+        return ShareDreamInformationResponse.builder()
+                .uuid(shareDream.getUuid())
+                .title(shareDream.getTitle())
+                .content(shareDream.getContent())
+                .updatedAt(shareDream.getUpdatedAt())
+                .dreamTypes(shareDream.getDreamTypes().stream()
+                        .map(DreamType::toCode).collect(Collectors.toList()))
+                .attachmentImage(shareDream.getDefaultImage())
+                .quality(shareDream.getQuality())
+                .isShared(shareDream.getIsShared())
+                .sleepBeginDateTime(shareDream.getSleepDateTime())
+                .sleepEndDateTime(shareDream.getSleepDateTime().plusHours(shareDream.getSleepTime()))
+                .shareDateTime(shareDream.getShareDateTime())
+                .lucyCount(shareDream.getLucyCount())
+                .user(ShareDreamInformationResponse.User.builder()
+                        .uuid(user.getUuid())
+                        .id(user.getId())
+                        .profile(user.getProfile())
+                        .build())
+                .build();
+    }
 
     @Override
     public SharedDreamGroupResponse queryShareDreams(int page, int size) {

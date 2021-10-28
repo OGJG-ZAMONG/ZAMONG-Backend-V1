@@ -1,9 +1,6 @@
 package app.jg.og.zamong.service.dream;
 
-import app.jg.og.zamong.dto.response.ShareDreamGroupResponse;
-import app.jg.og.zamong.dto.response.ShareDreamTimeTableResponse;
-import app.jg.og.zamong.dto.response.ShareDreamTimeTableResponseV2;
-import app.jg.og.zamong.dto.response.SharedDreamGroupResponse;
+import app.jg.og.zamong.dto.response.*;
 import app.jg.og.zamong.entity.dream.sharedream.ShareDream;
 import app.jg.og.zamong.entity.dream.sharedream.ShareDreamRepository;
 import app.jg.og.zamong.entity.user.User;
@@ -22,6 +19,8 @@ import org.springframework.data.domain.Pageable;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -36,6 +35,23 @@ public class ShareDreamFindServiceTest extends UnitTest {
     private ShareDreamRepository shareDreamRepository;
     @Mock
     private SecurityContextService securityContextService;
+
+    @Test
+    void 공유꿈_상세정보() {
+        //given
+        User user = UserBuilder.build();
+        ShareDream shareDream = ShareDreamBuilder.build(user);
+
+        given(shareDreamRepository.findById(shareDream.getUuid())).willReturn(Optional.of(shareDream));
+
+        //when
+        ShareDreamInformationResponse response = dreamFindService.queryShareDreamInformation(shareDream.getUuid().toString());
+
+        //then
+        assertThat(response.getUser().getUuid()).isEqualTo(user.getUuid());
+        assertThat(response.getSleepBeginDateTime()).isEqualTo(shareDream.getSleepDateTime());
+        assertThat(response.getSleepEndDateTime()).isEqualTo(shareDream.getSleepDateTime().plusHours(shareDream.getSleepTime()));
+    }
 
     @Test
     void 공유된_꿈_목록() {
