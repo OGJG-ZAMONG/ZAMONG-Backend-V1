@@ -6,6 +6,8 @@ import app.jg.og.zamong.dto.request.dream.DreamCommentRequest;
 import app.jg.og.zamong.entity.dream.Dream;
 import app.jg.og.zamong.entity.dream.DreamRepository;
 import app.jg.og.zamong.entity.dream.comment.CommentRepository;
+import app.jg.og.zamong.entity.dream.sharedream.ShareDream;
+import app.jg.og.zamong.entity.dream.sharedream.ShareDreamRepository;
 import app.jg.og.zamong.entity.user.User;
 import app.jg.og.zamong.entity.user.UserRepository;
 import app.jg.og.zamong.entity.user.profile.Profile;
@@ -21,6 +23,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -34,6 +37,8 @@ public class DreamControllerTest extends IntegrationTest {
     private PasswordEncoder passwordEncoder;
     @Autowired
     private DreamRepository dreamRepository;
+    @Autowired
+    private ShareDreamRepository shareDreamRepository;
     @Autowired
     private CommentRepository commentRepository;
     @Autowired
@@ -59,8 +64,23 @@ public class DreamControllerTest extends IntegrationTest {
     @AfterEach
     void deleteAl() {
         dreamRepository.deleteAll();
+        shareDreamRepository.deleteAll();
         commentRepository.deleteAll();
         userRepository.deleteAll();
+    }
+
+    @Test
+    @Transactional
+    void share_dream_timetable_200() throws Exception {
+        ShareDream dream = shareDreamRepository.save(ShareDreamBuilder.build(user));
+
+        int year = dream.getSleepDateTime().getYear();
+        int month = dream.getSleepDateTime().getMonthValue();
+
+        mockMvc.perform(get("/dream/share/timetable")
+                .queryParam("year", Integer.toString(year)).queryParam("month", Integer.toString(month))
+                .header(AUTHORIZATION, createBearerToken(loginUser()))
+        ).andExpect(status().isOk());
     }
 
     @Test
