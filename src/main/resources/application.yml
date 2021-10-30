@@ -35,8 +35,10 @@ auth:
     secret: ${JWT_SECRET_KEY}
 aws:
   s3:
-    accessKey: ${AWS_S3_KEY}
-    secretKey: ${AWS_S3_SECRET}
+    access-key: ${AWS_S3_KEY}
+    secret-key: ${AWS_S3_SECRET}
+    bucket: s3-zamong-1
+    region: ap-northeast-2
 file:
   local:
     host: ${HOST_NAME}
