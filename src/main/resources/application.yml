@@ -33,6 +33,10 @@ auth:
       refresh: ${JWT_EXP_REFRESH}
       access: ${JWT_EXP_ACCESS}
     secret: ${JWT_SECRET_KEY}
+aws:
+  s3:
+    accessKey: ${AWS_S3_KEY}
+    secretKey: ${AWS_S3_SECRET}
 file:
   local:
     host: ${HOST_NAME}
