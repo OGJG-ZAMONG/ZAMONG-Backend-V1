@@ -16,10 +16,12 @@ import app.jg.og.zamong.entity.user.User;
 import app.jg.og.zamong.entity.user.UserRepository;
 import app.jg.og.zamong.exception.business.DreamNotFoundException;
 import app.jg.og.zamong.exception.business.UserNotFoundException;
+import app.jg.og.zamong.service.file.FileSaveService;
 import app.jg.og.zamong.service.securitycontext.SecurityContextService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.temporal.ChronoUnit;
 import java.util.UUID;
@@ -29,6 +31,7 @@ import java.util.UUID;
 public class ShareDreamServiceImpl implements ShareDreamService {
 
     private final SecurityContextService securityContextService;
+    private final FileSaveService fileSaveService;
 
     private final ShareDreamRepository shareDreamRepository;
     private final UserRepository userRepository;
@@ -96,6 +99,21 @@ public class ShareDreamServiceImpl implements ShareDreamService {
                 .createdAt(shareDream.getCreatedAt())
                 .updatedAt(shareDream.getUpdatedAt())
                 .build();
+    }
+
+    @Override
+    @Transactional
+    public void patchShareDreamImage(String uuid, MultipartFile file) {
+        ShareDream shareDream = shareDreamRepository.findById(UUID.fromString(uuid))
+                .orElseThrow(() -> new DreamNotFoundException("해당하는 꿈을 찾을 수 없습니다"));
+
+        String host = fileSaveService.queryHostName();
+        String path = fileSaveService.saveFile(file, "dream/share");
+
+        AttachmentImage attachmentImage = shareDream.getAttachmentImages().get(0);
+
+        attachmentImage.setHost(host);
+        attachmentImage.setPath(path);
     }
 
     @Override

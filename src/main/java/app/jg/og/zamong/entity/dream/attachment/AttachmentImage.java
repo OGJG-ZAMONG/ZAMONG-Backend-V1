@@ -5,6 +5,7 @@ import app.jg.og.zamong.entity.dream.attachment.converter.DreamTagConverter;
 import app.jg.og.zamong.entity.dream.enums.DreamTag;
 import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -15,6 +16,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @DynamicInsert
+@DynamicUpdate
 @Entity
 @Table(name = "attachment_image")
 public class AttachmentImage {
@@ -28,8 +30,10 @@ public class AttachmentImage {
     @Column(columnDefinition = "tinyint")
     private Integer order;
 
+    @Setter
     private String path;
 
+    @Setter
     private String host;
 
     @Convert(converter = DreamTagConverter.class)

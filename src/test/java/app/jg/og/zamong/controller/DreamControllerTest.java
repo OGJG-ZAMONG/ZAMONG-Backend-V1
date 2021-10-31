@@ -12,19 +12,23 @@ import app.jg.og.zamong.entity.user.User;
 import app.jg.og.zamong.entity.user.UserRepository;
 import app.jg.og.zamong.entity.user.profile.Profile;
 import app.jg.og.zamong.entity.user.profile.ProfileRepository;
+import app.jg.og.zamong.service.file.FileSaveService;
 import app.jg.og.zamong.service.user.auth.UserAuthenticationService;
 import app.jg.og.zamong.util.ShareDreamBuilder;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.nio.charset.StandardCharsets;
+
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 public class DreamControllerTest extends IntegrationTest {
@@ -105,6 +109,26 @@ public class DreamControllerTest extends IntegrationTest {
         mockMvc.perform(get("/dream/share/" + dream.getUuid())
                 .header(AUTHORIZATION, createBearerToken(loginUser()))
         ).andExpect(status().isOk());
+    }
+
+    @MockBean
+    private FileSaveService fileSaveService;
+
+    @Test
+    @Transactional
+    void share_dream_image_204() throws Exception {
+        ShareDream dream = shareDreamRepository.save(ShareDreamBuilder.build(user));
+
+        MockMultipartFile file = new MockMultipartFile(
+                "file",
+                "hello.txt",
+                MediaType.TEXT_PLAIN_VALUE,
+                "Hello World".getBytes(StandardCharsets.UTF_8)
+        );
+        mockMvc.perform(multipart("/dream/share/image/" + dream.getUuid())
+                .file(file)
+                .header(AUTHORIZATION, createBearerToken(loginUser()))
+        ).andExpect(status().isNoContent());
     }
 
     @Test

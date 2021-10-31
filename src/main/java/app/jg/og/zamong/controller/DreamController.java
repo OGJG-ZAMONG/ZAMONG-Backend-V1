@@ -17,6 +17,7 @@ import org.hibernate.validator.constraints.Range;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Max;
@@ -106,6 +107,12 @@ public class DreamController {
     @PutMapping("/share/{dream-uuid}")
     public ResponseBody share(@PathVariable("dream-uuid") String uuid, @Valid @RequestBody ShareDreamRequest request) {
         return ResponseBody.of(shareDreamService.modifyShareDream(uuid, request), HttpStatus.OK.value());
+    }
+
+    @PostMapping("/share/image/{dream-uuid}")
+    @ResponseStatus(value = HttpStatus.NO_CONTENT)
+    public void image(@PathVariable("dream-uuid") String uuid, @RequestParam("file")MultipartFile file) {
+        shareDreamService.patchShareDreamImage(uuid, file);
     }
 
     @PatchMapping("/share/quality/{dream-uuid}")
