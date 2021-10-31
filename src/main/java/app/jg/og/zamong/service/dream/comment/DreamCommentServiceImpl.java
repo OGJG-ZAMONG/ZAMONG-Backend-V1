@@ -74,7 +74,7 @@ public class DreamCommentServiceImpl implements DreamCommentService {
         Dream dream = dreamRepository.findById(UUID.fromString(uuid))
                 .orElseThrow(() -> new DreamNotFoundException("해당하는 꿈을 찾을 수 없습니다"));
 
-        List<DreamCommendGroupResponse.CommentResponse> coments = dream.getComments().stream()
+        List<DreamCommendGroupResponse.CommentResponse> comments = dream.getComments().stream()
                 .filter(comment -> comment.getDepth() == 0)
                 .map(comment -> DreamCommendGroupResponse.CommentResponse.builder()
                 .uuid(comment.getUuid())
@@ -90,7 +90,7 @@ public class DreamCommentServiceImpl implements DreamCommentService {
                 .build()).collect(Collectors.toList());
 
         return DreamCommendGroupResponse.builder()
-                .comments(coments)
+                .comments(comments)
                 .build();
     }
 }
