@@ -33,6 +33,18 @@ auth:
       refresh: ${JWT_EXP_REFRESH}
       access: ${JWT_EXP_ACCESS}
     secret: ${JWT_SECRET_KEY}
+cloud:
+  aws:
+    credentials:
+      accessKey: ${AWS_S3_KEY}
+      secretKey: ${AWS_S3_SECRET}
+    s3:
+      bucket: s3-zamong-1
+      host: ${S3_HOST_NAME}
+    region:
+      static: ap-northeast-2
+    stack:
+      auto: false
 file:
   local:
     host: ${HOST_NAME}

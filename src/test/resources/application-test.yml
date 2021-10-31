@@ -29,6 +29,18 @@ file:
 server:
   servlet:
     context-path: /v1/api
+cloud:
+  aws:
+    credentials:
+      accessKey: accessKey
+      secretKey: secretKey
+    s3:
+      bucket: s3-zamong-1
+      host: http://localhost:8080
+    region:
+      static: ap-northeast-2
+    stack:
+      auto: false
 auth:
   jwt:
     exp:

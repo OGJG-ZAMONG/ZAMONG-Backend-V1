@@ -47,6 +47,8 @@ dependencies {
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
 
     implementation 'org.springframework.boot:spring-boot-starter-mail'
+
+    implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.0.1.RELEASE'
 }
 
 test {
@@ -77,7 +79,8 @@ jacocoTestCoverageVerification {
 
             excludes = [
                     'app.jg.og.zamong.security.*',
-                    'app.jg.og.zamong.config.*'
+                    'app.jg.og.zamong.config.*',
+                    'app.jg.og.zamong.service.file.*'
             ]
         }
     }

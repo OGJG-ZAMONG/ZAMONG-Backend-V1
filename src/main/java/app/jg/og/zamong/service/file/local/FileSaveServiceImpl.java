@@ -10,7 +10,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.UUID;
 
-@Service
+//@Service
 public class FileSaveServiceImpl implements FileSaveService {
 
     @Value("${file.local.host}")
