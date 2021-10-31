@@ -5,6 +5,7 @@ import app.jg.og.zamong.entity.dream.attachment.AttachmentImage;
 import app.jg.og.zamong.entity.dream.sharedream.ShareDream;
 import app.jg.og.zamong.entity.user.User;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
@@ -28,6 +29,7 @@ public class ShareDreamBuilder {
                 .shareDateTime(DreamConstant.SLEEP_DATE_TIME)
                 .sleepDateTime(DreamConstant.SLEEP_DATE_TIME)
                 .sleepTime(5)
+                .comments(new ArrayList<>())
                 .build();
     }
 }

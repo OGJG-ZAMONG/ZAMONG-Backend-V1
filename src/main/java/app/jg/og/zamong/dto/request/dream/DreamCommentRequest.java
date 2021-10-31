@@ -1,5 +1,6 @@
 package app.jg.og.zamong.dto.request.dream;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
 import javax.validation.constraints.NotNull;
@@ -15,5 +16,6 @@ public class DreamCommentRequest {
     @Size(max = 100, message = "100자 이상 입력할 수 없습니다")
     private String content;
 
+    @JsonProperty("p_comment")
     private String pComment;
 }

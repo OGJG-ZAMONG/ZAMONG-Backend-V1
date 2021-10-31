@@ -5,6 +5,7 @@ import app.jg.og.zamong.dto.request.LoginUserRequest;
 import app.jg.og.zamong.dto.request.dream.DreamCommentRequest;
 import app.jg.og.zamong.entity.dream.Dream;
 import app.jg.og.zamong.entity.dream.DreamRepository;
+import app.jg.og.zamong.entity.dream.comment.Comment;
 import app.jg.og.zamong.entity.dream.comment.CommentRepository;
 import app.jg.og.zamong.entity.dream.sharedream.ShareDream;
 import app.jg.og.zamong.entity.dream.sharedream.ShareDreamRepository;
@@ -26,6 +27,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDateTime;
 
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -148,6 +150,28 @@ public class DreamControllerTest extends IntegrationTest {
                 .content(objectMapper.writeValueAsString(request))
                 .header(AUTHORIZATION, createBearerToken(accessToken))
         ).andExpect(status().isCreated());
+    }
+
+    @Test
+    @Transactional
+    void dream_comment_group_200() throws Exception {
+        Dream dream = dreamRepository.save(ShareDreamBuilder.build(user));
+
+        String content = "comment content";
+        Comment comment = commentRepository.save(Comment.builder()
+                .content(content)
+                .isChecked(false)
+                .dateTime(LocalDateTime.now())
+                .depth(0)
+                .pComment(null)
+                .user(user)
+                .dream(dream)
+                .build());
+
+        mockMvc.perform(get("/dream/" + dream.getUuid() + "/comment")
+                .contentType(MediaType.APPLICATION_JSON)
+                .header(AUTHORIZATION, createBearerToken(loginUser()))
+        ).andExpect(status().isOk());
     }
 
     private String loginUser() {

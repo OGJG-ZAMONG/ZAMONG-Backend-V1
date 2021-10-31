@@ -134,4 +134,9 @@ public class DreamController {
     public ResponseBody comment(@PathVariable("dream-uuid") String uuid, @Valid @RequestBody DreamCommentRequest request) {
         return ResponseBody.of(dreamCommentService.createDream(uuid, request), HttpStatus.CREATED.value());
     }
+
+    @GetMapping("/{dream-uuid}/comment")
+    public ResponseBody comment(@PathVariable("dream-uuid") String uuid) {
+        return ResponseBody.listOf(dreamCommentService.queryDreamComment(uuid), HttpStatus.OK.value());
+    }
 }
