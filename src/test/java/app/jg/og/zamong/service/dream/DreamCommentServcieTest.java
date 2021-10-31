@@ -1,11 +1,13 @@
 package app.jg.og.zamong.service.dream;
 
 import app.jg.og.zamong.dto.request.dream.DreamCommentRequest;
+import app.jg.og.zamong.dto.response.DreamCommendGroupResponse;
 import app.jg.og.zamong.dto.response.DreamCommentResponse;
 import app.jg.og.zamong.entity.dream.Dream;
 import app.jg.og.zamong.entity.dream.DreamRepository;
 import app.jg.og.zamong.entity.dream.comment.Comment;
 import app.jg.og.zamong.entity.dream.comment.CommentRepository;
+import app.jg.og.zamong.entity.dream.comment.recommend.RecommendRepository;
 import app.jg.og.zamong.entity.user.User;
 import app.jg.og.zamong.exception.business.BusinessException;
 import app.jg.og.zamong.exception.business.CommentNotFoundException;
@@ -38,6 +40,8 @@ public class DreamCommentServcieTest extends UnitTest {
     private CommentRepository commentRepository;
     @Mock
     private SecurityContextService securityContextService;
+    @Mock
+    private RecommendRepository recommendRepository;
 
     @Test
     void 댓글작성_실패() {
@@ -129,5 +133,22 @@ public class DreamCommentServcieTest extends UnitTest {
         //then
         assertThat(response.getContent()).isEqualTo(content);
         assertThat(response.getDepth()).isEqualTo(commentDepth + 1);
+    }
+
+    @Test
+    void 댓글목록조회_성공() {
+        //given
+        User user = UserBuilder.build();
+        Dream dream = DreamBuilder.build();
+
+        given(securityContextService.getPrincipal()).willReturn(new AuthenticationDetails(user));
+        given(dreamRepository.findById(dream.getUuid())).willReturn(Optional.of(dream));
+
+        //when
+        DreamCommendGroupResponse response = dreamCommentService.queryDreamComment(dream.getUuid().toString());
+
+        assertThat(response.getComments().size()).isEqualTo(dream.getComments().stream()
+                .filter(comment -> comment.getDepth() == 0)
+                .count());
     }
 }
