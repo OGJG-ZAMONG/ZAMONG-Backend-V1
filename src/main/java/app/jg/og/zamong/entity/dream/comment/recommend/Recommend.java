@@ -22,6 +22,7 @@ public class Recommend {
     private UUID uuid;
 
     @Setter
+    @Column(name = "type")
     private RecommendType recommendType;
 
     @ManyToOne(fetch = FetchType.LAZY)
