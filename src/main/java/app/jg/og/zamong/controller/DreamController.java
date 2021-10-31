@@ -109,7 +109,7 @@ public class DreamController {
         return ResponseBody.of(shareDreamService.modifyShareDream(uuid, request), HttpStatus.OK.value());
     }
 
-    @PatchMapping("/share/image/{dream-uuid}")
+    @PostMapping("/share/image/{dream-uuid}")
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void image(@PathVariable("dream-uuid") String uuid, @RequestParam("file")MultipartFile file) {
         shareDreamService.patchShareDreamImage(uuid, file);
