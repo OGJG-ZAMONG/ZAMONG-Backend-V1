@@ -22,12 +22,12 @@ public enum RecommendType {
 
     private final String value;
 
-    private static final Map<String, RecommendType> qualities =
+    private static final Map<String, RecommendType> recommendTypes =
             Collections.unmodifiableMap(Arrays.stream(RecommendType.values())
                     .collect(Collectors.toMap(RecommendType::getCode, Function.identity())));
 
     public static RecommendType find(String code) {
-        return Optional.ofNullable(qualities.get(code))
+        return Optional.ofNullable(recommendTypes.get(code))
                 .orElseThrow(() -> new AttributeConvertFailedException("Attribute Convert Failed " + code));
     }
 }
