@@ -1,12 +1,15 @@
 package app.jg.og.zamong.service.dream.comment;
 
 import app.jg.og.zamong.dto.request.dream.DreamCommentRequest;
+import app.jg.og.zamong.dto.response.DreamCommendGroupResponse;
 import app.jg.og.zamong.dto.response.DreamCommentResponse;
 import app.jg.og.zamong.dto.response.UserInformationResponse;
 import app.jg.og.zamong.entity.dream.Dream;
 import app.jg.og.zamong.entity.dream.DreamRepository;
 import app.jg.og.zamong.entity.dream.comment.Comment;
 import app.jg.og.zamong.entity.dream.comment.CommentRepository;
+import app.jg.og.zamong.entity.dream.comment.recommend.RecommendRepository;
+import app.jg.og.zamong.entity.dream.comment.recommend.RecommendType;
 import app.jg.og.zamong.entity.user.User;
 import app.jg.og.zamong.exception.business.CommentNotFoundException;
 import app.jg.og.zamong.exception.business.DreamNotFoundException;
@@ -15,7 +18,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -23,6 +28,7 @@ public class DreamCommentServiceImpl implements DreamCommentService {
 
     private final DreamRepository dreamRepository;
     private final CommentRepository commentRepository;
+    private final RecommendRepository recommendRepository;
 
     private final SecurityContextService securityContextService;
 
@@ -58,6 +64,32 @@ public class DreamCommentServiceImpl implements DreamCommentService {
                         .profile(user.getProfile())
                         .build())
                 .depth(depth)
+                .build();
+    }
+
+    @Override
+    public DreamCommendGroupResponse queryDreamComment(String uuid) {
+        User user = securityContextService.getPrincipal().getUser();
+
+        Dream dream = dreamRepository.findById(UUID.fromString(uuid))
+                .orElseThrow(() -> new DreamNotFoundException("해당하는 꿈을 찾을 수 없습니다"));
+
+        List<DreamCommendGroupResponse.CommentResponse> coments = dream.getComments().stream()
+                .map(comment -> DreamCommendGroupResponse.CommentResponse.builder()
+                .uuid(comment.getUuid())
+                .isChecked(comment.getIsChecked())
+                .content(comment.getContent())
+                .dateTime(comment.getDateTime())
+                .userUuid(comment.getUser().getUuid())
+                .userProfile(comment.getUser().getProfile())
+                .likeCount(recommendRepository.countAllByCommentAndRecommendType(comment, RecommendType.LIKE))
+                .dislikeCount(recommendRepository.countAllByCommentAndRecommendType(comment, RecommendType.DISLIKE))
+                .isLike(recommendRepository.existsByCommentAndUserAndRecommendType(comment, user, RecommendType.LIKE))
+                .isDisLike(recommendRepository.existsByCommentAndUserAndRecommendType(comment, user, RecommendType.DISLIKE))
+                .build()).collect(Collectors.toList());
+
+        return DreamCommendGroupResponse.builder()
+                .comments(coments)
                 .build();
     }
 }
