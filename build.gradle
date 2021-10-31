@@ -79,7 +79,8 @@ jacocoTestCoverageVerification {
 
             excludes = [
                     'app.jg.og.zamong.security.*',
-                    'app.jg.og.zamong.config.*'
+                    'app.jg.og.zamong.config.*',
+                    'app.jg.og.zamong.service.file.*'
             ]
         }
     }
