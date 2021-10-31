@@ -14,6 +14,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Optional;
+import java.util.UUID;
 
 @RequiredArgsConstructor
 @Service
@@ -36,7 +37,7 @@ public class FileSaveServiceImpl implements FileSaveService {
     }
 
     private String saveFile(File file, String directory) {
-        String fileName = directory + "/" + file.getName();
+        String fileName = directory + "/" + UUID.randomUUID() + file.getName().substring(file.getName().lastIndexOf("."));
         String uploadFilePath = putS3(file, fileName);
         file.delete();
         return uploadFilePath;
