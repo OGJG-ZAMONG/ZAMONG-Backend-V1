@@ -168,4 +168,15 @@ public class ShareDreamServiceImpl implements ShareDreamService {
                 .shareDream(shareDream)
                 .build());
     }
+
+    @Override
+    @Transactional
+    public void cancelShareDreamLucy(String uuid) {
+        ShareDream shareDream = shareDreamRepository.findById(UUID.fromString(uuid))
+                .orElseThrow(() -> new DreamNotFoundException("해당하는 꿈을 찾을 수 없습니다"));
+
+        User user = securityContextService.getPrincipal().getUser();
+
+        shareDreamLucyPointRepository.deleteByUserAndShareDream(user, shareDream);
+    }
 }
