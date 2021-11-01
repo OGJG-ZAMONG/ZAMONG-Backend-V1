@@ -151,4 +151,10 @@ public class DreamController {
     public void recommend(@PathVariable("comment-uuid") String uuid, @Valid @RequestBody DreamCommentRecommendRequest request) {
         dreamCommentService.doCommentRecommend(uuid, request);
     }
+
+    @PatchMapping("/comment/{comment-uuid}/content")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void content(@PathVariable("comment-uuid") String uuid, @Valid @RequestBody DreamCommentRequest request) {
+        dreamCommentService.patchCommentContent(uuid, request);
+    }
 }
