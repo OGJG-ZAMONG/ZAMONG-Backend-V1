@@ -16,4 +16,5 @@ public interface ShareDreamService {
     void patchShareDreamSleepDateTime(String uuid, ShareDreamSleepDateTimeRequest request);
 
     DoShareDreamResponse doShareDream(String uuid);
+    void addShareDreamLucy(String uuid);
 }
