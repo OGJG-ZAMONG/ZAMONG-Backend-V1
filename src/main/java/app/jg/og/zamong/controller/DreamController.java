@@ -128,6 +128,11 @@ public class DreamController {
         shareDreamService.patchShareDreamSleepDateTime(uuid, request);
     }
 
+    @PostMapping("/share/{dream-uuid}/lucy")
+    public void lucy(@PathVariable("dream-uuid") String uuid) {
+        shareDreamService.addShareDreamLucy(uuid);
+    }
+
     private final DreamCommentService dreamCommentService;
 
     @PostMapping("/{dream-uuid}/comment")

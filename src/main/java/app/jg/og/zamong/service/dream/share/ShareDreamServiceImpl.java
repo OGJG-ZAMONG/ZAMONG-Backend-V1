@@ -12,9 +12,12 @@ import app.jg.og.zamong.entity.dream.dreamtype.DreamTypeRepository;
 import app.jg.og.zamong.entity.dream.enums.DreamTag;
 import app.jg.og.zamong.entity.dream.sharedream.ShareDream;
 import app.jg.og.zamong.entity.dream.sharedream.ShareDreamRepository;
+import app.jg.og.zamong.entity.dream.sharedream.lucypoint.ShareDreamLucyPoint;
+import app.jg.og.zamong.entity.dream.sharedream.lucypoint.ShareDreamLucyPointRepository;
 import app.jg.og.zamong.entity.user.User;
 import app.jg.og.zamong.entity.user.UserRepository;
 import app.jg.og.zamong.exception.business.DreamNotFoundException;
+import app.jg.og.zamong.exception.business.ForbiddenUserException;
 import app.jg.og.zamong.exception.business.UserNotFoundException;
 import app.jg.og.zamong.service.file.FileSaveService;
 import app.jg.og.zamong.service.securitycontext.SecurityContextService;
@@ -37,6 +40,7 @@ public class ShareDreamServiceImpl implements ShareDreamService {
     private final UserRepository userRepository;
     private final DreamTypeRepository dreamTypeRepository;
     private final AttachmentImageRepository attachmentImageRepository;
+    private final ShareDreamLucyPointRepository shareDreamLucyPointRepository;
 
     @Override
     @Transactional
@@ -147,5 +151,21 @@ public class ShareDreamServiceImpl implements ShareDreamService {
                 .uuid(shareDream.getUuid())
                 .shareDateTime(shareDream.getShareDateTime())
                 .build();
+    }
+
+    @Override
+    public void addShareDreamLucy(String uuid) {
+        ShareDream shareDream = shareDreamRepository.findById(UUID.fromString(uuid))
+                .orElseThrow(() -> new DreamNotFoundException("해당하는 꿈을 찾을 수 없습니다"));
+
+        User user = securityContextService.getPrincipal().getUser();
+
+        shareDreamLucyPointRepository.findByUserAndShareDream(user, shareDream)
+                .ifPresent(s -> { throw new ForbiddenUserException("이미 추가되었습니다"); });
+
+        shareDreamLucyPointRepository.save(ShareDreamLucyPoint.builder()
+                .user(user)
+                .shareDream(shareDream)
+                .build());
     }
 }
