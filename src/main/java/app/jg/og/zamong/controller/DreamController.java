@@ -141,6 +141,11 @@ public class DreamController {
         return ResponseBody.listOf(dreamCommentService.queryDreamComment(uuid), HttpStatus.OK.value());
     }
 
+    @GetMapping("/comment/{comment-uuid}/comment")
+    public ResponseBody reComment(@PathVariable("comment-uuid") String uuid) {
+        return ResponseBody.listOf(dreamCommentService.queryDreamReComment(uuid), HttpStatus.OK.value());
+    }
+
     @PostMapping("/comment/{comment-uuid}/recommend")
     @ResponseStatus(HttpStatus.CREATED)
     public void recommend(@PathVariable("comment-uuid") String uuid, @Valid @RequestBody DreamCommentRecommendRequest request) {
