@@ -167,4 +167,10 @@ public class DreamController {
     public void content(@PathVariable("comment-uuid") String uuid, @Valid @RequestBody DreamCommentRequest request) {
         dreamCommentService.patchCommentContent(uuid, request);
     }
+
+    @PostMapping("/comment/{comment-uuid}/check")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void check(@PathVariable("comment-uuid") String uuid) {
+        dreamCommentService.checkDreamComment(uuid);
+    }
 }
