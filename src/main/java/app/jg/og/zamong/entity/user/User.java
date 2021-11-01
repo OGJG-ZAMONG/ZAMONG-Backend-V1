@@ -13,6 +13,7 @@ import java.util.UUID;
 
 @Builder
 @Getter
+@EqualsAndHashCode(of = {"uuid"})
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity

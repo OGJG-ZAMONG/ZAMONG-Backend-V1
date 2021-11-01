@@ -62,26 +62,4 @@ jacocoTestReport {
         html.required.set(true)
         xml.required.set(true)
     }
-
-    finalizedBy 'jacocoTestCoverageVerification'
-}
-
-jacocoTestCoverageVerification {
-    violationRules {
-        rule {
-            element = 'CLASS'
-
-            limit {
-                counter = 'BRANCH'
-                value = 'COVEREDRATIO'
-                minimum = 0.80
-            }
-
-            excludes = [
-                    'app.jg.og.zamong.security.*',
-                    'app.jg.og.zamong.config.*',
-                    'app.jg.og.zamong.service.file.*'
-            ]
-        }
-    }
 }

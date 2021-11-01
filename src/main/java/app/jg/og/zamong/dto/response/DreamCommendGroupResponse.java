@@ -36,5 +36,7 @@ public class DreamCommendGroupResponse implements Response {
         private final Boolean isLike;
 
         private final Boolean isDisLike;
+
+        private final Boolean itsMe;
     }
 }

@@ -1,5 +1,6 @@
 package app.jg.og.zamong.controller;
 
+import app.jg.og.zamong.dto.request.DreamCommentRecommendRequest;
 import app.jg.og.zamong.dto.request.dream.DreamCommentRequest;
 import app.jg.og.zamong.dto.request.dream.DreamContentRequest;
 import app.jg.og.zamong.dto.request.dream.DreamTitleRequest;
@@ -138,5 +139,22 @@ public class DreamController {
     @GetMapping("/{dream-uuid}/comment")
     public ResponseBody comment(@PathVariable("dream-uuid") String uuid) {
         return ResponseBody.listOf(dreamCommentService.queryDreamComment(uuid), HttpStatus.OK.value());
+    }
+
+    @GetMapping("/comment/{comment-uuid}/comment")
+    public ResponseBody reComment(@PathVariable("comment-uuid") String uuid) {
+        return ResponseBody.listOf(dreamCommentService.queryDreamReComment(uuid), HttpStatus.OK.value());
+    }
+
+    @PostMapping("/comment/{comment-uuid}/recommend")
+    @ResponseStatus(HttpStatus.CREATED)
+    public void recommend(@PathVariable("comment-uuid") String uuid, @Valid @RequestBody DreamCommentRecommendRequest request) {
+        dreamCommentService.doCommentRecommend(uuid, request);
+    }
+
+    @PatchMapping("/comment/{comment-uuid}/content")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void content(@PathVariable("comment-uuid") String uuid, @Valid @RequestBody DreamCommentRequest request) {
+        dreamCommentService.patchCommentContent(uuid, request);
     }
 }
