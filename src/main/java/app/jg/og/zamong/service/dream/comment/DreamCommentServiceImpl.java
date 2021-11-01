@@ -152,4 +152,13 @@ public class DreamCommentServiceImpl implements DreamCommentService {
 
         comment.setContent(request.getContent());
     }
+
+    @Override
+    @Transactional
+    public void checkDreamComment(String uuid) {
+        Comment comment = commentRepository.findById(UUID.fromString(uuid))
+                .orElseThrow(() -> new CommentNotFoundException("댓글을 찾을 수 없습니다"));
+
+        comment.setIsChecked(true);
+    }
 }
