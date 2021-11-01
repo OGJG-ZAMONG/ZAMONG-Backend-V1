@@ -9,5 +9,6 @@ public interface DreamCommentService {
 
     DreamCommentResponse createDream(String dreamId, DreamCommentRequest request);
     DreamCommendGroupResponse queryDreamComment(String uuid);
+    DreamCommendGroupResponse queryDreamReComment(String uuid);
     void doCommentRecommend(String uuid, DreamCommentRecommendRequest request);
 }

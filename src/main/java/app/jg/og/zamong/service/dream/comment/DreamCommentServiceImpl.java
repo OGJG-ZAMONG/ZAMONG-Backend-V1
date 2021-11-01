@@ -86,6 +86,23 @@ public class DreamCommentServiceImpl implements DreamCommentService {
                 .build();
     }
 
+    @Override
+    public DreamCommendGroupResponse queryDreamReComment(String uuid) {
+        User user = securityContextService.getPrincipal().getUser();
+
+        Comment pComment = commentRepository.findById(UUID.fromString(uuid))
+                .orElseThrow(() -> new CommentNotFoundException("댓글을 찾을 수 없습니다"));
+
+        List<DreamCommendGroupResponse.CommentResponse> comments = pComment.getComments().stream()
+                .filter(comment -> comment.getDepth() == pComment.getDepth() + 1)
+                .map(comment -> convert(comment, user))
+                .collect(Collectors.toList());
+
+        return DreamCommendGroupResponse.builder()
+                .comments(comments)
+                .build();
+    }
+
     private DreamCommendGroupResponse.CommentResponse convert(Comment comment, User user) {
         return DreamCommendGroupResponse.CommentResponse.builder()
                 .uuid(comment.getUuid())
