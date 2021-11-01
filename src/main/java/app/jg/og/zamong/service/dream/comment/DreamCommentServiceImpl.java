@@ -78,7 +78,16 @@ public class DreamCommentServiceImpl implements DreamCommentService {
 
         List<DreamCommendGroupResponse.CommentResponse> comments = dream.getComments().stream()
                 .filter(comment -> comment.getDepth() == 0)
-                .map(comment -> DreamCommendGroupResponse.CommentResponse.builder()
+                .map(comment -> convert(comment, user))
+                .collect(Collectors.toList());
+
+        return DreamCommendGroupResponse.builder()
+                .comments(comments)
+                .build();
+    }
+
+    private DreamCommendGroupResponse.CommentResponse convert(Comment comment, User user) {
+        return DreamCommendGroupResponse.CommentResponse.builder()
                 .uuid(comment.getUuid())
                 .isChecked(comment.getIsChecked())
                 .content(comment.getContent())
@@ -89,10 +98,6 @@ public class DreamCommentServiceImpl implements DreamCommentService {
                 .dislikeCount(recommendRepository.countAllByCommentAndRecommendType(comment, RecommendType.DISLIKE))
                 .isLike(recommendRepository.existsByCommentAndUserAndRecommendType(comment, user, RecommendType.LIKE))
                 .isDisLike(recommendRepository.existsByCommentAndUserAndRecommendType(comment, user, RecommendType.DISLIKE))
-                .build()).collect(Collectors.toList());
-
-        return DreamCommendGroupResponse.builder()
-                .comments(comments)
                 .build();
     }
 
