@@ -11,4 +11,5 @@ public interface DreamCommentService {
     DreamCommendGroupResponse queryDreamComment(String uuid);
     DreamCommendGroupResponse queryDreamReComment(String uuid);
     void doCommentRecommend(String uuid, DreamCommentRecommendRequest request);
+    void patchCommentContent(String uuid, DreamCommentRequest  request);
 }

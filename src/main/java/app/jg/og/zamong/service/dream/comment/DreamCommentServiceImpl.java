@@ -15,9 +15,11 @@ import app.jg.og.zamong.entity.dream.comment.recommend.RecommendType;
 import app.jg.og.zamong.entity.user.User;
 import app.jg.og.zamong.exception.business.CommentNotFoundException;
 import app.jg.og.zamong.exception.business.DreamNotFoundException;
+import app.jg.og.zamong.exception.business.ForbiddenUserException;
 import app.jg.og.zamong.service.securitycontext.SecurityContextService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -134,5 +136,20 @@ public class DreamCommentServiceImpl implements DreamCommentService {
                 .user(user)
                 .comment(comment)
                 .build());
+    }
+
+    @Override
+    @Transactional
+    public void patchCommentContent(String uuid, DreamCommentRequest request) {
+        User user = securityContextService.getPrincipal().getUser();
+
+        Comment comment = commentRepository.findById(UUID.fromString(uuid))
+                .orElseThrow(() -> new CommentNotFoundException("댓글을 찾을 수 없습니다"));
+
+        if(!comment.getUser().equals(user)) {
+            throw new ForbiddenUserException("해당 댓글을 수정할 수 없습니다");
+        }
+
+        comment.setContent(request.getContent());
     }
 }
