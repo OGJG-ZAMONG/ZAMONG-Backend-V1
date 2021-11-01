@@ -23,6 +23,7 @@ public class Comment {
     @Column(columnDefinition = "BINARY(16)")
     private UUID uuid;
 
+    @Setter
     @Column(length = 100)
     private String content;
 
