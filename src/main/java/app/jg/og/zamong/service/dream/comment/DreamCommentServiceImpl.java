@@ -1,5 +1,6 @@
 package app.jg.og.zamong.service.dream.comment;
 
+import app.jg.og.zamong.dto.request.DreamCommentRecommendRequest;
 import app.jg.og.zamong.dto.request.dream.DreamCommentRequest;
 import app.jg.og.zamong.dto.response.DreamCommendGroupResponse;
 import app.jg.og.zamong.dto.response.DreamCommentResponse;
@@ -8,6 +9,7 @@ import app.jg.og.zamong.entity.dream.Dream;
 import app.jg.og.zamong.entity.dream.DreamRepository;
 import app.jg.og.zamong.entity.dream.comment.Comment;
 import app.jg.og.zamong.entity.dream.comment.CommentRepository;
+import app.jg.og.zamong.entity.dream.comment.recommend.Recommend;
 import app.jg.og.zamong.entity.dream.comment.recommend.RecommendRepository;
 import app.jg.og.zamong.entity.dream.comment.recommend.RecommendType;
 import app.jg.og.zamong.entity.user.User;
@@ -92,5 +94,22 @@ public class DreamCommentServiceImpl implements DreamCommentService {
         return DreamCommendGroupResponse.builder()
                 .comments(comments)
                 .build();
+    }
+
+    @Override
+    public void doCommentRecommend(String uuid, DreamCommentRecommendRequest request) {
+        User user = securityContextService.getPrincipal().getUser();
+
+        Comment comment = commentRepository.findById(UUID.fromString(uuid))
+                .orElseThrow(() -> new CommentNotFoundException("댓글을 찾을 수 없습니다"));
+
+        recommendRepository.findByCommentAndUser(comment, user)
+                .ifPresent(recommendRepository::delete);
+
+        recommendRepository.save(Recommend.builder()
+                .recommendType(request.getType())
+                .user(user)
+                .comment(comment)
+                .build());
     }
 }
