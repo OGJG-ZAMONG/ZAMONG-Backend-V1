@@ -115,6 +115,7 @@ public class DreamCommentServiceImpl implements DreamCommentService {
                 .dislikeCount(recommendRepository.countAllByCommentAndRecommendType(comment, RecommendType.DISLIKE))
                 .isLike(recommendRepository.existsByCommentAndUserAndRecommendType(comment, user, RecommendType.LIKE))
                 .isDisLike(recommendRepository.existsByCommentAndUserAndRecommendType(comment, user, RecommendType.DISLIKE))
+                .itsMe(comment.getUser().equals(user))
                 .build();
     }
 
