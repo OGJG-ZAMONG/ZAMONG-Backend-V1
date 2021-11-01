@@ -12,4 +12,5 @@ import java.util.UUID;
 public interface ShareDreamLucyPointRepository extends CrudRepository<ShareDreamLucyPoint, UUID> {
 
     Optional<ShareDreamLucyPoint> findByUserAndShareDream(User user, ShareDream shareDream);
+    void deleteByUserAndShareDream(User user, ShareDream shareDream);
 }

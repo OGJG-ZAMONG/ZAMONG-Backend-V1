@@ -17,4 +17,5 @@ public interface ShareDreamService {
 
     DoShareDreamResponse doShareDream(String uuid);
     void addShareDreamLucy(String uuid);
+    void cancelShareDreamLucy(String uuid);
 }
