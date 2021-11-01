@@ -1,5 +1,6 @@
 package app.jg.og.zamong.controller;
 
+import app.jg.og.zamong.dto.request.DreamCommentRecommendRequest;
 import app.jg.og.zamong.dto.request.dream.DreamCommentRequest;
 import app.jg.og.zamong.dto.request.dream.DreamContentRequest;
 import app.jg.og.zamong.dto.request.dream.DreamTitleRequest;
@@ -138,5 +139,11 @@ public class DreamController {
     @GetMapping("/{dream-uuid}/comment")
     public ResponseBody comment(@PathVariable("dream-uuid") String uuid) {
         return ResponseBody.listOf(dreamCommentService.queryDreamComment(uuid), HttpStatus.OK.value());
+    }
+
+    @PostMapping("/comment/{comment-uuid}/recommend")
+    @ResponseStatus(HttpStatus.CREATED)
+    public void recommend(@PathVariable("comment-uuid") String uuid, @Valid @RequestBody DreamCommentRecommendRequest request) {
+        dreamCommentService.doCommentRecommend(uuid, request);
     }
 }
