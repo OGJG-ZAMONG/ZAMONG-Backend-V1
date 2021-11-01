@@ -27,6 +27,7 @@ public class Comment {
     @Column(length = 100)
     private String content;
 
+    @Setter
     @Column(columnDefinition = "tinyint(1)")
     private Boolean isChecked;
 
