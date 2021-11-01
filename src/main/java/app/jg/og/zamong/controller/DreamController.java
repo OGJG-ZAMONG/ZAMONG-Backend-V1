@@ -133,6 +133,11 @@ public class DreamController {
         shareDreamService.addShareDreamLucy(uuid);
     }
 
+    @DeleteMapping("/share/{dream-uuid}/lucy")
+    public void lucyCancel(@PathVariable("dream-uuid") String uuid) {
+        shareDreamService.cancelShareDreamLucy(uuid);
+    }
+
     private final DreamCommentService dreamCommentService;
 
     @PostMapping("/{dream-uuid}/comment")
