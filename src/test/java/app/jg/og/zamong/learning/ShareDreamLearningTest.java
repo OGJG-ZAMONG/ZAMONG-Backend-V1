@@ -35,14 +35,4 @@ public class ShareDreamLearningTest extends IntegrationTest {
 
         assertThat(findShareDream.getUser()).isEqualTo(user);
     }
-
-    @Test
-    void 날짜컬럼_자동생성() {
-        LocalDateTime now = LocalDateTime.now();
-
-        ShareDream shareDream = shareDreamRepository.save(ShareDreamBuilder.build(null));
-
-        assertThat(shareDream.getCreatedAt()).isAfter(now);
-        assertThat(shareDream.getUpdatedAt()).isAfter(now);
-    }
 }
