@@ -20,6 +20,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Service
@@ -43,6 +44,8 @@ public class SellDreamServiceImpl implements SellDreamService {
                 .content(request.getContent())
                 .user(user)
                 .cost(request.getCost())
+                .createdAt(LocalDateTime.now())
+                .updatedAt(LocalDateTime.now())
                 .build());
 
         request.getDreamTypes()
