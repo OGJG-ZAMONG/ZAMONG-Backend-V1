@@ -5,12 +5,15 @@ import app.jg.og.zamong.dto.request.dream.DreamCommentRequest;
 import app.jg.og.zamong.dto.request.dream.DreamContentRequest;
 import app.jg.og.zamong.dto.request.dream.DreamTitleRequest;
 import app.jg.og.zamong.dto.request.dream.DreamTypesRequest;
+import app.jg.og.zamong.dto.request.dream.selldream.SellDreamCostRequest;
+import app.jg.og.zamong.dto.request.dream.selldream.SellDreamRequest;
 import app.jg.og.zamong.dto.request.dream.sharedream.ShareDreamQualityRequest;
 import app.jg.og.zamong.dto.request.dream.sharedream.ShareDreamRequest;
 import app.jg.og.zamong.dto.request.dream.sharedream.ShareDreamSleepDateTimeRequest;
 import app.jg.og.zamong.dto.response.ResponseBody;
 import app.jg.og.zamong.service.dream.DreamService;
 import app.jg.og.zamong.service.dream.comment.DreamCommentService;
+import app.jg.og.zamong.service.dream.sell.SellDreamService;
 import app.jg.og.zamong.service.dream.share.ShareDreamService;
 import app.jg.og.zamong.service.dream.find.ShareDreamFindService;
 import lombok.RequiredArgsConstructor;
@@ -136,6 +139,24 @@ public class DreamController {
     @DeleteMapping("/share/{dream-uuid}/lucy")
     public void lucyCancel(@PathVariable("dream-uuid") String uuid) {
         shareDreamService.cancelShareDreamLucy(uuid);
+    }
+
+    private final SellDreamService sellDreamService;
+
+    @PostMapping("/sell")
+    public ResponseBody sell(@Valid @RequestBody SellDreamRequest request) {
+        return ResponseBody.of(sellDreamService.createSellDream(request), HttpStatus.CREATED.value());
+    }
+
+    @PatchMapping("/sell/cost/{dream-uuid}")
+    @ResponseStatus(value = HttpStatus.NO_CONTENT)
+    public void cost(@PathVariable("dream-uuid") String uuid, @Valid @RequestBody SellDreamCostRequest request) {
+        sellDreamService.patchSellDreamCost(uuid, request);
+    }
+
+    @PostMapping("/sell/{dream-uuid}/request")
+    public ResponseBody sellRequest(@PathVariable("dream-uuid") String uuid) {
+        return ResponseBody.of(sellDreamService.doSellRequestDream(uuid), HttpStatus.OK.value());
     }
 
     private final DreamCommentService dreamCommentService;

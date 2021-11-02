@@ -1,7 +1,7 @@
 package app.jg.og.zamong.service.dream;
 
 import app.jg.og.zamong.dto.request.dream.sharedream.*;
-import app.jg.og.zamong.dto.response.CreateShareDreamResponse;
+import app.jg.og.zamong.dto.response.CreateDreamResponse;
 import app.jg.og.zamong.dto.response.DoShareDreamResponse;
 import app.jg.og.zamong.entity.dream.attachment.AttachmentImage;
 import app.jg.og.zamong.entity.dream.attachment.AttachmentImageRepository;
@@ -67,7 +67,7 @@ public class ShareDreamServiceTest extends UnitTest {
                 .sleepEndDateTime(LocalDateTime.now())
                 .build();
 
-        CreateShareDreamResponse response = shareDreamService.createShareDream(request);
+        CreateDreamResponse response = shareDreamService.createShareDream(request);
 
         //when
         assertThat(response.getUuid()).isEqualTo(shareDream.getUuid());
