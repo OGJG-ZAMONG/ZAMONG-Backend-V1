@@ -13,5 +13,6 @@ import javax.persistence.Entity;
 @Entity
 public class SellDream extends Dream {
 
+    @Setter
     private Integer cost;
 }
