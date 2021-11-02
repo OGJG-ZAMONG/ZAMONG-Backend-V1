@@ -154,6 +154,11 @@ public class DreamController {
         sellDreamService.patchSellDreamCost(uuid, request);
     }
 
+    @PostMapping("/sell/{dream-uuid}/request")
+    public ResponseBody sellRequest(@PathVariable("dream-uuid") String uuid) {
+        return ResponseBody.of(sellDreamService.doSellRequestDream(uuid), HttpStatus.OK.value());
+    }
+
     private final DreamCommentService dreamCommentService;
 
     @PostMapping("/{dream-uuid}/comment")
