@@ -5,6 +5,7 @@ import app.jg.og.zamong.dto.request.dream.DreamCommentRequest;
 import app.jg.og.zamong.dto.request.dream.DreamContentRequest;
 import app.jg.og.zamong.dto.request.dream.DreamTitleRequest;
 import app.jg.og.zamong.dto.request.dream.DreamTypesRequest;
+import app.jg.og.zamong.dto.request.dream.selldream.SellDreamCostRequest;
 import app.jg.og.zamong.dto.request.dream.selldream.SellDreamRequest;
 import app.jg.og.zamong.dto.request.dream.sharedream.ShareDreamQualityRequest;
 import app.jg.og.zamong.dto.request.dream.sharedream.ShareDreamRequest;
@@ -145,6 +146,12 @@ public class DreamController {
     @PostMapping("/sell")
     public ResponseBody sell(@Valid @RequestBody SellDreamRequest request) {
         return ResponseBody.of(sellDreamService.createSellDream(request), HttpStatus.CREATED.value());
+    }
+
+    @PatchMapping("/sell/cost/{dream-uuid}")
+    @ResponseStatus(value = HttpStatus.NO_CONTENT)
+    public void cost(@PathVariable("dream-uuid") String uuid, @Valid @RequestBody SellDreamCostRequest request) {
+        sellDreamService.patchSellDreamCost(uuid, request);
     }
 
     private final DreamCommentService dreamCommentService;
