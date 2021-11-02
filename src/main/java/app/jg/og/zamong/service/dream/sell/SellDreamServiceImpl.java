@@ -1,5 +1,6 @@
 package app.jg.og.zamong.service.dream.sell;
 
+import app.jg.og.zamong.dto.request.dream.selldream.SellDreamCostRequest;
 import app.jg.og.zamong.dto.request.dream.selldream.SellDreamRequest;
 import app.jg.og.zamong.dto.response.CreateDreamResponse;
 import app.jg.og.zamong.entity.dream.attachment.AttachmentImage;
@@ -10,10 +11,13 @@ import app.jg.og.zamong.entity.dream.enums.DreamTag;
 import app.jg.og.zamong.entity.dream.selldream.SellDream;
 import app.jg.og.zamong.entity.dream.selldream.SellDreamRepository;
 import app.jg.og.zamong.entity.user.User;
+import app.jg.og.zamong.exception.business.DreamNotFoundException;
 import app.jg.og.zamong.service.securitycontext.SecurityContextService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -54,5 +58,14 @@ public class SellDreamServiceImpl implements SellDreamService {
                 .createdAt(sellDream.getCreatedAt())
                 .updatedAt(sellDream.getUpdatedAt())
                 .build();
+    }
+
+    @Override
+    @Transactional
+    public void patchSellDreamCost(String uuid, SellDreamCostRequest request) {
+        SellDream sellDream = sellDreamRepository.findById(UUID.fromString(uuid))
+                .orElseThrow(() -> new DreamNotFoundException("해당하는 꿈을 찾을 수 없습니다"));
+
+        sellDream.setCost(request.getCost());
     }
 }
