@@ -5,12 +5,14 @@ import app.jg.og.zamong.dto.request.dream.DreamCommentRequest;
 import app.jg.og.zamong.dto.request.dream.DreamContentRequest;
 import app.jg.og.zamong.dto.request.dream.DreamTitleRequest;
 import app.jg.og.zamong.dto.request.dream.DreamTypesRequest;
+import app.jg.og.zamong.dto.request.dream.selldream.SellDreamRequest;
 import app.jg.og.zamong.dto.request.dream.sharedream.ShareDreamQualityRequest;
 import app.jg.og.zamong.dto.request.dream.sharedream.ShareDreamRequest;
 import app.jg.og.zamong.dto.request.dream.sharedream.ShareDreamSleepDateTimeRequest;
 import app.jg.og.zamong.dto.response.ResponseBody;
 import app.jg.og.zamong.service.dream.DreamService;
 import app.jg.og.zamong.service.dream.comment.DreamCommentService;
+import app.jg.og.zamong.service.dream.sell.SellDreamService;
 import app.jg.og.zamong.service.dream.share.ShareDreamService;
 import app.jg.og.zamong.service.dream.find.ShareDreamFindService;
 import lombok.RequiredArgsConstructor;
@@ -136,6 +138,13 @@ public class DreamController {
     @DeleteMapping("/share/{dream-uuid}/lucy")
     public void lucyCancel(@PathVariable("dream-uuid") String uuid) {
         shareDreamService.cancelShareDreamLucy(uuid);
+    }
+
+    private final SellDreamService sellDreamService;
+
+    @PostMapping("/sell")
+    public ResponseBody sell(@Valid @RequestBody SellDreamRequest request) {
+        return ResponseBody.of(sellDreamService.createSellDream(request), HttpStatus.CREATED.value());
     }
 
     private final DreamCommentService dreamCommentService;
