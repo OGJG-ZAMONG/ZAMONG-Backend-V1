@@ -3,7 +3,7 @@ package app.jg.og.zamong.service.dream.sell;
 import app.jg.og.zamong.dto.request.dream.selldream.SellDreamCostRequest;
 import app.jg.og.zamong.dto.request.dream.selldream.SellDreamRequest;
 import app.jg.og.zamong.dto.response.CreateDreamResponse;
-import app.jg.og.zamong.dto.response.DoSellRequestDreamResponse;
+import app.jg.og.zamong.dto.response.dream.selldream.DoSellRequestDreamResponse;
 import app.jg.og.zamong.entity.dream.attachment.AttachmentImage;
 import app.jg.og.zamong.entity.dream.attachment.AttachmentImageRepository;
 import app.jg.og.zamong.entity.dream.dreamtype.DreamType;
@@ -20,7 +20,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Service
