@@ -66,7 +66,7 @@ public class ShareDreamFindServiceTest extends UnitTest {
         given(shareDreamRepository.findByIsSharedIsTrue(any(Pageable.class))).willReturn(shareDreamPage);
 
         //when
-        SharedDreamGroupResponse response = dreamFindService.queryShareDreams(page, size);
+        SharedDreamGroupResponse response = dreamFindService.queryShareDreams(page, size, "shared");
 
         //then
         assertThat(response.getShareDreams().size()).isEqualTo(size);
