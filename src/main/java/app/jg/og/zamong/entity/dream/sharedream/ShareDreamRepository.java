@@ -14,4 +14,5 @@ public interface ShareDreamRepository extends PagingAndSortingRepository<ShareDr
     List<ShareDream> findByUserAndSleepDateTimeBetween(User user, LocalDateTime start, LocalDateTime end);
     Page<ShareDream> findByIsSharedIsTrue(Pageable pageable);
     Page<ShareDream> findByUser(User user, Pageable pageable);
+    Page<ShareDream> findByUserIn(List<User> users, Pageable pageable);
 }
