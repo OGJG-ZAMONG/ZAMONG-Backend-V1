@@ -85,7 +85,7 @@ public class DreamController {
             @Range(min = 2000, max = 3000) @PathParam("year") int year,
             @Range(min = 1, max = 12) @PathParam("month") int month
     ) {
-        return ResponseBody.of(shareDreamFindService.queryMyShareDreamTimeTable(year, month), HttpStatus.OK.value());
+        return ResponseBody.listOf(shareDreamFindService.queryMyShareDreamTimeTable(year, month), HttpStatus.OK.value());
     }
 
     @GetMapping("/share/timetable/v2")
@@ -93,7 +93,15 @@ public class DreamController {
             @Range(min = 2000, max = 3000) @PathParam("year") int year,
             @Range(min = 1, max = 12) @PathParam("month") int month
     ) {
-        return ResponseBody.of(shareDreamFindService.queryShareDreamTimeTableV2(year, month), HttpStatus.OK.value());
+        return ResponseBody.listOf(shareDreamFindService.queryShareDreamTimeTableV2(year, month), HttpStatus.OK.value());
+    }
+
+    @GetMapping("/share/follow")
+    public ResponseBody follwoing(
+            @PathParam("page") int page,
+            @Max(50) @PathParam("size") int size
+    ) {
+        return ResponseBody.listOf(shareDreamFindService.queryFollowShareDreams(page, size), HttpStatus.OK.value());
     }
 
     private final ShareDreamService shareDreamService;
