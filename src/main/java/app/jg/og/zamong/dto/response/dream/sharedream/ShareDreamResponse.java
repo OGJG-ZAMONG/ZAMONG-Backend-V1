@@ -1,4 +1,4 @@
-package app.jg.og.zamong.dto.response;
+package app.jg.og.zamong.dto.response.dream.sharedream;
 
 import app.jg.og.zamong.entity.dream.sharedream.ShareDream;
 import lombok.Builder;

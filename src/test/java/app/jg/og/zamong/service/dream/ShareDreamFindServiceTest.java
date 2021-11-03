@@ -1,6 +1,6 @@
 package app.jg.og.zamong.service.dream;
 
-import app.jg.og.zamong.dto.response.*;
+import app.jg.og.zamong.dto.response.dream.sharedream.*;
 import app.jg.og.zamong.entity.dream.sharedream.ShareDream;
 import app.jg.og.zamong.entity.dream.sharedream.ShareDreamRepository;
 import app.jg.og.zamong.entity.user.User;
@@ -20,7 +20,6 @@ import org.springframework.data.domain.Pageable;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;

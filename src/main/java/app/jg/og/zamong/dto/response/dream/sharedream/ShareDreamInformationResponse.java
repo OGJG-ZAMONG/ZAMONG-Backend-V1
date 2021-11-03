@@ -1,5 +1,6 @@
-package app.jg.og.zamong.dto.response;
+package app.jg.og.zamong.dto.response.dream.sharedream;
 
+import app.jg.og.zamong.dto.response.Response;
 import app.jg.og.zamong.entity.dream.enums.DreamQuality;
 import app.jg.og.zamong.entity.dream.enums.DreamType;
 import lombok.Builder;
