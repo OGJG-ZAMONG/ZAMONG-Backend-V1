@@ -11,6 +11,7 @@ import app.jg.og.zamong.dto.request.dream.sharedream.ShareDreamQualityRequest;
 import app.jg.og.zamong.dto.request.dream.sharedream.ShareDreamRequest;
 import app.jg.og.zamong.dto.request.dream.sharedream.ShareDreamSleepDateTimeRequest;
 import app.jg.og.zamong.dto.response.ResponseBody;
+import app.jg.og.zamong.dto.response.StringResponse;
 import app.jg.og.zamong.service.dream.DreamService;
 import app.jg.og.zamong.service.dream.comment.DreamCommentService;
 import app.jg.og.zamong.service.dream.sell.SellDreamService;
@@ -64,8 +65,14 @@ public class DreamController {
     @GetMapping("/share")
     public ResponseBody share(
             @PathParam("page") int page,
-            @Max(50) @PathParam("size") int size) {
-        return ResponseBody.listOf(shareDreamFindService.queryShareDreams(page, size), HttpStatus.OK.value());
+            @Max(50) @PathParam("size") int size,
+            @PathParam("sort") String sort) {
+        switch (sort) {
+            case "created":
+                return ResponseBody.listOf(shareDreamFindService.queryShareDreams(page, size), HttpStatus.OK.value());
+            default:
+                return ResponseBody.of(new StringResponse("올바르지 않은 정렬 인자"), HttpStatus.BAD_REQUEST.value());
+        }
     }
 
     @GetMapping("/share/me")
