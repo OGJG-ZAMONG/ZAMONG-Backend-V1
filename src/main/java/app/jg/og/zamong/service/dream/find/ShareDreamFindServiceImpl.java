@@ -4,6 +4,8 @@ import app.jg.og.zamong.dto.response.*;
 import app.jg.og.zamong.entity.dream.dreamtype.DreamType;
 import app.jg.og.zamong.entity.dream.sharedream.ShareDream;
 import app.jg.og.zamong.entity.dream.sharedream.ShareDreamRepository;
+import app.jg.og.zamong.entity.follow.Follow;
+import app.jg.og.zamong.entity.follow.FollowRepository;
 import app.jg.og.zamong.entity.user.User;
 import app.jg.og.zamong.exception.business.DreamNotFoundException;
 import app.jg.og.zamong.service.securitycontext.SecurityContextService;
@@ -25,6 +27,7 @@ public class ShareDreamFindServiceImpl implements ShareDreamFindService {
 
     private final ShareDreamRepository shareDreamRepository;
     private final SecurityContextService securityContextService;
+    private final FollowRepository followRepository;
 
     @Override
     public ShareDreamInformationResponse queryShareDreamInformation(String uuid) {
@@ -79,6 +82,35 @@ public class ShareDreamFindServiceImpl implements ShareDreamFindService {
         List<ShareDreamResponse> shareDreamGroup = shareDreamPage
                 .map(sd -> ShareDreamResponse.builder()
                         .uuid(sd.getUuid())
+                        .title(sd.getTitle())
+                        .defaultPostingImage(sd.getDefaultImage())
+                        .isShared(sd.getIsShared())
+                        .createdAt(sd.getCreatedAt())
+                        .build())
+                .toList();
+
+        return ShareDreamGroupResponse.builder()
+                .shareDreams(shareDreamGroup)
+                .totalPage(shareDreamPage.getTotalPages())
+                .totalSize(shareDreamPage.getTotalElements())
+                .build();
+    }
+
+    @Override
+    public ShareDreamGroupResponse queryFollowShareDreams(int page, int size) {
+        User user = securityContextService.getPrincipal().getUser();
+
+
+        List<User> followings = followRepository.findAllByFollower(user).stream().map(Follow::getFollowing).collect(Collectors.toList());
+
+        Pageable request = PageRequest.of(page, size, Sort.by("createdAt").descending());
+
+        Page<ShareDream> shareDreamPage = shareDreamRepository.findByUserIn(followings, request);
+
+        List<ShareDreamResponse> shareDreamGroup = shareDreamPage
+                .map(sd -> ShareDreamResponse.builder()
+                        .uuid(sd.getUuid())
+                        .profile(sd.getUser().getProfile())
                         .title(sd.getTitle())
                         .defaultPostingImage(sd.getDefaultImage())
                         .isShared(sd.getIsShared())
