@@ -57,8 +57,8 @@ public class ShareDreamServiceImpl implements ShareDreamService {
                 .isShared(false)
                 .sleepDateTime(request.getSleepBeginDateTime())
                 .sleepTime((int) ChronoUnit.HOURS.between(request.getSleepBeginDateTime(), request.getSleepEndDateTime()))
-                .createdAt(LocalDateTime.now())
-                .updatedAt(LocalDateTime.now())
+                .createdAt(LocalDateTime.now().plusHours(9))
+                .updatedAt(LocalDateTime.now().plusHours(9))
                 .build()
         );
 
