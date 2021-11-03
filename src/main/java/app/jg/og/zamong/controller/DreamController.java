@@ -67,12 +67,7 @@ public class DreamController {
             @PathParam("page") int page,
             @Max(50) @PathParam("size") int size,
             @PathParam("sort") String sort) {
-        switch (sort) {
-            case "created":
-                return ResponseBody.listOf(shareDreamFindService.queryShareDreams(page, size), HttpStatus.OK.value());
-            default:
-                return ResponseBody.of(new StringResponse("올바르지 않은 정렬 인자"), HttpStatus.BAD_REQUEST.value());
-        }
+        return ResponseBody.listOf(shareDreamFindService.queryShareDreams(page, size, sort), HttpStatus.OK.value());
     }
 
     @GetMapping("/share/me")
