@@ -34,15 +34,13 @@ public class ShareDream extends Dream {
     @Column(columnDefinition = "tinyint")
     private Integer sleepTime;
 
+    private Integer lucyCount;
+
     @Column(name = "share_datetime", columnDefinition = "timestamp")
     private LocalDateTime shareDateTime;
 
     @OneToMany(mappedBy = "shareDream")
     private List<ShareDreamLucyPoint> shareDreamLucyPoints;
-
-    public Integer getLucyCount() {
-        return shareDreamLucyPoints.size();
-    }
 
     public void doShare() {
         if(isShared) {
@@ -58,5 +56,9 @@ public class ShareDream extends Dream {
         }
         isShared = false;
         shareDateTime = null;
+    }
+
+    public void addLucy() {
+        lucyCount += 1;
     }
 }
