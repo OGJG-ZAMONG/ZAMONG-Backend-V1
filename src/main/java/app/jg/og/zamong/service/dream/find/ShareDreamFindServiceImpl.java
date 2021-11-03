@@ -58,8 +58,8 @@ public class ShareDreamFindServiceImpl implements ShareDreamFindService {
     }
 
     @Override
-    public SharedDreamGroupResponse queryShareDreams(int page, int size) {
-        Pageable request = PageRequest.of(page, size, Sort.by("shareDateTime").descending());
+    public SharedDreamGroupResponse queryShareDreams(int page, int size, String sort) {
+        Pageable request = getSortArgument(sort, page, size);
         Page<ShareDream> shareDreamPage = shareDreamRepository.findByIsSharedIsTrue(request);
 
         List<SharedDreamResponse> shareDreamGroup = shareDreamPage
@@ -70,6 +70,17 @@ public class ShareDreamFindServiceImpl implements ShareDreamFindService {
                 .totalPage(shareDreamPage.getTotalPages())
                 .totalSize(shareDreamPage.getTotalElements())
                 .build();
+    }
+
+    private Pageable getSortArgument(String sort, int page, int size) {
+        switch (sort) {
+            case "shared":
+                return PageRequest.of(page, size, Sort.by("shareDateTime").descending());
+            case "lucy":
+                return PageRequest.of(page, size, Sort.by("lucyCount").descending());
+            default:
+                throw new IllegalStateException("올바르지 않은 정렬인자");
+        }
     }
 
     @Override
