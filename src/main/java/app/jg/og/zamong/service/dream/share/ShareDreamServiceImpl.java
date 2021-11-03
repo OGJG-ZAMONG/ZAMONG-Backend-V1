@@ -184,5 +184,7 @@ public class ShareDreamServiceImpl implements ShareDreamService {
         User user = securityContextService.getPrincipal().getUser();
 
         shareDreamLucyPointRepository.deleteByUserAndShareDream(user, shareDream);
+
+        shareDream.cancelLucy();
     }
 }
