@@ -61,4 +61,8 @@ public class ShareDream extends Dream {
     public void addLucy() {
         lucyCount += 1;
     }
+
+    public void cancelLucy() {
+        lucyCount -= 1;
+    }
 }
