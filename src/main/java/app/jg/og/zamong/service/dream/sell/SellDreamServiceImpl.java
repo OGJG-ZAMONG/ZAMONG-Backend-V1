@@ -44,8 +44,6 @@ public class SellDreamServiceImpl implements SellDreamService {
                 .content(request.getContent())
                 .user(user)
                 .cost(request.getCost())
-                .createdAt(LocalDateTime.now().plusHours(9))
-                .updatedAt(LocalDateTime.now().plusHours(9))
                 .build());
 
         request.getDreamTypes()
