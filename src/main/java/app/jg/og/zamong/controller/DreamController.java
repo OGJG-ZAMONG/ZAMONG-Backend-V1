@@ -14,6 +14,7 @@ import app.jg.og.zamong.dto.response.ResponseBody;
 import app.jg.og.zamong.service.dream.DreamService;
 import app.jg.og.zamong.service.dream.comment.DreamCommentService;
 import app.jg.og.zamong.service.dream.sell.SellDreamService;
+import app.jg.og.zamong.service.dream.sell.find.SellDreamFindService;
 import app.jg.og.zamong.service.dream.share.ShareDreamService;
 import app.jg.og.zamong.service.dream.share.find.ShareDreamFindService;
 import lombok.RequiredArgsConstructor;
@@ -178,6 +179,16 @@ public class DreamController {
     @PostMapping("/sell/{dream-uuid}/request")
     public ResponseBody sellRequest(@PathVariable("dream-uuid") String uuid) {
         return ResponseBody.of(sellDreamService.doSellRequestDream(uuid), HttpStatus.OK.value());
+    }
+
+    private final SellDreamFindService sellDreamFindService;
+
+    @GetMapping("/sell/continue")
+    public ResponseBody sellContinue(
+            @PathParam("page") int page,
+            @Max(50) @PathParam("size") int size
+    ) {
+        return ResponseBody.listOf(sellDreamFindService.queryPendingSellDreams(page, size), HttpStatus.OK.value());
     }
 
     private final DreamCommentService dreamCommentService;
