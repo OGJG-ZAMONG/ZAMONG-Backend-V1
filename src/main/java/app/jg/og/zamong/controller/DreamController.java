@@ -191,6 +191,14 @@ public class DreamController {
         return ResponseBody.listOf(sellDreamFindService.queryPendingSellDreams(page, size), HttpStatus.OK.value());
     }
 
+    @GetMapping("/sell/close")
+    public ResponseBody sellClose(
+            @PathParam("page") int page,
+            @Max(50) @PathParam("size") int size
+    ) {
+        return ResponseBody.listOf(sellDreamFindService.queryClosedSellDream(page, size), HttpStatus.OK.value());
+    }
+
     private final DreamCommentService dreamCommentService;
 
     @PostMapping("/{dream-uuid}/comment")
