@@ -6,7 +6,7 @@ import app.jg.og.zamong.entity.dream.sharedream.ShareDreamRepository;
 import app.jg.og.zamong.entity.user.User;
 import app.jg.og.zamong.security.auth.AuthenticationDetails;
 import app.jg.og.zamong.service.UnitTest;
-import app.jg.og.zamong.service.dream.find.ShareDreamFindServiceImpl;
+import app.jg.og.zamong.service.dream.share.find.ShareDreamFindServiceImpl;
 import app.jg.og.zamong.service.securitycontext.SecurityContextService;
 import app.jg.og.zamong.util.ShareDreamBuilder;
 import app.jg.og.zamong.util.UserBuilder;
