@@ -158,6 +158,12 @@ public class DreamController {
         return ResponseBody.of(sellDreamService.createSellDream(request), HttpStatus.CREATED.value());
     }
 
+    @DeleteMapping("/sell/{dream-uuid}")
+    @ResponseStatus(value = HttpStatus.NO_CONTENT)
+    public void sellCancel(@PathVariable("dream-uuid") String uuid) {
+        sellDreamService.cancelSellDream(uuid);
+    }
+
     @PatchMapping("/sell/cost/{dream-uuid}")
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void cost(@PathVariable("dream-uuid") String uuid, @Valid @RequestBody SellDreamCostRequest request) {

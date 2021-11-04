@@ -1,5 +1,6 @@
-package app.jg.og.zamong.dto.response;
+package app.jg.og.zamong.dto.response.dream.sharedream;
 
+import app.jg.og.zamong.dto.response.Response;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
 import lombok.Getter;

@@ -1,6 +1,6 @@
 package app.jg.og.zamong.service.dream.find;
 
-import app.jg.og.zamong.dto.response.*;
+import app.jg.og.zamong.dto.response.dream.sharedream.*;
 
 public interface ShareDreamFindService {
 

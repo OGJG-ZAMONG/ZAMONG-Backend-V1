@@ -3,24 +3,25 @@ package app.jg.og.zamong.service.dream.sell;
 import app.jg.og.zamong.dto.request.dream.selldream.SellDreamCostRequest;
 import app.jg.og.zamong.dto.request.dream.selldream.SellDreamRequest;
 import app.jg.og.zamong.dto.response.CreateDreamResponse;
-import app.jg.og.zamong.dto.response.DoSellRequestDreamResponse;
+import app.jg.og.zamong.dto.response.dream.selldream.DoSellRequestDreamResponse;
 import app.jg.og.zamong.entity.dream.attachment.AttachmentImage;
 import app.jg.og.zamong.entity.dream.attachment.AttachmentImageRepository;
 import app.jg.og.zamong.entity.dream.dreamtype.DreamType;
 import app.jg.og.zamong.entity.dream.dreamtype.DreamTypeRepository;
 import app.jg.og.zamong.entity.dream.enums.DreamTag;
+import app.jg.og.zamong.entity.dream.enums.SalesStatus;
 import app.jg.og.zamong.entity.dream.selldream.SellDream;
 import app.jg.og.zamong.entity.dream.selldream.SellDreamRepository;
 import app.jg.og.zamong.entity.dream.selldream.buyrequest.SellDreamBuyRequest;
 import app.jg.og.zamong.entity.dream.selldream.buyrequest.SellDreamBuyRequestRepository;
 import app.jg.og.zamong.entity.user.User;
 import app.jg.og.zamong.exception.business.DreamNotFoundException;
+import app.jg.og.zamong.exception.business.ForbiddenUserException;
 import app.jg.og.zamong.service.securitycontext.SecurityContextService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Service
@@ -44,6 +45,7 @@ public class SellDreamServiceImpl implements SellDreamService {
                 .content(request.getContent())
                 .user(user)
                 .cost(request.getCost())
+                .status(SalesStatus.PENDING)
                 .build());
 
         request.getDreamTypes()
@@ -91,5 +93,20 @@ public class SellDreamServiceImpl implements SellDreamService {
                 .orElseThrow(() -> new DreamNotFoundException("해당하는 꿈을 찾을 수 없습니다"));
 
         sellDream.setCost(request.getCost());
+    }
+
+    @Override
+    @Transactional
+    public void cancelSellDream(String uuid) {
+        User user = securityContextService.getPrincipal().getUser();
+
+        SellDream sellDream = sellDreamRepository.findById(UUID.fromString(uuid))
+                .orElseThrow(() -> new DreamNotFoundException("해당하는 꿈을 찾을 수 없습니다"));
+
+        if(!sellDream.getUser().equals(user)) {
+            throw new ForbiddenUserException("취소할 수 없습니다");
+        }
+
+        sellDream.candleSale();
     }
 }

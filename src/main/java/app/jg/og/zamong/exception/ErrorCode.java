@@ -19,6 +19,7 @@ public enum ErrorCode {
     NOT_SHARED(403, "Not Shared Dream"),
     CANT_FOLLOW_USER(403, "Can't Follow User"),
     FORBIDDEN_USER(403, "Forbidden User"),
+    CANT_CANCEL_SELL_DREAM(403, "Can't Cancel Sell Dream"),
 
     MAIL_SEND_FAILED(400, "Mail Send Failed"),
     ATTRIBUTE_CONVERT_FAILED(400, "Attribute Convert Failed"),
