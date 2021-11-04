@@ -20,7 +20,7 @@ public class SellDreamResponse {
 
     private final List<DreamType> dreamTypes;
 
-    private final LocalDateTime createdAt;
+    private final LocalDateTime updatedAt;
 
     private final Integer cost;
 }
