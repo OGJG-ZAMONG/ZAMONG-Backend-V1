@@ -16,6 +16,7 @@ import app.jg.og.zamong.entity.dream.selldream.buyrequest.SellDreamBuyRequest;
 import app.jg.og.zamong.entity.dream.selldream.buyrequest.SellDreamBuyRequestRepository;
 import app.jg.og.zamong.entity.user.User;
 import app.jg.og.zamong.exception.business.DreamNotFoundException;
+import app.jg.og.zamong.exception.business.ForbiddenUserException;
 import app.jg.og.zamong.service.securitycontext.SecurityContextService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -92,5 +93,20 @@ public class SellDreamServiceImpl implements SellDreamService {
                 .orElseThrow(() -> new DreamNotFoundException("해당하는 꿈을 찾을 수 없습니다"));
 
         sellDream.setCost(request.getCost());
+    }
+
+    @Override
+    @Transactional
+    public void cancelSellDream(String uuid) {
+        User user = securityContextService.getPrincipal().getUser();
+
+        SellDream sellDream = sellDreamRepository.findById(UUID.fromString(uuid))
+                .orElseThrow(() -> new DreamNotFoundException("해당하는 꿈을 찾을 수 없습니다"));
+
+        if(!sellDream.getUser().equals(user)) {
+            throw new ForbiddenUserException("취소할 수 없습니다");
+        }
+
+        sellDream.candleSale();
     }
 }

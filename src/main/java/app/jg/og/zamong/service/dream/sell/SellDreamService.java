@@ -10,4 +10,6 @@ public interface SellDreamService {
     CreateDreamResponse createSellDream(SellDreamRequest request);
     DoSellRequestDreamResponse doSellRequestDream(String uuid);
     void patchSellDreamCost(String uuid, SellDreamCostRequest request);
+
+    void cancelSellDream(String uuid);
 }
