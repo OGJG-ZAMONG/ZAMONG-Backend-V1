@@ -3,7 +3,7 @@ package app.jg.og.zamong.entity.dream.selldream;
 import app.jg.og.zamong.entity.dream.Dream;
 import app.jg.og.zamong.entity.dream.enums.SalesStatus;
 import app.jg.og.zamong.entity.dream.selldream.converter.SalesStatusConverter;
-import app.jg.og.zamong.exception.business.CantCancelSellDreamException;
+import app.jg.og.zamong.exception.business.ForbiddenStatusSellDreamException;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
@@ -37,7 +37,7 @@ public class SellDream extends Dream {
 
     private void checkPendingStatus() {
         if(status != SalesStatus.PENDING) {
-            throw new CantCancelSellDreamException("취소할 수 없습니다");
+            throw new ForbiddenStatusSellDreamException("판매중이 아닙니다");
         }
     }
 }
