@@ -11,5 +11,6 @@ public interface SellDreamService {
     DoSellRequestDreamResponse doSellRequestDream(String uuid);
     void patchSellDreamCost(String uuid, SellDreamCostRequest request);
 
+    void doneSellDream(String uuid);
     void cancelSellDream(String uuid);
 }

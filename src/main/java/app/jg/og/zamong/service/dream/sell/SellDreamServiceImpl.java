@@ -97,6 +97,21 @@ public class SellDreamServiceImpl implements SellDreamService {
 
     @Override
     @Transactional
+    public void doneSellDream(String uuid) {
+        User user = securityContextService.getPrincipal().getUser();
+
+        SellDream sellDream = sellDreamRepository.findById(UUID.fromString(uuid))
+                .orElseThrow(() -> new DreamNotFoundException("해당하는 꿈을 찾을 수 없습니다"));
+
+        if(!sellDream.getUser().equals(user)) {
+            throw new ForbiddenUserException("완료할 수 없습니다");
+        }
+
+        sellDream.doneSale();
+    }
+
+    @Override
+    @Transactional
     public void cancelSellDream(String uuid) {
         User user = securityContextService.getPrincipal().getUser();
 
