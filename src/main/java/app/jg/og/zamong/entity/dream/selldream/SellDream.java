@@ -26,9 +26,13 @@ public class SellDream extends Dream {
     private SalesStatus status;
 
     public void candleSale() {
+        checkPendingStatus();
+        status = SalesStatus.CANCEL;
+    }
+
+    private void checkPendingStatus() {
         if(status != SalesStatus.PENDING) {
             throw new CantCancelSellDreamException("취소할 수 없습니다");
         }
-        status = SalesStatus.CANCEL;
     }
 }
