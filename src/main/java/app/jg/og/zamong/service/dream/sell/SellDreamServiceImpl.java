@@ -9,6 +9,7 @@ import app.jg.og.zamong.entity.dream.attachment.AttachmentImageRepository;
 import app.jg.og.zamong.entity.dream.dreamtype.DreamType;
 import app.jg.og.zamong.entity.dream.dreamtype.DreamTypeRepository;
 import app.jg.og.zamong.entity.dream.enums.DreamTag;
+import app.jg.og.zamong.entity.dream.enums.SalesStatus;
 import app.jg.og.zamong.entity.dream.selldream.SellDream;
 import app.jg.og.zamong.entity.dream.selldream.SellDreamRepository;
 import app.jg.og.zamong.entity.dream.selldream.buyrequest.SellDreamBuyRequest;
@@ -43,6 +44,7 @@ public class SellDreamServiceImpl implements SellDreamService {
                 .content(request.getContent())
                 .user(user)
                 .cost(request.getCost())
+                .status(SalesStatus.PENDING)
                 .build());
 
         request.getDreamTypes()
