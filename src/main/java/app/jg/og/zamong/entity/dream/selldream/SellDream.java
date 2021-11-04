@@ -25,6 +25,11 @@ public class SellDream extends Dream {
     @Column(length = 4, columnDefinition = "char(4)")
     private SalesStatus status;
 
+    public void doneSale() {
+        checkPendingStatus();
+        status = SalesStatus.DONE;
+    }
+
     public void candleSale() {
         checkPendingStatus();
         status = SalesStatus.CANCEL;
