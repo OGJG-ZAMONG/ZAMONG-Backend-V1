@@ -1,4 +1,4 @@
-package app.jg.og.zamong.service.dream.find;
+package app.jg.og.zamong.service.dream.share.find;
 
 import app.jg.og.zamong.dto.response.dream.sharedream.*;
 import app.jg.og.zamong.entity.dream.dreamtype.DreamType;
