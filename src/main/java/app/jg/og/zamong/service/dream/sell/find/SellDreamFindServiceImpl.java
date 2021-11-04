@@ -27,7 +27,17 @@ public class SellDreamFindServiceImpl implements SellDreamFindService {
         Pageable request = PageRequest.of(page, size, Sort.by("updatedAt").descending());
         Page<SellDream> sellDreamPage = sellDreamRepository.findByStatus(SalesStatus.PENDING, request);
 
-        List<SellDreamResponse> sellDreamGroup = sellDreamPage
+        List<SellDreamResponse> sellDreamGroup = sellDreamResponsesOf(sellDreamPage);
+
+        return SellDreamGroupResponse.builder()
+                .sellDreams(sellDreamGroup)
+                .totalPage(sellDreamPage.getTotalPages())
+                .totalSize(sellDreamPage.getTotalElements())
+                .build();
+    }
+
+    private List<SellDreamResponse> sellDreamResponsesOf(Page<SellDream> sellDreamPage) {
+        return sellDreamPage
                 .map(sd -> SellDreamResponse.builder()
                         .uuid(sd.getUuid())
                         .title(sd.getTitle())
@@ -37,11 +47,5 @@ public class SellDreamFindServiceImpl implements SellDreamFindService {
                         .cost(sd.getCost())
                         .build())
                 .toList();
-
-        return SellDreamGroupResponse.builder()
-                .sellDreams(sellDreamGroup)
-                .totalPage(sellDreamPage.getTotalPages())
-                .totalSize(sellDreamPage.getTotalElements())
-                .build();
     }
 }
