@@ -202,9 +202,14 @@ public class DreamController {
 
     private final InterpretationDreamService interpretationDreamService;
 
-    @GetMapping("/interpretation")
+    @GetMapping("/interpretation/static")
     public ResponseBody interpretationDream() {
         return ResponseBody.listOf(interpretationDreamService.queryInterpretationDreamCategory(), HttpStatus.OK.value());
+    }
+
+    @GetMapping("/interpretation/static/{interpretation-uuid}")
+    public ResponseBody interpretationDetail(@PathVariable("interpretation-uuid") String uuid) {
+        return ResponseBody.of(interpretationDreamService.queryInterpretation(uuid), HttpStatus.OK.value());
     }
 
     private final DreamCommentService dreamCommentService;
