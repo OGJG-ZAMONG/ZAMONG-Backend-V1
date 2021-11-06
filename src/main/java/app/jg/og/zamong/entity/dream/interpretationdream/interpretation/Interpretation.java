@@ -22,5 +22,7 @@ public class Interpretation {
     @Column(columnDefinition = "BINARY(16)")
     private UUID uuid;
 
+    private String dreamName;
+
     private String interpretation;
 }
