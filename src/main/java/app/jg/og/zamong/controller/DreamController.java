@@ -13,6 +13,7 @@ import app.jg.og.zamong.dto.request.dream.sharedream.ShareDreamSleepDateTimeRequ
 import app.jg.og.zamong.dto.response.ResponseBody;
 import app.jg.og.zamong.service.dream.DreamService;
 import app.jg.og.zamong.service.dream.comment.DreamCommentService;
+import app.jg.og.zamong.service.dream.interpretation.InterpretationDreamService;
 import app.jg.og.zamong.service.dream.sell.SellDreamService;
 import app.jg.og.zamong.service.dream.sell.find.SellDreamFindService;
 import app.jg.og.zamong.service.dream.share.ShareDreamService;
@@ -197,6 +198,13 @@ public class DreamController {
             @Max(50) @PathParam("size") int size
     ) {
         return ResponseBody.listOf(sellDreamFindService.queryClosedSellDream(page, size), HttpStatus.OK.value());
+    }
+
+    private final InterpretationDreamService interpretationDreamService;
+
+    @GetMapping("/interpretation")
+    public ResponseBody interpretationDream() {
+        return ResponseBody.listOf(interpretationDreamService.queryInterpretationDreamCategory(), HttpStatus.OK.value());
     }
 
     private final DreamCommentService dreamCommentService;
