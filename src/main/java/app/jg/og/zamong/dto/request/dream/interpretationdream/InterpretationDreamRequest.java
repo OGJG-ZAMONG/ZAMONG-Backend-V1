@@ -1,9 +1,11 @@
 package app.jg.og.zamong.dto.request.dream.interpretationdream;
 
+import app.jg.og.zamong.entity.dream.enums.DreamType;
 import lombok.*;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.List;
 
 @Builder
 @Getter
@@ -17,4 +19,7 @@ public class InterpretationDreamRequest {
 
     @NotNull(message = "내용을 반드시 입력해야 합니다")
     private String content;
+
+    @NotNull(message = "꿈의 유형을 입력해주세요")
+    private List<DreamType> dreamTypes;
 }
