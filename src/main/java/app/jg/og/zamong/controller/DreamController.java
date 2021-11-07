@@ -75,8 +75,9 @@ public class DreamController {
     @GetMapping("/share/me")
     public ResponseBody myShareDream(
             @PathParam("page") int page,
-            @Max(50) @PathParam("size") int size) {
-        return ResponseBody.listOf(shareDreamFindService.queryMyShareDreams(page, size), HttpStatus.OK.value());
+            @Max(50) @PathParam("size") int size,
+            @PathParam("sort") String sort) {
+        return ResponseBody.listOf(shareDreamFindService.queryMyShareDreams(page, size, sort), HttpStatus.OK.value());
     }
 
     @GetMapping("/share/{dream-uuid}")

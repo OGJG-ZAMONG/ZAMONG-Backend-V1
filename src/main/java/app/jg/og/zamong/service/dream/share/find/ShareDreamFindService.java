@@ -6,7 +6,7 @@ public interface ShareDreamFindService {
 
     ShareDreamInformationResponse queryShareDreamInformation(String uuid);
     SharedDreamGroupResponse queryShareDreams(int page, int size, String sort);
-    ShareDreamGroupResponse queryMyShareDreams(int page, int size);
+    ShareDreamGroupResponse queryMyShareDreams(int page, int size, String sort);
     ShareDreamGroupResponse queryFollowShareDreams(int page, int size);
     ShareDreamTimeTableResponse queryMyShareDreamTimeTable(int year, int month);
     ShareDreamTimeTableResponseV2 queryShareDreamTimeTableV2(int year, int month);
