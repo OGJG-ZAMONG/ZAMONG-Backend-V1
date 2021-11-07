@@ -72,22 +72,11 @@ public class ShareDreamFindServiceImpl implements ShareDreamFindService {
                 .build();
     }
 
-    private Pageable getSortArgument(String sort, int page, int size) {
-        switch (sort) {
-            case "shared":
-                return PageRequest.of(page, size, Sort.by("shareDateTime").descending());
-            case "lucy":
-                return PageRequest.of(page, size, Sort.by("lucyCount").descending());
-            default:
-                throw new IllegalStateException("올바르지 않은 정렬인자");
-        }
-    }
-
     @Override
-    public ShareDreamGroupResponse queryMyShareDreams(int page, int size) {
+    public ShareDreamGroupResponse queryMyShareDreams(int page, int size, String sort) {
         User user = securityContextService.getPrincipal().getUser();
 
-        Pageable request = PageRequest.of(page, size, Sort.by("createdAt").descending());
+        Pageable request = getSortArgument(sort, page, size);
         Page<ShareDream> shareDreamPage = shareDreamRepository.findByUser(user, request);
 
         List<ShareDreamResponse> shareDreamGroup = shareDreamPage
@@ -105,6 +94,19 @@ public class ShareDreamFindServiceImpl implements ShareDreamFindService {
                 .totalPage(shareDreamPage.getTotalPages())
                 .totalSize(shareDreamPage.getTotalElements())
                 .build();
+    }
+
+    private Pageable getSortArgument(String sort, int page, int size) {
+        switch (sort) {
+            case "shared":
+                return PageRequest.of(page, size, Sort.by("shareDateTime").descending());
+            case "lucy":
+                return PageRequest.of(page, size, Sort.by("lucyCount").descending());
+            case "created":
+                return PageRequest.of(page, size, Sort.by("createdAt").descending());
+            default:
+                throw new IllegalStateException("올바르지 않은 정렬인자");
+        }
     }
 
     @Override
