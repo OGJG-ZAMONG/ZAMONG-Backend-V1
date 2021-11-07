@@ -5,6 +5,7 @@ import app.jg.og.zamong.dto.request.dream.DreamCommentRequest;
 import app.jg.og.zamong.dto.request.dream.DreamContentRequest;
 import app.jg.og.zamong.dto.request.dream.DreamTitleRequest;
 import app.jg.og.zamong.dto.request.dream.DreamTypesRequest;
+import app.jg.og.zamong.dto.request.dream.interpretationdream.InterpretationDreamRequest;
 import app.jg.og.zamong.dto.request.dream.selldream.SellDreamCostRequest;
 import app.jg.og.zamong.dto.request.dream.selldream.SellDreamRequest;
 import app.jg.og.zamong.dto.request.dream.sharedream.ShareDreamQualityRequest;
@@ -201,6 +202,11 @@ public class DreamController {
     }
 
     private final InterpretationDreamService interpretationDreamService;
+
+    @PostMapping("/interpretation")
+    public ResponseBody interpretation(@Valid @RequestBody InterpretationDreamRequest request) {
+        return ResponseBody.of(interpretationDreamService.createInterpretationDream(request), HttpStatus.CREATED.value());
+    }
 
     @GetMapping("/interpretation/static")
     public ResponseBody interpretationDream() {
