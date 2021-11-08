@@ -80,6 +80,11 @@ public class DreamController {
         return ResponseBody.listOf(shareDreamFindService.queryMyShareDreams(page, size, sort), HttpStatus.OK.value());
     }
 
+    @GetMapping("/share/me/today")
+    public ResponseBody todayMyShareDream() {
+        return ResponseBody.listOf(shareDreamFindService.queryTodayMyShareDreams(), HttpStatus.OK.value());
+    }
+
     @GetMapping("/share/{dream-uuid}")
     public ResponseBody shareDreamInformation(@PathVariable("dream-uuid") String uuid) {
         return ResponseBody.of(shareDreamFindService.queryShareDreamInformation(uuid), HttpStatus.OK.value());

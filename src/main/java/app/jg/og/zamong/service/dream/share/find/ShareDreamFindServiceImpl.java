@@ -16,7 +16,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.Month;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -96,6 +98,30 @@ public class ShareDreamFindServiceImpl implements ShareDreamFindService {
                 .build();
     }
 
+    @Override
+    public ShareDreamGroupResponse queryTodayMyShareDreams() {
+        User user = securityContextService.getPrincipal().getUser();
+
+        LocalDateTime start = LocalDateTime.of(LocalDate.now(), LocalTime.MIN);
+        LocalDateTime end = LocalDateTime.of(LocalDate.now(), LocalTime.MAX);
+
+        List<ShareDream> shareDreams = shareDreamRepository.findByUserAndUpdatedAtBetween(user, start, end);
+
+        List<ShareDreamResponse> shareDreamGroup = shareDreams.stream()
+                .map(sd -> ShareDreamResponse.builder()
+                        .uuid(sd.getUuid())
+                        .title(sd.getTitle())
+                        .defaultPostingImage(sd.getDefaultImage())
+                        .isShared(sd.getIsShared())
+                        .createdAt(sd.getCreatedAt())
+                        .build())
+                .collect(Collectors.toList());
+
+        return ShareDreamGroupResponse.builder()
+                .shareDreams(shareDreamGroup)
+                .build();
+    }
+
     private Pageable getSortArgument(String sort, int page, int size) {
         switch (sort) {
             case "shared":
@@ -141,7 +167,7 @@ public class ShareDreamFindServiceImpl implements ShareDreamFindService {
     @Override
     public ShareDreamTimeTableResponse queryMyShareDreamTimeTable(int year, int month) {
         LocalDateTime start = LocalDateTime.of(year, month, 1, 0, 0);
-        LocalDateTime end = LocalDateTime.of(year, month, Month.of(month).maxLength(), 0, 0);
+        LocalDateTime end = LocalDateTime.of(year, month, Month.of(month).maxLength(), 23, 59, 59);
 
         User user = securityContextService.getPrincipal().getUser();
         List<ShareDream> shareDreams = shareDreamRepository.findByUserAndSleepDateTimeBetween(user, start, end);
@@ -164,7 +190,7 @@ public class ShareDreamFindServiceImpl implements ShareDreamFindService {
     @Override
     public ShareDreamTimeTableResponseV2 queryShareDreamTimeTableV2(int year, int month) {
         LocalDateTime start = LocalDateTime.of(year, month, 1, 0, 0);
-        LocalDateTime end = LocalDateTime.of(year, month, Month.of(month).maxLength(), 0, 0);
+        LocalDateTime end = LocalDateTime.of(year, month, Month.of(month).maxLength(), 23, 59, 59);
 
         User user = securityContextService.getPrincipal().getUser();
         List<ShareDream> shareDreams = shareDreamRepository.findByUserAndSleepDateTimeBetween(user, start, end);
