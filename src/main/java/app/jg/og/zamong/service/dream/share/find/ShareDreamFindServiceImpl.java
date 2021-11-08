@@ -16,7 +16,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.Month;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -93,6 +95,30 @@ public class ShareDreamFindServiceImpl implements ShareDreamFindService {
                 .shareDreams(shareDreamGroup)
                 .totalPage(shareDreamPage.getTotalPages())
                 .totalSize(shareDreamPage.getTotalElements())
+                .build();
+    }
+
+    @Override
+    public ShareDreamGroupResponse queryTodayMyShareDreams() {
+        User user = securityContextService.getPrincipal().getUser();
+
+        LocalDateTime start = LocalDateTime.of(LocalDate.now(), LocalTime.MIN);
+        LocalDateTime end = LocalDateTime.of(LocalDate.now(), LocalTime.MAX);
+
+        List<ShareDream> shareDreams = shareDreamRepository.findByUserAndUpdatedAtBetween(user, start, end);
+
+        List<ShareDreamResponse> shareDreamGroup = shareDreams.stream()
+                .map(sd -> ShareDreamResponse.builder()
+                        .uuid(sd.getUuid())
+                        .title(sd.getTitle())
+                        .defaultPostingImage(sd.getDefaultImage())
+                        .isShared(sd.getIsShared())
+                        .createdAt(sd.getCreatedAt())
+                        .build())
+                .collect(Collectors.toList());
+
+        return ShareDreamGroupResponse.builder()
+                .shareDreams(shareDreamGroup)
                 .build();
     }
 
