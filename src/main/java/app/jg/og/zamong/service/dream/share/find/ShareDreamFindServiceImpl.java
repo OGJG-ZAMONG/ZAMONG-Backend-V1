@@ -141,7 +141,7 @@ public class ShareDreamFindServiceImpl implements ShareDreamFindService {
     @Override
     public ShareDreamTimeTableResponse queryMyShareDreamTimeTable(int year, int month) {
         LocalDateTime start = LocalDateTime.of(year, month, 1, 0, 0);
-        LocalDateTime end = LocalDateTime.of(year, month, Month.of(month).maxLength(), 0, 0);
+        LocalDateTime end = LocalDateTime.of(year, month, Month.of(month).maxLength(), 23, 59, 59);
 
         User user = securityContextService.getPrincipal().getUser();
         List<ShareDream> shareDreams = shareDreamRepository.findByUserAndSleepDateTimeBetween(user, start, end);
@@ -164,7 +164,7 @@ public class ShareDreamFindServiceImpl implements ShareDreamFindService {
     @Override
     public ShareDreamTimeTableResponseV2 queryShareDreamTimeTableV2(int year, int month) {
         LocalDateTime start = LocalDateTime.of(year, month, 1, 0, 0);
-        LocalDateTime end = LocalDateTime.of(year, month, Month.of(month).maxLength(), 0, 0);
+        LocalDateTime end = LocalDateTime.of(year, month, Month.of(month).maxLength(), 23, 59, 59);
 
         User user = securityContextService.getPrincipal().getUser();
         List<ShareDream> shareDreams = shareDreamRepository.findByUserAndSleepDateTimeBetween(user, start, end);
