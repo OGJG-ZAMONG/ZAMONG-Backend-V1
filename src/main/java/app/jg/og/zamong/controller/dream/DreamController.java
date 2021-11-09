@@ -1,4 +1,4 @@
-package app.jg.og.zamong.controller;
+package app.jg.og.zamong.controller.dream;
 
 import app.jg.og.zamong.dto.request.DreamCommentRecommendRequest;
 import app.jg.og.zamong.dto.request.dream.DreamCommentRequest;
