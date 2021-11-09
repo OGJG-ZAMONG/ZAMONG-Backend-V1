@@ -12,5 +12,5 @@ import java.util.UUID;
 public interface SellDreamRepository extends PagingAndSortingRepository<SellDream, UUID> {
     Page<SellDream> findByStatus(SalesStatus status, Pageable pageable);
     Page<SellDream> findByStatusAndUser(SalesStatus status, User user, Pageable pageable);
-    Page<SellDream> findByStatusIn(List<SalesStatus> statuses, Pageable pageable);
+    Page<SellDream> findByUserAndStatusIn(User user, List<SalesStatus> statuses, Pageable pageable);
 }
