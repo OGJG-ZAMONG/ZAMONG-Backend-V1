@@ -57,9 +57,11 @@ public class SellDreamFindServiceImpl implements SellDreamFindService {
     }
 
     @Override
-    public SellDreamGroupResponse queryClosedSellDream(int page, int size) {
+    public SellDreamGroupResponse queryMyClosedSellDream(int page, int size) {
+        User user = securityContextService.getPrincipal().getUser();
+
         Pageable request = PageRequest.of(page, size, Sort.by("updatedAt").descending());
-        Page<SellDream> sellDreamPage = sellDreamRepository.findByStatusIn(List.of(SalesStatus.DONE, SalesStatus.CANCEL), request);
+        Page<SellDream> sellDreamPage = sellDreamRepository.findByUserAndStatusIn(user, List.of(SalesStatus.DONE, SalesStatus.CANCEL), request);
 
         List<SellDreamResponse> sellDreamGroup = sellDreamResponsesOf(sellDreamPage);
 
