@@ -4,6 +4,7 @@ import app.jg.og.zamong.dto.request.dream.sharedream.ShareDreamQualityRequest;
 import app.jg.og.zamong.dto.request.dream.sharedream.ShareDreamRequest;
 import app.jg.og.zamong.dto.request.dream.sharedream.ShareDreamSleepDateTimeRequest;
 import app.jg.og.zamong.dto.response.ResponseBody;
+import app.jg.og.zamong.entity.dream.enums.DreamType;
 import app.jg.og.zamong.service.dream.share.ShareDreamService;
 import app.jg.og.zamong.service.dream.share.find.ShareDreamFindService;
 import lombok.RequiredArgsConstructor;
@@ -120,7 +121,7 @@ public class ShareDreamController {
     }
 
     @GetMapping("/search")
-    public void search(@PathParam("title") String title, @PathParam("fields") String[] types) {
-        System.out.println(List.of(types));
+    public ResponseBody search(@PathParam("title") String title, @PathParam("fields") String[] types) {
+        return ResponseBody.listOf(shareDreamFindService.querySearchShareDreams(title, types), HttpStatus.OK.value());
     }
 }
