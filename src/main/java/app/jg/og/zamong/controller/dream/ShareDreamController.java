@@ -15,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.validation.Valid;
 import javax.validation.constraints.Max;
 import javax.websocket.server.PathParam;
+import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
@@ -116,5 +117,10 @@ public class ShareDreamController {
     @DeleteMapping("/{dream-uuid}/lucy")
     public void lucyCancel(@PathVariable("dream-uuid") String uuid) {
         shareDreamService.cancelShareDreamLucy(uuid);
+    }
+
+    @GetMapping("/search")
+    public void search(@PathParam("title") String title, @PathParam("fields") String[] types) {
+        System.out.println(List.of(types));
     }
 }
