@@ -22,7 +22,6 @@ import app.jg.og.zamong.service.dream.share.find.ShareDreamFindService;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.validator.constraints.Range;
 import org.springframework.http.HttpStatus;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -32,7 +31,6 @@ import javax.websocket.server.PathParam;
 
 @RequiredArgsConstructor
 @RestController
-@Validated
 @RequestMapping("/dream")
 public class DreamController {
 
