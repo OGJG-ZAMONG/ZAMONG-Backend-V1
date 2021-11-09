@@ -210,7 +210,17 @@ public class ShareDreamFindServiceImpl implements ShareDreamFindService {
     }
 
     @Override
-    public SharedDreamGroupResponse querySearchShareDreams(String title, List<String> types) {
-        return null;
+    public SharedDreamGroupResponse querySearchShareDreams(String title, String[] types) {
+        List<app.jg.og.zamong.entity.dream.enums.DreamType> dreamTypes =
+                Arrays.stream(types).map(app.jg.og.zamong.entity.dream.enums.DreamType::valueOf).collect(Collectors.toList());
+
+        List<ShareDream> shareDreams = shareDreamRepository.findByTitleLikeAndDreamTypesIn(title, dreamTypes);
+
+        List<SharedDreamResponse> sharedDreamResponses = shareDreams
+                .stream().map(SharedDreamResponse::of).collect(Collectors.toList());
+
+        return SharedDreamGroupResponse.builder()
+                .shareDreams(sharedDreamResponses)
+                .build();
     }
 }
