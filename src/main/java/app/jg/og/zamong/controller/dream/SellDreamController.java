@@ -71,6 +71,6 @@ public class SellDreamController {
             @PathParam("page") int page,
             @Max(50) @PathParam("size") int size
     ) {
-        return ResponseBody.listOf(sellDreamFindService.queryClosedSellDream(page, size), HttpStatus.OK.value());
+        return ResponseBody.listOf(sellDreamFindService.queryMyClosedSellDream(page, size), HttpStatus.OK.value());
     }
 }
