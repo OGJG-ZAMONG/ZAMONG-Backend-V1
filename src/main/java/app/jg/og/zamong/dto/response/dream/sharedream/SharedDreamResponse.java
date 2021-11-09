@@ -19,7 +19,7 @@ public class SharedDreamResponse {
 
     private final String defaultPostingImage;
 
-    private final String profile;
+    private final User user;
 
     private final String title;
 
@@ -30,11 +30,26 @@ public class SharedDreamResponse {
     @JsonProperty("share_datetime")
     private final LocalDateTime shareDateTime;
 
+    @Builder
+    @Getter
+    public static class User {
+
+        private final UUID uuid;
+
+        private final String id;
+
+        private final String profile;
+    }
+
     public static SharedDreamResponse of(ShareDream shareDream) {
         return SharedDreamResponse.builder()
                 .uuid(shareDream.getUuid())
                 .title(shareDream.getTitle())
-                .profile(shareDream.getUser().getProfile())
+                .user(User.builder()
+                        .uuid(shareDream.getUser().getUuid())
+                        .profile(shareDream.getUser().getProfile())
+                        .id(shareDream.getUser().getId())
+                        .build())
                 .lucyCount(shareDream.getLucyCount())
                 .dreamTypes(shareDream.getDreamTypes()
                         .stream()
