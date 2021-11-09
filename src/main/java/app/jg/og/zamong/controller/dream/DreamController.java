@@ -5,11 +5,9 @@ import app.jg.og.zamong.dto.request.dream.DreamCommentRequest;
 import app.jg.og.zamong.dto.request.dream.DreamContentRequest;
 import app.jg.og.zamong.dto.request.dream.DreamTitleRequest;
 import app.jg.og.zamong.dto.request.dream.DreamTypesRequest;
-import app.jg.og.zamong.dto.request.dream.interpretationdream.InterpretationDreamRequest;
 import app.jg.og.zamong.dto.response.ResponseBody;
 import app.jg.og.zamong.service.dream.DreamService;
 import app.jg.og.zamong.service.dream.comment.DreamCommentService;
-import app.jg.og.zamong.service.dream.interpretation.InterpretationDreamService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -45,23 +43,6 @@ public class DreamController {
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void delete(@PathVariable("dream-uuid") String uuid) {
         dreamService.removeDream(uuid);
-    }
-
-    private final InterpretationDreamService interpretationDreamService;
-
-    @PostMapping("/interpretation")
-    public ResponseBody interpretation(@Valid @RequestBody InterpretationDreamRequest request) {
-        return ResponseBody.of(interpretationDreamService.createInterpretationDream(request), HttpStatus.CREATED.value());
-    }
-
-    @GetMapping("/interpretation/static")
-    public ResponseBody interpretationDream() {
-        return ResponseBody.listOf(interpretationDreamService.queryInterpretationDreamCategory(), HttpStatus.OK.value());
-    }
-
-    @GetMapping("/interpretation/static/{interpretation-uuid}")
-    public ResponseBody interpretationDetail(@PathVariable("interpretation-uuid") String uuid) {
-        return ResponseBody.of(interpretationDreamService.queryInterpretation(uuid), HttpStatus.OK.value());
     }
 
     private final DreamCommentService dreamCommentService;
