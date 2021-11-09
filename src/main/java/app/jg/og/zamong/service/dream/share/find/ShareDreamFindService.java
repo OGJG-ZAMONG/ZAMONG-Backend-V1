@@ -2,6 +2,8 @@ package app.jg.og.zamong.service.dream.share.find;
 
 import app.jg.og.zamong.dto.response.dream.sharedream.*;
 
+import java.util.List;
+
 public interface ShareDreamFindService {
 
     ShareDreamInformationResponse queryShareDreamInformation(String uuid);
@@ -11,4 +13,5 @@ public interface ShareDreamFindService {
     ShareDreamGroupResponse queryFollowShareDreams(int page, int size);
     ShareDreamTimeTableResponse queryMyShareDreamTimeTable(int year, int month);
     ShareDreamTimeTableResponseV2 queryShareDreamTimeTableV2(int year, int month);
+    SharedDreamGroupResponse querySearchShareDreams(String title, List<String> types);
 }

@@ -208,4 +208,9 @@ public class ShareDreamFindServiceImpl implements ShareDreamFindService {
 
         return response;
     }
+
+    @Override
+    public SharedDreamGroupResponse querySearchShareDreams(String title, List<String> types) {
+        return null;
+    }
 }
