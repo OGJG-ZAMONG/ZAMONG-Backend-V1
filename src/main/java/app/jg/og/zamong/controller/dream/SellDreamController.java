@@ -58,6 +58,14 @@ public class SellDreamController {
         return ResponseBody.listOf(sellDreamFindService.queryPendingSellDreams(page, size), HttpStatus.OK.value());
     }
 
+    @GetMapping("/continue/me")
+    public ResponseBody sellMyContinueSellDream(
+            @PathParam("page") int page,
+            @Max(50) @PathParam("size") int size
+    ) {
+        return ResponseBody.listOf(sellDreamFindService.queryPendingSellDreams(page, size), HttpStatus.OK.value());
+    }
+
     @GetMapping("/close")
     public ResponseBody sellClose(
             @PathParam("page") int page,
