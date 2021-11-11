@@ -23,4 +23,17 @@ public class SellDreamResponse {
     private final LocalDateTime updatedAt;
 
     private final Integer cost;
+
+    private final User user;
+
+    @Builder
+    @Getter
+    public static class User {
+
+        private final UUID uuid;
+
+        private final String id;
+
+        private final String profile;
+    }
 }

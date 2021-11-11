@@ -73,4 +73,9 @@ public class SellDreamController {
     ) {
         return ResponseBody.listOf(sellDreamFindService.queryMyClosedSellDream(page, size), HttpStatus.OK.value());
     }
+
+    @GetMapping("/search")
+    public ResponseBody search(@PathParam("title") String title, @PathParam("fields") String[] types) {
+        return ResponseBody.listOf(sellDreamFindService.searchSellDream(title, types), HttpStatus.OK.value());
+    }
 }
