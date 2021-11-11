@@ -15,6 +15,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -69,6 +70,29 @@ public class SellDreamFindServiceImpl implements SellDreamFindService {
                 .sellDreams(sellDreamGroup)
                 .totalPage(sellDreamPage.getTotalPages())
                 .totalSize(sellDreamPage.getTotalElements())
+                .build();
+    }
+
+    @Override
+    public SellDreamGroupResponse searchSellDream(String title, String[] types) {
+        List<app.jg.og.zamong.entity.dream.enums.DreamType> dreamTypes =
+                Arrays.stream(types).map(app.jg.og.zamong.entity.dream.enums.DreamType::valueOf).collect(Collectors.toList());
+
+        List<SellDream> sellDreams = sellDreamRepository.findByTitleLikeAndDreamTypesIn(title, dreamTypes);
+
+        List<SellDreamResponse> sellDreamGroup = sellDreams.stream()
+                .map(sd -> SellDreamResponse.builder()
+                        .uuid(sd.getUuid())
+                        .title(sd.getTitle())
+                        .defaultPostingImage(sd.getDefaultImage())
+                        .updatedAt(sd.getUpdatedAt())
+                        .dreamTypes(sd.getDreamTypes().stream().map(DreamType::getCode).collect(Collectors.toList()))
+                        .cost(sd.getCost())
+                        .build())
+                .collect(Collectors.toList());
+
+        return SellDreamGroupResponse.builder()
+                .sellDreams(sellDreamGroup)
                 .build();
     }
 

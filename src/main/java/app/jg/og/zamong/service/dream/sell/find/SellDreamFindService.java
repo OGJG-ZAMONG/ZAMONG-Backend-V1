@@ -7,4 +7,6 @@ public interface SellDreamFindService {
     SellDreamGroupResponse queryPendingSellDreams(int page, int size);
     SellDreamGroupResponse queryMyPendingSellDreams(int page, int size);
     SellDreamGroupResponse queryMyClosedSellDream(int page, int size);
+
+    SellDreamGroupResponse searchSellDream(String title, String[] types);
 }
