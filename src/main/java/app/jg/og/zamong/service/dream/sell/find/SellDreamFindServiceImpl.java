@@ -81,14 +81,7 @@ public class SellDreamFindServiceImpl implements SellDreamFindService {
         List<SellDream> sellDreams = sellDreamRepository.findByTitleLikeAndDreamTypesIn(title, dreamTypes);
 
         List<SellDreamResponse> sellDreamGroup = sellDreams.stream()
-                .map(sd -> SellDreamResponse.builder()
-                        .uuid(sd.getUuid())
-                        .title(sd.getTitle())
-                        .defaultPostingImage(sd.getDefaultImage())
-                        .updatedAt(sd.getUpdatedAt())
-                        .dreamTypes(sd.getDreamTypes().stream().map(DreamType::getCode).collect(Collectors.toList()))
-                        .cost(sd.getCost())
-                        .build())
+                .map(this::sellDreamResponseOf)
                 .collect(Collectors.toList());
 
         return SellDreamGroupResponse.builder()
@@ -98,14 +91,22 @@ public class SellDreamFindServiceImpl implements SellDreamFindService {
 
     private List<SellDreamResponse> sellDreamResponsesOf(Page<SellDream> sellDreamPage) {
         return sellDreamPage
-                .map(sd -> SellDreamResponse.builder()
-                        .uuid(sd.getUuid())
-                        .title(sd.getTitle())
-                        .defaultPostingImage(sd.getDefaultImage())
-                        .updatedAt(sd.getUpdatedAt())
-                        .dreamTypes(sd.getDreamTypes().stream().map(DreamType::getCode).collect(Collectors.toList()))
-                        .cost(sd.getCost())
+                .map(this::sellDreamResponseOf).toList();
+    }
+
+    private SellDreamResponse sellDreamResponseOf(SellDream sellDream) {
+        return SellDreamResponse.builder()
+                .uuid(sellDream.getUuid())
+                .title(sellDream.getTitle())
+                .defaultPostingImage(sellDream.getDefaultImage())
+                .updatedAt(sellDream.getUpdatedAt())
+                .dreamTypes(sellDream.getDreamTypes().stream().map(DreamType::getCode).collect(Collectors.toList()))
+                .cost(sellDream.getCost())
+                .user(SellDreamResponse.User.builder()
+                        .uuid(sellDream.getUser().getUuid())
+                        .id(sellDream.getUser().getId())
+                        .profile(sellDream.getUser().getProfile())
                         .build())
-                .toList();
+                .build();
     }
 }
