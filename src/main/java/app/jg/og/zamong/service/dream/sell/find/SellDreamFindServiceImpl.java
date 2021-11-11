@@ -32,7 +32,8 @@ public class SellDreamFindServiceImpl implements SellDreamFindService {
         Pageable request = PageRequest.of(page, size, Sort.by("updatedAt").descending());
         Page<SellDream> sellDreamPage = sellDreamRepository.findByStatus(SalesStatus.PENDING, request);
 
-        List<SellDreamResponse> sellDreamGroup = sellDreamResponsesOf(sellDreamPage);
+        List<SellDreamResponse> sellDreamGroup = sellDreamPage
+                .map(this::sellDreamResponseOf).toList();
 
         return SellDreamGroupResponse.builder()
                 .sellDreams(sellDreamGroup)
@@ -48,7 +49,8 @@ public class SellDreamFindServiceImpl implements SellDreamFindService {
         Pageable request = PageRequest.of(page, size, Sort.by("updatedAt").descending());
         Page<SellDream> sellDreamPage = sellDreamRepository.findByStatusAndUser(SalesStatus.PENDING, user, request);
 
-        List<SellDreamResponse> sellDreamGroup = sellDreamResponsesOf(sellDreamPage);
+        List<SellDreamResponse> sellDreamGroup = sellDreamPage
+                .map(this::sellDreamResponseOf).toList();
 
         return SellDreamGroupResponse.builder()
                 .sellDreams(sellDreamGroup)
@@ -64,7 +66,8 @@ public class SellDreamFindServiceImpl implements SellDreamFindService {
         Pageable request = PageRequest.of(page, size, Sort.by("updatedAt").descending());
         Page<SellDream> sellDreamPage = sellDreamRepository.findByUserAndStatusIn(user, List.of(SalesStatus.DONE, SalesStatus.CANCEL), request);
 
-        List<SellDreamResponse> sellDreamGroup = sellDreamResponsesOf(sellDreamPage);
+        List<SellDreamResponse> sellDreamGroup = sellDreamPage
+                .map(this::sellDreamResponseOf).toList();
 
         return SellDreamGroupResponse.builder()
                 .sellDreams(sellDreamGroup)
@@ -87,11 +90,6 @@ public class SellDreamFindServiceImpl implements SellDreamFindService {
         return SellDreamGroupResponse.builder()
                 .sellDreams(sellDreamGroup)
                 .build();
-    }
-
-    private List<SellDreamResponse> sellDreamResponsesOf(Page<SellDream> sellDreamPage) {
-        return sellDreamPage
-                .map(this::sellDreamResponseOf).toList();
     }
 
     private SellDreamResponse sellDreamResponseOf(SellDream sellDream) {
