@@ -3,7 +3,7 @@ package app.jg.og.zamong.service.user;
 import app.jg.og.zamong.constant.UserConstant;
 import app.jg.og.zamong.dto.request.ChangePasswordRequest;
 import app.jg.og.zamong.dto.request.CheckIdDuplicationRequest;
-import app.jg.og.zamong.dto.response.UserInformationResponse;
+import app.jg.og.zamong.dto.response.user.UserInformationResponse;
 import app.jg.og.zamong.entity.dream.sharedream.ShareDream;
 import app.jg.og.zamong.entity.dream.sharedream.ShareDreamRepository;
 import app.jg.og.zamong.entity.user.User;

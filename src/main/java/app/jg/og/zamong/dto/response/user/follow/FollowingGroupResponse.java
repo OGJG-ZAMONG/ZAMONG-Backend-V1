@@ -1,5 +1,6 @@
-package app.jg.og.zamong.dto.response;
+package app.jg.og.zamong.dto.response.user.follow;
 
+import app.jg.og.zamong.dto.response.Response;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
 import lombok.Getter;
@@ -10,9 +11,9 @@ import java.util.UUID;
 
 @Builder
 @Getter
-public class FollowerGroupResponse implements Response {
+public class FollowingGroupResponse implements Response {
 
-    private final List<FollowerResponse> followers;
+    private final List<FollowingResponse> followings;
 
     private final Integer totalPage;
 
@@ -20,7 +21,7 @@ public class FollowerGroupResponse implements Response {
 
     @Builder
     @Getter
-    public static class FollowerResponse {
+    public static class FollowingResponse {
 
         private final UUID uuid;
 

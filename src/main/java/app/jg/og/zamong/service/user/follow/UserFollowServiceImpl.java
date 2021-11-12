@@ -1,8 +1,8 @@
 package app.jg.og.zamong.service.user.follow;
 
-import app.jg.og.zamong.dto.response.FollowUserResponse;
-import app.jg.og.zamong.dto.response.FollowerGroupResponse;
-import app.jg.og.zamong.dto.response.FollowingGroupResponse;
+import app.jg.og.zamong.dto.response.user.follow.FollowUserResponse;
+import app.jg.og.zamong.dto.response.user.follow.FollowerGroupResponse;
+import app.jg.og.zamong.dto.response.user.follow.FollowingGroupResponse;
 import app.jg.og.zamong.entity.follow.Follow;
 import app.jg.og.zamong.entity.follow.FollowRepository;
 import app.jg.og.zamong.entity.user.User;

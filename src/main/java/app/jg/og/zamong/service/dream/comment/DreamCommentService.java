@@ -2,8 +2,8 @@ package app.jg.og.zamong.service.dream.comment;
 
 import app.jg.og.zamong.dto.request.DreamCommentRecommendRequest;
 import app.jg.og.zamong.dto.request.dream.DreamCommentRequest;
-import app.jg.og.zamong.dto.response.DreamCommendGroupResponse;
-import app.jg.og.zamong.dto.response.DreamCommentResponse;
+import app.jg.og.zamong.dto.response.dream.comment.DreamCommendGroupResponse;
+import app.jg.og.zamong.dto.response.dream.comment.DreamCommentResponse;
 
 public interface DreamCommentService {
 

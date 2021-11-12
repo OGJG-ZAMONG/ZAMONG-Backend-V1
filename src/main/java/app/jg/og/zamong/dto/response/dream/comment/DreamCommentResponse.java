@@ -1,5 +1,7 @@
-package app.jg.og.zamong.dto.response;
+package app.jg.og.zamong.dto.response.dream.comment;
 
+import app.jg.og.zamong.dto.response.Response;
+import app.jg.og.zamong.dto.response.user.UserInformationResponse;
 import lombok.Builder;
 import lombok.Getter;
 

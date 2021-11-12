@@ -3,7 +3,7 @@ package app.jg.og.zamong.service.dream.share;
 import app.jg.og.zamong.dto.request.dream.sharedream.ShareDreamQualityRequest;
 import app.jg.og.zamong.dto.request.dream.sharedream.ShareDreamRequest;
 import app.jg.og.zamong.dto.request.dream.sharedream.ShareDreamSleepDateTimeRequest;
-import app.jg.og.zamong.dto.response.CreateDreamResponse;
+import app.jg.og.zamong.dto.response.dream.CreateDreamResponse;
 import app.jg.og.zamong.dto.response.dream.sharedream.DoShareDreamResponse;
 import app.jg.og.zamong.entity.dream.attachment.AttachmentImage;
 import app.jg.og.zamong.entity.dream.attachment.AttachmentImageRepository;
