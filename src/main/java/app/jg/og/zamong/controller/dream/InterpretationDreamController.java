@@ -33,6 +33,11 @@ public class InterpretationDreamController {
         return ResponseBody.of(interpretationDreamService.createInterpretationDream(request), HttpStatus.CREATED.value());
     }
 
+    @GetMapping("/search")
+    public ResponseBody search(@PathParam("title") String title, @RequestParam("types") String[] types) {
+        return ResponseBody.listOf(interpretationDreamFindService.searchInterpretationDreams(title, types), HttpStatus.OK.value());
+    }
+
     @GetMapping("/static")
     public ResponseBody interpretationDream() {
         return ResponseBody.listOf(interpretationDreamService.queryInterpretationDreamCategory(), HttpStatus.OK.value());
