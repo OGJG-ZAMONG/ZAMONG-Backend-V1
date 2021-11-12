@@ -27,7 +27,15 @@ public class InterpretationDreamFindServiceImpl implements InterpretationDreamFi
 
         Page<InterpretationDream> interpretationDreamPage = interpretationDreamRepository.findAll(request);
 
-        return null;
+        List<InterpretationDreamResponse> interpretationDreamResponses = interpretationDreamPage
+                .map(this::interpretationDreamResponseOf)
+                .toList();
+
+        return InterpretationDreamGroupResponse.builder()
+                .interpretationDreams(interpretationDreamResponses)
+                .totalPage(interpretationDreamPage.getTotalPages())
+                .totalSize(interpretationDreamPage.getTotalElements())
+                .build();
     }
 
     private InterpretationDreamResponse interpretationDreamResponseOf(InterpretationDream interpretationDream) {
