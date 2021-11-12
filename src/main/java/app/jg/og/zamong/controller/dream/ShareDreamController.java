@@ -121,7 +121,7 @@ public class ShareDreamController {
     }
 
     @GetMapping("/search")
-    public ResponseBody search(@PathParam("title") String title, @PathParam("fields") String[] types) {
+    public ResponseBody search(@PathParam("title") String title, @RequestParam("types") String[] types) {
         return ResponseBody.listOf(shareDreamFindService.searchShareDreams(title, types), HttpStatus.OK.value());
     }
 }

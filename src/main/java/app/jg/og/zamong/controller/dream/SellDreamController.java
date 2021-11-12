@@ -75,7 +75,7 @@ public class SellDreamController {
     }
 
     @GetMapping("/search")
-    public ResponseBody search(@PathParam("title") String title, @PathParam("fields") String[] types) {
+    public ResponseBody search(@PathParam("title") String title, @RequestParam("types") String[] types) {
         return ResponseBody.listOf(sellDreamFindService.searchSellDream(title, types), HttpStatus.OK.value());
     }
 }
