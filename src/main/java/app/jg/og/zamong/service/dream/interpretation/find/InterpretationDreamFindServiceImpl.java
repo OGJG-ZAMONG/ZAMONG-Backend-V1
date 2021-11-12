@@ -12,6 +12,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -35,6 +36,22 @@ public class InterpretationDreamFindServiceImpl implements InterpretationDreamFi
                 .interpretationDreams(interpretationDreamResponses)
                 .totalPage(interpretationDreamPage.getTotalPages())
                 .totalSize(interpretationDreamPage.getTotalElements())
+                .build();
+    }
+
+    @Override
+    public InterpretationDreamGroupResponse searchInterpretationDreams(String title, String[] types) {
+        List<app.jg.og.zamong.entity.dream.enums.DreamType> dreamTypes =
+                Arrays.stream(types).map(app.jg.og.zamong.entity.dream.enums.DreamType::valueOf).collect(Collectors.toList());
+
+        List<InterpretationDream> interpretationDreams = interpretationDreamRepository.findByTitleLikeAndDreamTypesIn(title, dreamTypes);
+
+        List<InterpretationDreamResponse> interpretationDreamResponses = interpretationDreams
+                .stream().map(this::interpretationDreamResponseOf)
+                .collect(Collectors.toList());
+
+        return InterpretationDreamGroupResponse.builder()
+                .interpretationDreams(interpretationDreamResponses)
                 .build();
     }
 

@@ -5,4 +5,5 @@ import app.jg.og.zamong.dto.response.dream.interpretationdream.InterpretationDre
 public interface InterpretationDreamFindService {
 
     InterpretationDreamGroupResponse queryInterpretationDreams(int page, int size);
+    InterpretationDreamGroupResponse searchInterpretationDreams(String title, String[] types);
 }
