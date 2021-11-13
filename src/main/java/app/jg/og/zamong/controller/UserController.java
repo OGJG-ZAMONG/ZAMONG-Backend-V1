@@ -77,4 +77,9 @@ public class UserController {
     public void password(@Valid @RequestBody ChangePasswordRequest request) {
         userService.modifyPassword(request);
     }
+
+    @GetMapping("/search")
+    public ResponseBody search(@RequestParam("query") String query) {
+        return ResponseBody.listOf(userFindService.searchUsers(query), HttpStatus.OK.value());
+    }
 }
