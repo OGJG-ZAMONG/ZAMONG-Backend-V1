@@ -1,4 +1,4 @@
-package app.jg.og.zamong.dto.response;
+package app.jg.og.zamong.dto.response.user;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
@@ -9,12 +9,16 @@ import java.util.UUID;
 
 @Builder
 @Getter
-public class FollowUserResponse implements Response {
+public class UserResponse {
 
-    private final UUID userId;
+    private final UUID uuid;
 
-    private final UUID followerId;
+    private final String id;
+
+    private final String profile;
 
     @JsonProperty("follow_datetime")
     private final LocalDateTime followDateTime;
+
+    private final Boolean isFollowing;
 }

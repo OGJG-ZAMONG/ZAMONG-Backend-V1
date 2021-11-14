@@ -1,8 +1,9 @@
 package app.jg.og.zamong.service.user.follow;
 
-import app.jg.og.zamong.dto.response.FollowUserResponse;
-import app.jg.og.zamong.dto.response.FollowerGroupResponse;
-import app.jg.og.zamong.dto.response.FollowingGroupResponse;
+import app.jg.og.zamong.dto.response.user.UserResponse;
+import app.jg.og.zamong.dto.response.user.follow.FollowUserResponse;
+import app.jg.og.zamong.dto.response.user.follow.FollowerGroupResponse;
+import app.jg.og.zamong.dto.response.user.follow.FollowingGroupResponse;
 import app.jg.og.zamong.entity.follow.Follow;
 import app.jg.og.zamong.entity.follow.FollowRepository;
 import app.jg.og.zamong.entity.user.User;
@@ -63,8 +64,8 @@ public class UserFollowServiceImpl implements UserFollowService {
         Pageable request = PageRequest.of(page, size, Sort.by("followDateTime").descending());
         Page<Follow> followPage = followRepository.findAllByFollower(user, request);
 
-        List<FollowingGroupResponse.FollowingResponse> followingGroup = followPage
-                .map(follow -> FollowingGroupResponse.FollowingResponse.builder()
+        List<UserResponse> followingGroup = followPage
+                .map(follow -> UserResponse.builder()
                         .uuid(follow.getFollowing().getUuid())
                         .id(follow.getFollowing().getId())
                         .profile(follow.getFollowing().getProfile())
@@ -88,8 +89,8 @@ public class UserFollowServiceImpl implements UserFollowService {
         Pageable request = PageRequest.of(page, size, Sort.by("followDateTime").descending());
         Page<Follow> followPage = followRepository.findAllByFollowing(user, request);
 
-        List<FollowerGroupResponse.FollowerResponse> followerGroup = followPage
-                .map(follow -> FollowerGroupResponse.FollowerResponse.builder()
+        List<UserResponse> followerGroup = followPage
+                .map(follow -> UserResponse.builder()
                         .uuid(follow.getFollower().getUuid())
                         .id(follow.getFollower().getId())
                         .profile(follow.getFollower().getProfile())

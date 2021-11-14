@@ -1,5 +1,6 @@
-package app.jg.og.zamong.dto.response;
+package app.jg.og.zamong.dto.response.dream;
 
+import app.jg.og.zamong.dto.response.Response;
 import lombok.Builder;
 import lombok.Getter;
 

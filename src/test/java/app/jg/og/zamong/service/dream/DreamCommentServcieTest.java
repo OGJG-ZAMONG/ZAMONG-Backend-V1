@@ -1,8 +1,8 @@
 package app.jg.og.zamong.service.dream;
 
 import app.jg.og.zamong.dto.request.dream.DreamCommentRequest;
-import app.jg.og.zamong.dto.response.DreamCommendGroupResponse;
-import app.jg.og.zamong.dto.response.DreamCommentResponse;
+import app.jg.og.zamong.dto.response.dream.comment.DreamCommendGroupResponse;
+import app.jg.og.zamong.dto.response.dream.comment.DreamCommentResponse;
 import app.jg.og.zamong.entity.dream.Dream;
 import app.jg.og.zamong.entity.dream.DreamRepository;
 import app.jg.og.zamong.entity.dream.comment.Comment;

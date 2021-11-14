@@ -1,7 +1,7 @@
 package app.jg.og.zamong.service.dream.interpretation;
 
 import app.jg.og.zamong.dto.request.dream.interpretationdream.InterpretationDreamRequest;
-import app.jg.og.zamong.dto.response.CreateDreamResponse;
+import app.jg.og.zamong.dto.response.dream.CreateDreamResponse;
 import app.jg.og.zamong.dto.response.Response;
 import app.jg.og.zamong.dto.response.dream.interpretationdream.InterpretationDreamCategoryResponse;
 

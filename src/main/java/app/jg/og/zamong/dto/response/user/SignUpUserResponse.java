@@ -1,5 +1,6 @@
-package app.jg.og.zamong.dto.response;
+package app.jg.og.zamong.dto.response.user;
 
+import app.jg.og.zamong.dto.response.Response;
 import app.jg.og.zamong.entity.user.User;
 import lombok.Builder;
 import lombok.Getter;

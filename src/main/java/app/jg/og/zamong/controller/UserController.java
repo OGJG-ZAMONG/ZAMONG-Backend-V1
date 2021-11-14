@@ -6,6 +6,7 @@ import app.jg.og.zamong.dto.request.FollowUserRequest;
 import app.jg.og.zamong.dto.response.ResponseBody;
 import app.jg.og.zamong.service.securitycontext.SecurityContextService;
 import app.jg.og.zamong.service.user.UserService;
+import app.jg.og.zamong.service.user.find.UserFindService;
 import app.jg.og.zamong.service.user.follow.UserFollowService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -22,17 +23,18 @@ import javax.websocket.server.PathParam;
 public class UserController {
 
     private final UserService userService;
+    private final UserFindService userFindService;
     private final UserFollowService userFollowService;
     private final SecurityContextService securityContextService;
 
     @GetMapping("/{user-uuid}")
     public ResponseBody userInformation(@PathVariable("user-uuid") String uuid) {
-        return ResponseBody.of(userService.queryUserInformation(uuid), HttpStatus.OK.value());
+        return ResponseBody.of(userFindService.queryUserInformation(uuid), HttpStatus.OK.value());
     }
 
     @GetMapping("/me")
     public ResponseBody myInformation() {
-        return ResponseBody.of(userService.queryMyInformation(), HttpStatus.OK.value());
+        return ResponseBody.of(userFindService.queryMyInformation(), HttpStatus.OK.value());
     }
 
     @PostMapping("/follow")
@@ -74,5 +76,10 @@ public class UserController {
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void password(@Valid @RequestBody ChangePasswordRequest request) {
         userService.modifyPassword(request);
+    }
+
+    @GetMapping("/search")
+    public ResponseBody search(@RequestParam("query") String query) {
+        return ResponseBody.listOf(userFindService.searchUsers(query), HttpStatus.OK.value());
     }
 }

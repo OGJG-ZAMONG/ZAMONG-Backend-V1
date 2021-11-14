@@ -4,7 +4,7 @@ import app.jg.og.zamong.dto.request.CheckIdDuplicationRequest;
 import app.jg.og.zamong.dto.request.EmailAuthenticationRequest;
 import app.jg.og.zamong.dto.request.SendMailRequest;
 import app.jg.og.zamong.dto.request.SignUpUserRequest;
-import app.jg.og.zamong.dto.response.SignUpUserResponse;
+import app.jg.og.zamong.dto.response.user.SignUpUserResponse;
 import app.jg.og.zamong.dto.response.StringResponse;
 import app.jg.og.zamong.entity.redis.authenticationcode.AuthenticationCode;
 import app.jg.og.zamong.entity.redis.authenticationcode.AuthenticationCodeRepository;
