@@ -1,10 +1,12 @@
 package app.jg.og.zamong.service.dream.interpretation.find;
 
 import app.jg.og.zamong.dto.response.dream.interpretationdream.InterpretationDreamGroupResponse;
+import app.jg.og.zamong.dto.response.dream.interpretationdream.InterpretationDreamInformationResponse;
 import app.jg.og.zamong.dto.response.dream.interpretationdream.InterpretationDreamResponse;
 import app.jg.og.zamong.entity.dream.dreamtype.DreamType;
 import app.jg.og.zamong.entity.dream.interpretationdream.InterpretationDream;
 import app.jg.og.zamong.entity.dream.interpretationdream.InterpretationDreamRepository;
+import app.jg.og.zamong.exception.business.DreamNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -14,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -63,6 +66,26 @@ public class InterpretationDreamFindServiceImpl implements InterpretationDreamFi
                 .dreamTypes(interpretationDream.getDreamTypes().stream().map(DreamType::getCode).collect(Collectors.toList()))
                 .updatedAt(interpretationDream.getUpdatedAt())
                 .user(InterpretationDreamResponse.User.builder()
+                        .uuid(interpretationDream.getUser().getUuid())
+                        .id(interpretationDream.getUser().getId())
+                        .profile(interpretationDream.getUser().getProfile())
+                        .build())
+                .build();
+    }
+
+    @Override
+    public InterpretationDreamInformationResponse queryInterpretationDreamResponse(String uuid) {
+        InterpretationDream interpretationDream = interpretationDreamRepository.findById(UUID.fromString(uuid))
+                .orElseThrow(() -> new DreamNotFoundException("해당하는 꿈을 찾을 수 없습니다"));
+
+        return InterpretationDreamInformationResponse.builder()
+                .uuid(interpretationDream.getUuid())
+                .title(interpretationDream.getTitle())
+                .content(interpretationDream.getContent())
+                .updatedAt(interpretationDream.getUpdatedAt())
+                .dreamTypes(interpretationDream.getDreamTypes().stream().map(DreamType::getCode).collect(Collectors.toList()))
+                .attachmentImage(interpretationDream.getDefaultImage())
+                .user(InterpretationDreamInformationResponse.User.builder()
                         .uuid(interpretationDream.getUser().getUuid())
                         .id(interpretationDream.getUser().getId())
                         .profile(interpretationDream.getUser().getProfile())
