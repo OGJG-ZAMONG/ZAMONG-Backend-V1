@@ -78,4 +78,9 @@ public class SellDreamController {
     public ResponseBody search(@PathParam("title") String title, @RequestParam("types") String[] types) {
         return ResponseBody.listOf(sellDreamFindService.searchSellDream(title, types), HttpStatus.OK.value());
     }
+
+    @GetMapping("/{dream-uuid}")
+    public ResponseBody information(@PathVariable("dream-uuid") String uuid) {
+        return ResponseBody.of(sellDreamFindService.querySellDreamInformation(uuid), HttpStatus.OK.value());
+    }
 }
