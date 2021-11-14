@@ -50,6 +50,8 @@ dependencies {
 
     implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.0.1.RELEASE'
 
+    implementation 'org.springframework.boot:spring-boot-starter-websocket'
+
     // QueryDSL
     implementation "com.querydsl:querydsl-jpa:4.4.0"
     annotationProcessor(
