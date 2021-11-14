@@ -1,12 +1,14 @@
 package app.jg.og.zamong.service.dream.sell.find;
 
 import app.jg.og.zamong.dto.response.dream.selldream.SellDreamGroupResponse;
+import app.jg.og.zamong.dto.response.dream.selldream.SellDreamInformationResponse;
 import app.jg.og.zamong.dto.response.dream.selldream.SellDreamResponse;
 import app.jg.og.zamong.entity.dream.dreamtype.DreamType;
 import app.jg.og.zamong.entity.dream.enums.SalesStatus;
 import app.jg.og.zamong.entity.dream.selldream.SellDream;
 import app.jg.og.zamong.entity.dream.selldream.SellDreamRepository;
 import app.jg.og.zamong.entity.user.User;
+import app.jg.og.zamong.exception.business.DreamNotFoundException;
 import app.jg.og.zamong.service.securitycontext.SecurityContextService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -17,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -101,6 +104,28 @@ public class SellDreamFindServiceImpl implements SellDreamFindService {
                 .dreamTypes(sellDream.getDreamTypes().stream().map(DreamType::getCode).collect(Collectors.toList()))
                 .cost(sellDream.getCost())
                 .user(SellDreamResponse.User.builder()
+                        .uuid(sellDream.getUser().getUuid())
+                        .id(sellDream.getUser().getId())
+                        .profile(sellDream.getUser().getProfile())
+                        .build())
+                .build();
+    }
+
+    @Override
+    public SellDreamInformationResponse querySellDreamInformation(String uuid) {
+        SellDream sellDream = sellDreamRepository.findById(UUID.fromString(uuid))
+                .orElseThrow(() -> new DreamNotFoundException("해당하는 꿈을 찾을 수 없습니다"));
+
+        return SellDreamInformationResponse.builder()
+                .uuid(sellDream.getUuid())
+                .title(sellDream.getTitle())
+                .content(sellDream.getContent())
+                .updatedAt(sellDream.getUpdatedAt())
+                .dreamTypes(sellDream.getDreamTypes().stream().map(DreamType::getCode).collect(Collectors.toList()))
+                .attachmentImage(sellDream.getDefaultImage())
+                .cost(sellDream.getCost())
+                .status(sellDream.getStatus())
+                .user(SellDreamInformationResponse.User.builder()
                         .uuid(sellDream.getUser().getUuid())
                         .id(sellDream.getUser().getId())
                         .profile(sellDream.getUser().getProfile())
