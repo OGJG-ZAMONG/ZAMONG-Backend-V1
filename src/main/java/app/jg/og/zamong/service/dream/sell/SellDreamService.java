@@ -9,6 +9,8 @@ import app.jg.og.zamong.dto.response.dream.selldream.DoSellRequestDreamResponse;
 public interface SellDreamService {
 
     CreateDreamResponse createSellDream(SellDreamRequest request);
+    CreateDreamResponse modifySellDream(String uuid, SellDreamRequest request);
+
     DoSellRequestDreamResponse doSellRequestDream(String uuid);
     void patchSellDreamCost(String uuid, SellDreamCostRequest request);
 

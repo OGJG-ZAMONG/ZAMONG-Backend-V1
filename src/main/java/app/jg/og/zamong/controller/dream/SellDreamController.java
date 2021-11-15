@@ -25,6 +25,11 @@ public class SellDreamController {
         return ResponseBody.of(sellDreamService.createSellDream(request), HttpStatus.CREATED.value());
     }
 
+    @PutMapping("/{dream-uuid}")
+    public ResponseBody modify(@PathVariable("dream-uuid") String uuid, @Valid @RequestBody SellDreamRequest request) {
+        return ResponseBody.of(sellDreamService.modifySellDream(uuid, request), HttpStatus.OK.value());
+    }
+
     @PostMapping("/{dream-uuid}/done")
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void sellDone(@PathVariable("dream-uuid") String uuid) {

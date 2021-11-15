@@ -73,6 +73,31 @@ public class SellDreamServiceImpl implements SellDreamService {
     }
 
     @Override
+    @Transactional
+    public CreateDreamResponse modifySellDream(String uuid, SellDreamRequest request) {
+        SellDream sellDream = sellDreamRepository.findById(UUID.fromString(uuid))
+                .orElseThrow(() -> new DreamNotFoundException("해당하는 꿈을 찾을 수 없습니다"));
+
+        sellDream.setTitle(request.getTitle());
+        sellDream.setContent(request.getContent());
+        sellDream.setCost(request.getCost());
+
+        dreamTypeRepository.deleteByDream(sellDream);
+
+        request.getDreamTypes()
+                .forEach((dt -> dreamTypeRepository.save(DreamType.builder()
+                        .dream(sellDream)
+                        .code(dt)
+                        .build())));
+
+        return CreateDreamResponse.builder()
+                .uuid(sellDream.getUuid())
+                .createdAt(sellDream.getCreatedAt())
+                .updatedAt(sellDream.getUpdatedAt())
+                .build();
+    }
+
+    @Override
     public DoSellRequestDreamResponse doSellRequestDream(String uuid) {
         User user = securityContextService.getPrincipal().getUser();
 
