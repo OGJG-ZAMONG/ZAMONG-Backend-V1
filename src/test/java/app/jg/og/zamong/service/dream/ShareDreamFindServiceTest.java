@@ -84,10 +84,10 @@ public class ShareDreamFindServiceTest extends UnitTest {
         Page<ShareDream> shareDreamPage = new PageImpl(List.of(shareDream));
 
         given(securityContextService.getPrincipal()).willReturn(new AuthenticationDetails(user));
-        given(shareDreamRepository.findByUser(any(), any())).willReturn(shareDreamPage);
+        given(shareDreamRepository.findByUserAndIsSharedIn(any(), any(), any())).willReturn(shareDreamPage);
 
         //when
-        ShareDreamGroupResponse response = dreamFindService.queryMyShareDreams(page, size, "created");
+        ShareDreamGroupResponse response = dreamFindService.queryMyShareDreams(page, size, "created", List.of(true));
 
         //then
         assertThat(response.getShareDreams().size()).isEqualTo(size);
