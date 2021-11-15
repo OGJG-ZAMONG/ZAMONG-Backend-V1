@@ -48,6 +48,11 @@ public class SellDreamController {
         return ResponseBody.of(sellDreamService.doSellRequestDream(uuid), HttpStatus.OK.value());
     }
 
+    @PostMapping("/{dream-uuid}/accept")
+    public ResponseBody accept(@PathVariable("dream-uuid") String uuid) {
+        return ResponseBody.of(sellDreamService.acceptSellDreamRequest(uuid), HttpStatus.OK.value());
+    }
+
     private final SellDreamFindService sellDreamFindService;
 
     @GetMapping("/continue")
@@ -77,5 +82,10 @@ public class SellDreamController {
     @GetMapping("/search")
     public ResponseBody search(@PathParam("title") String title, @RequestParam("types") String[] types) {
         return ResponseBody.listOf(sellDreamFindService.searchSellDream(title, types), HttpStatus.OK.value());
+    }
+
+    @GetMapping("/{dream-uuid}")
+    public ResponseBody information(@PathVariable("dream-uuid") String uuid) {
+        return ResponseBody.of(sellDreamFindService.querySellDreamInformation(uuid), HttpStatus.OK.value());
     }
 }

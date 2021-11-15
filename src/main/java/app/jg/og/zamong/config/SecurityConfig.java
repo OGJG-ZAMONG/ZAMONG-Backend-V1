@@ -27,6 +27,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .cors().and()
                 .authorizeRequests()
                     .antMatchers("/auth/**").permitAll()
+                    .antMatchers("/dream/share").permitAll()
+                    .antMatchers("/dream/sell/continue").permitAll()
                     .anyRequest().authenticated()
                 .and()
                     .apply(new JwtConfigurer(jwtTokenProvider));

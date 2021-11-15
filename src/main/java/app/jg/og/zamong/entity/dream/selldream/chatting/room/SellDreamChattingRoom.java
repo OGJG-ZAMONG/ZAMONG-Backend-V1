@@ -1,4 +1,4 @@
-package app.jg.og.zamong.entity.dream.selldream.buyrequest;
+package app.jg.og.zamong.entity.dream.selldream.chatting.room;
 
 import app.jg.og.zamong.entity.dream.selldream.SellDream;
 import app.jg.og.zamong.entity.user.User;
@@ -13,7 +13,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-public class SellDreamBuyRequest {
+public class SellDreamChattingRoom {
 
     @Id
     @GeneratedValue(generator = "uuid2")
@@ -21,18 +21,17 @@ public class SellDreamBuyRequest {
     @Column(columnDefinition = "BINARY(16)")
     private UUID uuid;
 
-    @Column(columnDefinition = "tinyint(1)")
-    private Boolean isAccept;
+    private String lastChat;
 
     @ManyToOne
-    @JoinColumn(name = "user_uuid", nullable = false)
-    private User user;
+    @JoinColumn(name = "seller_uuid", nullable = false)
+    private User seller;
+
+    @ManyToOne
+    @JoinColumn(name = "customer_uuid", nullable = false)
+    private User customer;
 
     @ManyToOne
     @JoinColumn(name = "sell_dream_uuid", nullable = false)
     private SellDream sellDream;
-
-    public void acceptBuyRequest() {
-        isAccept = true;
-    }
 }

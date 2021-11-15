@@ -47,4 +47,9 @@ public class InterpretationDreamController {
     public ResponseBody interpretationDetail(@PathVariable("interpretation-uuid") String uuid) {
         return ResponseBody.of(interpretationDreamService.queryInterpretation(uuid), HttpStatus.OK.value());
     }
+
+    @GetMapping("/{dream-uuid}")
+    public ResponseBody information(@PathVariable("dream-uuid") String uuid) {
+        return ResponseBody.of(interpretationDreamFindService.queryInterpretationDreamResponse(uuid), HttpStatus.OK.value());
+    }
 }

@@ -2,6 +2,8 @@ package app.jg.og.zamong.service.dream.sell;
 
 import app.jg.og.zamong.dto.request.dream.selldream.SellDreamCostRequest;
 import app.jg.og.zamong.dto.request.dream.selldream.SellDreamRequest;
+import app.jg.og.zamong.dto.response.Response;
+import app.jg.og.zamong.dto.response.StringResponse;
 import app.jg.og.zamong.dto.response.dream.CreateDreamResponse;
 import app.jg.og.zamong.dto.response.dream.selldream.DoSellRequestDreamResponse;
 import app.jg.og.zamong.entity.dream.attachment.AttachmentImage;
@@ -14,6 +16,8 @@ import app.jg.og.zamong.entity.dream.selldream.SellDream;
 import app.jg.og.zamong.entity.dream.selldream.SellDreamRepository;
 import app.jg.og.zamong.entity.dream.selldream.buyrequest.SellDreamBuyRequest;
 import app.jg.og.zamong.entity.dream.selldream.buyrequest.SellDreamBuyRequestRepository;
+import app.jg.og.zamong.entity.dream.selldream.chatting.room.SellDreamChattingRoom;
+import app.jg.og.zamong.entity.dream.selldream.chatting.room.SellDreamChattingRoomRepository;
 import app.jg.og.zamong.entity.user.User;
 import app.jg.og.zamong.exception.business.DreamNotFoundException;
 import app.jg.og.zamong.exception.business.ForbiddenUserException;
@@ -32,6 +36,7 @@ public class SellDreamServiceImpl implements SellDreamService {
     private final AttachmentImageRepository attachmentImageRepository;
     private final DreamTypeRepository dreamTypeRepository;
     private final SellDreamBuyRequestRepository sellDreamBuyRequestRepository;
+    private final SellDreamChattingRoomRepository sellDreamChattingRoomRepository;
 
     private final SecurityContextService securityContextService;
 
@@ -123,5 +128,25 @@ public class SellDreamServiceImpl implements SellDreamService {
         }
 
         sellDream.candleSale();
+    }
+
+    @Override
+    @Transactional
+    public Response acceptSellDreamRequest(String uuid) {
+        User user = securityContextService.getPrincipal().getUser();
+
+        SellDream sellDream = sellDreamRepository.findById(UUID.fromString(uuid))
+                .orElseThrow(() -> new DreamNotFoundException("해당하는 꿈을 찾을 수 없습니다"));
+
+        SellDreamBuyRequest sellDreamBuyRequest = sellDreamBuyRequestRepository.findByUserAndSellDream(user, sellDream);
+        sellDreamBuyRequest.acceptBuyRequest();
+
+        SellDreamChattingRoom room = sellDreamChattingRoomRepository.save(SellDreamChattingRoom.builder()
+                .sellDream(sellDream)
+                .seller(sellDream.getUser())
+                .customer(user)
+                .build());
+
+        return new StringResponse(room.getUuid().toString());
     }
 }
