@@ -31,4 +31,8 @@ public class SellDreamBuyRequest {
     @ManyToOne
     @JoinColumn(name = "sell_dream_uuid", nullable = false)
     private SellDream sellDream;
+
+    public void acceptBuyRequest() {
+        isAccept = true;
+    }
 }
