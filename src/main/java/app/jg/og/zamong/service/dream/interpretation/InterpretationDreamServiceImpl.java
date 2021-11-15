@@ -19,6 +19,7 @@ import app.jg.og.zamong.exception.business.DreamNotFoundException;
 import app.jg.og.zamong.service.securitycontext.SecurityContextService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.UUID;
@@ -56,6 +57,30 @@ public class InterpretationDreamServiceImpl implements InterpretationDreamServic
                 .tag(DreamTag.INTERPRETATION_DREAM)
                 .dream(interpretationDream)
                 .build());
+
+        return CreateDreamResponse.builder()
+                .uuid(interpretationDream.getUuid())
+                .createdAt(interpretationDream.getCreatedAt())
+                .updatedAt(interpretationDream.getUpdatedAt())
+                .build();
+    }
+
+    @Override
+    @Transactional
+    public CreateDreamResponse modifyInterpretationDream(String uuid, InterpretationDreamRequest request) {
+        InterpretationDream interpretationDream = interpretationDreamRepository.findById(UUID.fromString(uuid))
+                .orElseThrow(() -> new DreamNotFoundException("해당하는 꿈을 찾을 수 없습니다"));
+
+        interpretationDream.setTitle(request.getTitle());
+        interpretationDream.setContent(request.getContent());
+
+        dreamTypeRepository.deleteByDream(interpretationDream);
+
+        request.getDreamTypes()
+                .forEach((dt -> dreamTypeRepository.save(DreamType.builder()
+                        .dream(interpretationDream)
+                        .code(dt)
+                        .build())));
 
         return CreateDreamResponse.builder()
                 .uuid(interpretationDream.getUuid())

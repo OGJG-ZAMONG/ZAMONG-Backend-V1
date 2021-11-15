@@ -8,6 +8,8 @@ import app.jg.og.zamong.dto.response.dream.interpretationdream.InterpretationDre
 public interface InterpretationDreamService {
 
     CreateDreamResponse createInterpretationDream(InterpretationDreamRequest request);
+    CreateDreamResponse modifyInterpretationDream(String uuid, InterpretationDreamRequest request);
+
     InterpretationDreamCategoryResponse queryInterpretationDreamCategory();
     Response queryInterpretation(String uuid);
 }
