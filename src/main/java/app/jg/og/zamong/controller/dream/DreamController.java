@@ -11,6 +11,7 @@ import app.jg.og.zamong.service.dream.comment.DreamCommentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 
@@ -31,6 +32,12 @@ public class DreamController {
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void content(@PathVariable("dream-uuid") String uuid, @Valid @RequestBody DreamContentRequest request) {
         dreamService.patchDreamContent(uuid, request);
+    }
+
+    @PostMapping("/image/{dream-uuid}")
+    @ResponseStatus(value = HttpStatus.NO_CONTENT)
+    public void image(@PathVariable("dream-uuid") String uuid, @RequestParam("file") MultipartFile file) {
+        dreamService.patchDreamImage(uuid, file);
     }
 
     @PatchMapping("/dream-types/{dream-uuid}")
