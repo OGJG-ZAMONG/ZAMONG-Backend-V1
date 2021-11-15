@@ -35,10 +35,11 @@ public class ShareDreamController {
 
     @GetMapping("/me")
     public ResponseBody myShareDream(
-            @PathParam("page") int page,
-            @Max(50) @PathParam("size") int size,
-            @PathParam("sort") String sort) {
-        return ResponseBody.listOf(shareDreamFindService.queryMyShareDreams(page, size, sort), HttpStatus.OK.value());
+            @RequestParam("page") int page,
+            @Max(50) @RequestParam("size") int size,
+            @RequestParam("sort") String sort,
+            @RequestParam("shared") List<Boolean> shared) {
+        return ResponseBody.listOf(shareDreamFindService.queryMyShareDreams(page, size, sort, shared), HttpStatus.OK.value());
     }
 
     @GetMapping("/me/today")
