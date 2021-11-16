@@ -44,6 +44,11 @@ public class UserController {
         return ResponseBody.of(userFollowService.followUser(userUuid, followerUuid), HttpStatus.OK.value());
     }
 
+    @DeleteMapping("/follow")
+    public ResponseBody followCancel(@Valid @RequestBody FollowUserRequest request) {
+        return ResponseBody.of(userFollowService.cancelFollowUser(request), HttpStatus.OK.value());
+    }
+
     @GetMapping("/{user-uuid}/following")
     public ResponseBody following(
             @PathVariable("user-uuid") String uuid,
