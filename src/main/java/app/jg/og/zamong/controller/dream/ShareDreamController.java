@@ -4,7 +4,6 @@ import app.jg.og.zamong.dto.request.dream.sharedream.ShareDreamQualityRequest;
 import app.jg.og.zamong.dto.request.dream.sharedream.ShareDreamRequest;
 import app.jg.og.zamong.dto.request.dream.sharedream.ShareDreamSleepDateTimeRequest;
 import app.jg.og.zamong.dto.response.ResponseBody;
-import app.jg.og.zamong.entity.dream.enums.DreamType;
 import app.jg.og.zamong.service.dream.share.ShareDreamService;
 import app.jg.og.zamong.service.dream.share.find.ShareDreamFindService;
 import lombok.RequiredArgsConstructor;
@@ -16,7 +15,6 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.validation.Valid;
 import javax.validation.constraints.Max;
 import javax.websocket.server.PathParam;
-import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
@@ -38,7 +36,7 @@ public class ShareDreamController {
             @RequestParam("page") int page,
             @Max(50) @RequestParam("size") int size,
             @RequestParam("sort") String sort,
-            @RequestParam("shared") List<Boolean> shared) {
+            @RequestParam("shared") Boolean shared) {
         return ResponseBody.listOf(shareDreamFindService.queryMyShareDreams(page, size, sort, shared), HttpStatus.OK.value());
     }
 

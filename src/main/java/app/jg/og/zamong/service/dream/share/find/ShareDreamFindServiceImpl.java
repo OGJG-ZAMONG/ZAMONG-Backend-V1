@@ -75,12 +75,14 @@ public class ShareDreamFindServiceImpl implements ShareDreamFindService {
     }
 
     @Override
-    public ShareDreamGroupResponse queryMyShareDreams(int page, int size, String sort, List<Boolean> shared) {
+    public ShareDreamGroupResponse queryMyShareDreams(int page, int size, String sort, Boolean shared) {
         User user = securityContextService.getPrincipal().getUser();
 
         Pageable request = getSortArgument(sort, page, size);
 
-        Page<ShareDream> shareDreamPage = shareDreamRepository.findByUserAndIsSharedIn(user, shared, request);
+        List<Boolean> sharedRequest = shared ? List.of(true) : List.of(true, false);
+
+        Page<ShareDream> shareDreamPage = shareDreamRepository.findByUserAndIsSharedIn(user, sharedRequest, request);
 
         List<ShareDreamResponse> shareDreamGroup = shareDreamPage
                 .map(sd -> ShareDreamResponse.builder()
