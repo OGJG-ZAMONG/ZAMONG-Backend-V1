@@ -14,4 +14,6 @@ public interface FollowRepository extends PagingAndSortingRepository<Follow, UUI
     List<Follow> findAllByFollower(User user);
 
     boolean existsByFollowingAndFollower(User following, User follower);
+
+    void deleteByFollowingAndFollower(User following, User follower);
 }

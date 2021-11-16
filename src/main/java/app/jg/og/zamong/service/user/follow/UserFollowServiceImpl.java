@@ -1,5 +1,6 @@
 package app.jg.og.zamong.service.user.follow;
 
+import app.jg.og.zamong.dto.request.FollowUserRequest;
 import app.jg.og.zamong.dto.response.user.UserResponse;
 import app.jg.og.zamong.dto.response.user.follow.FollowUserResponse;
 import app.jg.og.zamong.dto.response.user.follow.FollowerGroupResponse;
@@ -10,12 +11,14 @@ import app.jg.og.zamong.entity.user.User;
 import app.jg.og.zamong.entity.user.UserRepository;
 import app.jg.og.zamong.exception.business.CantFollowUserException;
 import app.jg.og.zamong.exception.business.UserNotFoundException;
+import app.jg.og.zamong.service.securitycontext.SecurityContextService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -28,6 +31,8 @@ public class UserFollowServiceImpl implements UserFollowService {
     private final UserRepository userRepository;
     private final FollowRepository followRepository;
 
+    private final SecurityContextService securityContextService;
+
     @Override
     public FollowUserResponse followUser(String uuid, String followerUuid) {
         try {
@@ -35,6 +40,22 @@ public class UserFollowServiceImpl implements UserFollowService {
         } catch (RuntimeException e) {
             throw new CantFollowUserException("팔로우할 수 없는 유저입니다");
         }
+    }
+
+    @Override
+    @Transactional
+    public FollowUserResponse cancelFollowUser(FollowUserRequest request) {
+        User user = userRepository.findById(UUID.fromString(request.getUserUuid()))
+                .orElseThrow(() -> new UserNotFoundException("해당하는 유저를 찾을 수 없습니다"));
+
+        User follower = securityContextService.getPrincipal().getUser();
+
+        followRepository.deleteByFollowingAndFollower(user, follower);
+
+        return FollowUserResponse.builder()
+                .userId(user.getUuid())
+                .followerId(follower.getUuid())
+                .build();
     }
 
     private FollowUserResponse doFollowUser(String uuid, String followerUuid) {
