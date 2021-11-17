@@ -78,7 +78,7 @@ public class DreamCommentServiceImpl implements DreamCommentService {
         Dream dream = dreamRepository.findById(UUID.fromString(uuid))
                 .orElseThrow(() -> new DreamNotFoundException("해당하는 꿈을 찾을 수 없습니다"));
 
-        List<DreamCommendGroupResponse.CommentResponse> comments = dream.getComments().stream()
+        List<DreamCommendGroupResponse.CommentResponse> comments = commentRepository.findByDreamOrderByDateTimeDesc(dream).stream()
                 .filter(comment -> comment.getDepth() == 0)
                 .map(comment -> convert(comment, user))
                 .collect(Collectors.toList());
