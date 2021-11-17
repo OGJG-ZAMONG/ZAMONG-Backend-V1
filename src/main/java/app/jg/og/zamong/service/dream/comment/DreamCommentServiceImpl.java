@@ -128,8 +128,13 @@ public class DreamCommentServiceImpl implements DreamCommentService {
         Comment comment = commentRepository.findById(UUID.fromString(uuid))
                 .orElseThrow(() -> new CommentNotFoundException("댓글을 찾을 수 없습니다"));
 
-        recommendRepository.findByCommentAndUser(comment, user)
-                .ifPresent(recommendRepository::delete);
+        Recommend recommend = recommendRepository.findByCommentAndUser(comment, user)
+                .orElse(null);
+
+        if(recommend != null) {
+            recommendRepository.delete(recommend);
+            return;
+        }
 
         recommendRepository.save(Recommend.builder()
                 .recommendType(request.getType())
