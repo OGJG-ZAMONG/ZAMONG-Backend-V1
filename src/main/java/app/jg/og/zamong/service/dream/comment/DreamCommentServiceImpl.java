@@ -2,6 +2,7 @@ package app.jg.og.zamong.service.dream.comment;
 
 import app.jg.og.zamong.dto.request.DreamCommentRecommendRequest;
 import app.jg.og.zamong.dto.request.dream.DreamCommentRequest;
+import app.jg.og.zamong.dto.response.NumberResponse;
 import app.jg.og.zamong.dto.response.dream.comment.DreamCommendGroupResponse;
 import app.jg.og.zamong.dto.response.dream.comment.DreamCommentResponse;
 import app.jg.og.zamong.dto.response.user.UserInformationResponse;
@@ -156,6 +157,16 @@ public class DreamCommentServiceImpl implements DreamCommentService {
         }
 
         comment.setContent(request.getContent());
+    }
+
+    @Override
+    public NumberResponse queryCountOfComment(String uuid) {
+        Dream dream = dreamRepository.findById(UUID.fromString(uuid))
+                .orElseThrow(() -> new DreamNotFoundException("해당하는 꿈을 찾을 수 없습니다"));
+
+        Integer count = commentRepository.countAllByDream(dream);
+
+        return new NumberResponse(count);
     }
 
     @Override
