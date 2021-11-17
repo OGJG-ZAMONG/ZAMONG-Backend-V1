@@ -58,6 +58,7 @@ public abstract class Dream {
     private List<AttachmentImage> attachmentImages;
 
     @OneToMany(mappedBy = "dream")
+    @OrderBy("dateTime DESC")
     private List<Comment> comments;
 
     public String getDefaultImage() {

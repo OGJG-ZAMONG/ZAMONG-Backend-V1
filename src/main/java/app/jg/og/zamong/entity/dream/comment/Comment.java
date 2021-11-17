@@ -37,6 +37,7 @@ public class Comment {
     private Integer depth;
 
     @OneToMany(mappedBy = "pComment")
+    @OrderBy("dateTime DESC")
     private List<Comment> comments;
 
     @ManyToOne(fetch = FetchType.LAZY)
