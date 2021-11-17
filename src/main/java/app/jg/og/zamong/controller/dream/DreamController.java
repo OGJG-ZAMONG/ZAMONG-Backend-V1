@@ -60,6 +60,11 @@ public class DreamController {
         return ResponseBody.of(dreamCommentService.createDream(uuid, request), HttpStatus.CREATED.value());
     }
 
+    @GetMapping("/{dream-uuid}/comment/count")
+    public ResponseBody commentCount(@PathVariable("dream-uuid") String uuid) {
+        return ResponseBody.of(dreamCommentService.queryCountOfComment(uuid), HttpStatus.OK.value());
+    }
+
     @GetMapping("/{dream-uuid}/comment")
     public ResponseBody comment(@PathVariable("dream-uuid") String uuid) {
         return ResponseBody.listOf(dreamCommentService.queryDreamComment(uuid), HttpStatus.OK.value());
