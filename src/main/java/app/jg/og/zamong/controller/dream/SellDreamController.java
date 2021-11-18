@@ -4,6 +4,7 @@ import app.jg.og.zamong.dto.request.dream.selldream.SellDreamCostRequest;
 import app.jg.og.zamong.dto.request.dream.selldream.SellDreamRequest;
 import app.jg.og.zamong.dto.response.ResponseBody;
 import app.jg.og.zamong.service.dream.sell.SellDreamService;
+import app.jg.og.zamong.service.dream.sell.chat.SellDreamChattingRoomService;
 import app.jg.og.zamong.service.dream.sell.find.SellDreamFindService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -92,5 +93,12 @@ public class SellDreamController {
     @GetMapping("/{dream-uuid}")
     public ResponseBody information(@PathVariable("dream-uuid") String uuid) {
         return ResponseBody.of(sellDreamFindService.querySellDreamInformation(uuid), HttpStatus.OK.value());
+    }
+
+    private final SellDreamChattingRoomService sellDreamChattingRoomService;
+
+    @GetMapping("/room")
+    public ResponseBody room() {
+        return ResponseBody.listOf(sellDreamChattingRoomService.queryChattingRoom(), HttpStatus.OK.value());
     }
 }
