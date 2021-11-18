@@ -1,6 +1,7 @@
 package app.jg.og.zamong.entity.dream.selldream.chatting.room;
 
 import app.jg.og.zamong.entity.dream.selldream.SellDream;
+import app.jg.og.zamong.entity.dream.selldream.chatting.chat.SellDreamChatting;
 import app.jg.og.zamong.entity.user.User;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
@@ -21,7 +22,9 @@ public class SellDreamChattingRoom {
     @Column(columnDefinition = "BINARY(16)")
     private UUID uuid;
 
-    private String lastChat;
+    @ManyToOne
+    @JoinColumn(name = "last_chat_uuid")
+    private SellDreamChatting lastChat;
 
     @ManyToOne
     @JoinColumn(name = "seller_uuid", nullable = false)
