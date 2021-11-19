@@ -49,6 +49,11 @@ public class SellDreamController {
         sellDreamService.patchSellDreamCost(uuid, request);
     }
 
+    @GetMapping("/{dream-uuid}/request")
+    public ResponseBody sellDreamRequest(@PathVariable("dream-uuid") String uuid) {
+        return ResponseBody.listOf(sellDreamService.querySellDreamRequests(uuid), HttpStatus.OK.value());
+    }
+
     @PostMapping("/{dream-uuid}/request")
     public ResponseBody sellRequest(@PathVariable("dream-uuid") String uuid) {
         return ResponseBody.of(sellDreamService.doSellRequestDream(uuid), HttpStatus.OK.value());
