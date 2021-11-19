@@ -59,8 +59,8 @@ public class SellDreamController {
         return ResponseBody.of(sellDreamService.doSellRequestDream(uuid), HttpStatus.OK.value());
     }
 
-    @PostMapping("/{dream-uuid}/accept")
-    public ResponseBody accept(@PathVariable("dream-uuid") String uuid) {
+    @PostMapping("/{sell-dream-request-uuid}/accept")
+    public ResponseBody accept(@PathVariable("sell-dream-request-uuid") String uuid) {
         return ResponseBody.of(sellDreamService.acceptSellDreamRequest(uuid), HttpStatus.OK.value());
     }
 
