@@ -21,6 +21,7 @@ import app.jg.og.zamong.entity.dream.selldream.chatting.room.SellDreamChattingRo
 import app.jg.og.zamong.entity.dream.selldream.chatting.room.SellDreamChattingRoomRepository;
 import app.jg.og.zamong.entity.user.User;
 import app.jg.og.zamong.exception.business.DreamNotFoundException;
+import app.jg.og.zamong.exception.business.ForbiddenStatusSellDreamException;
 import app.jg.og.zamong.exception.business.ForbiddenUserException;
 import app.jg.og.zamong.service.securitycontext.SecurityContextService;
 import lombok.RequiredArgsConstructor;
@@ -108,12 +109,16 @@ public class SellDreamServiceImpl implements SellDreamService {
         SellDream sellDream = sellDreamRepository.findById(UUID.fromString(uuid))
                 .orElseThrow(() -> new DreamNotFoundException("해당하는 꿈을 찾을 수 없습니다"));
 
-        sellDreamBuyRequestRepository.save(SellDreamBuyRequest.builder()
-                .user(user)
-                .sellDream(sellDream)
-                .isAccept(false)
-                .dateTime(LocalDateTime.now())
-                .build());
+        try {
+            sellDreamBuyRequestRepository.save(SellDreamBuyRequest.builder()
+                    .user(user)
+                    .sellDream(sellDream)
+                    .isAccept(false)
+                    .dateTime(LocalDateTime.now())
+                    .build());
+        } catch (RuntimeException e) {
+            throw new ForbiddenStatusSellDreamException("이미 요청되었습니다");
+        }
 
         return DoSellRequestDreamResponse.builder()
                 .userUuid(user.getUuid())
