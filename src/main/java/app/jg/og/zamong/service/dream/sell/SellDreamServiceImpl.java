@@ -112,6 +112,7 @@ public class SellDreamServiceImpl implements SellDreamService {
                 .user(user)
                 .sellDream(sellDream)
                 .isAccept(false)
+                .dateTime(LocalDateTime.now())
                 .build());
 
         return DoSellRequestDreamResponse.builder()
