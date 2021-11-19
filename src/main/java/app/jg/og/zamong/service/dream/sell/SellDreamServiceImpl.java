@@ -165,16 +165,21 @@ public class SellDreamServiceImpl implements SellDreamService {
     public Response acceptSellDreamRequest(String uuid) {
         User user = securityContextService.getPrincipal().getUser();
 
-        SellDream sellDream = sellDreamRepository.findById(UUID.fromString(uuid))
-                .orElseThrow(() -> new DreamNotFoundException("해당하는 꿈을 찾을 수 없습니다"));
+        SellDreamBuyRequest sellDreamBuyRequest = sellDreamBuyRequestRepository.findById(UUID.fromString(uuid))
+                .orElseThrow(() -> new DreamNotFoundException("해당하는 구매요청을 찾을 수 없습니다"));
 
-        SellDreamBuyRequest sellDreamBuyRequest = sellDreamBuyRequestRepository.findByUserAndSellDream(user, sellDream);
+        SellDream sellDream = sellDreamBuyRequest.getSellDream();
+
+        if(!sellDream.getUser().equals(user)) {
+            throw new ForbiddenUserException("작성자가 아닙니다");
+        }
+
         sellDreamBuyRequest.acceptBuyRequest();
 
         SellDreamChattingRoom room = sellDreamChattingRoomRepository.save(SellDreamChattingRoom.builder()
                 .sellDream(sellDream)
-                .seller(sellDream.getUser())
-                .customer(user)
+                .seller(user)
+                .customer(sellDreamBuyRequest.getUser())
                 .build());
 
         return new StringResponse(room.getUuid().toString());
