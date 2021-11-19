@@ -6,6 +6,7 @@ import app.jg.og.zamong.dto.response.Response;
 import app.jg.og.zamong.dto.response.StringResponse;
 import app.jg.og.zamong.dto.response.dream.CreateDreamResponse;
 import app.jg.og.zamong.dto.response.dream.selldream.DoSellRequestDreamResponse;
+import app.jg.og.zamong.dto.response.dream.selldream.SellDreamRequestGroupResponse;
 import app.jg.og.zamong.entity.dream.attachment.AttachmentImage;
 import app.jg.og.zamong.entity.dream.attachment.AttachmentImageRepository;
 import app.jg.og.zamong.entity.dream.dreamtype.DreamType;
@@ -26,7 +27,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -173,5 +177,31 @@ public class SellDreamServiceImpl implements SellDreamService {
                 .build());
 
         return new StringResponse(room.getUuid().toString());
+    }
+
+    @Override
+    public SellDreamRequestGroupResponse querySellDreamRequests(String uuid) {
+        User user = securityContextService.getPrincipal().getUser();
+
+        SellDream sellDream = sellDreamRepository.findById(UUID.fromString(uuid))
+                .orElseThrow(() -> new DreamNotFoundException("해당하는 꿈을 찾을 수 없습니다"));
+
+        if(!sellDream.getUser().equals(user)) {
+            throw new ForbiddenUserException("작성자가 아닙니다");
+        }
+
+        List<SellDreamBuyRequest> sellDreamBuyRequests = sellDreamBuyRequestRepository.findBySellDream(sellDream);
+
+        return SellDreamRequestGroupResponse.builder()
+                .requests(sellDreamBuyRequests.stream()
+                        .map(sellDreamBuyRequest -> SellDreamRequestGroupResponse.Request.builder()
+                                .uuid(sellDreamBuyRequest.getUuid())
+                                .userUuid(sellDreamBuyRequest.getUser().getUuid())
+                                .id(sellDreamBuyRequest.getUser().getId())
+                                .profile(sellDreamBuyRequest.getUser().getProfile())
+                                .requestDateTime(sellDreamBuyRequest.getDateTime())
+                                .build())
+                        .collect(Collectors.toList()))
+                .build();
     }
 }
