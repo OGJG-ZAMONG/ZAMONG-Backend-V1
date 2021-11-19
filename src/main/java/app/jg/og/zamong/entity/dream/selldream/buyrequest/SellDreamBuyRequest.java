@@ -2,6 +2,7 @@ package app.jg.og.zamong.entity.dream.selldream.buyrequest;
 
 import app.jg.og.zamong.entity.dream.selldream.SellDream;
 import app.jg.og.zamong.entity.user.User;
+import app.jg.og.zamong.exception.business.ForbiddenStatusSellDreamException;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
@@ -37,6 +38,9 @@ public class SellDreamBuyRequest {
     private LocalDateTime dateTime;
 
     public void acceptBuyRequest() {
+        if (isAccept) {
+            throw new ForbiddenStatusSellDreamException("이미 인증 수락된 요청");
+        }
         isAccept = true;
     }
 }
