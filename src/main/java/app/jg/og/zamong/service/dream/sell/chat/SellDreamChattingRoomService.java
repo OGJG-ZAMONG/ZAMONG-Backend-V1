@@ -10,5 +10,5 @@ public interface SellDreamChattingRoomService {
     ChattingRoomGroupResponse queryChattingRoom();
 
     ChatResponse createChat(SellDreamChatRequest request);
-    ChatGroupResponse queryChats(String uuid);
+    ChatGroupResponse queryChats(String uuid, int page, int size);
 }

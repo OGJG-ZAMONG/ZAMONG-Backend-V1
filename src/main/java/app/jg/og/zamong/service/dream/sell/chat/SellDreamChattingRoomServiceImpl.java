@@ -15,6 +15,10 @@ import app.jg.og.zamong.exception.business.DreamNotFoundException;
 import app.jg.og.zamong.exception.business.UserNotFoundException;
 import app.jg.og.zamong.service.securitycontext.SecurityContextService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -73,26 +77,31 @@ public class SellDreamChattingRoomServiceImpl implements SellDreamChattingRoomSe
     }
 
     @Override
-    public ChatGroupResponse queryChats(String uuid) {
+    public ChatGroupResponse queryChats(String uuid, int page, int size) {
         User user = securityContextService.getPrincipal().getUser();
 
         SellDreamChattingRoom room = sellDreamChattingRoomRepository.findById(UUID.fromString(uuid))
                 .orElseThrow(() -> new DreamNotFoundException("Room Not Found"));
 
-        return ChatGroupResponse.builder()
-                .chats(room.getChats().stream()
-                        .map(chat -> ChatResponse.builder()
-                                .uuid(chat.getUuid())
-                                .user(ChatResponse.User.builder()
-                                        .uuid(chat.getUser().getUuid())
-                                        .id(chat.getUser().getId())
-                                        .profile(chat.getUser().getProfile())
-                                        .build())
-                                .chat(chat.getChat())
-                                .createdAt(chat.getCreatedAt())
-                                .itsMe(chat.getUser().equals(user))
+        Pageable request = PageRequest.of(page, size, Sort.by("createdAt").descending());
+        Page<SellDreamChatting> sellDreamChats = sellDreamChattingRepository.findByRoom(room, request);
+
+        List<ChatResponse> chatResponses = sellDreamChats
+                .map(chat -> ChatResponse.builder()
+                        .uuid(chat.getUuid())
+                        .user(ChatResponse.User.builder()
+                                .uuid(chat.getUser().getUuid())
+                                .id(chat.getUser().getId())
+                                .profile(chat.getUser().getProfile())
                                 .build())
-                        .collect(Collectors.toList()))
+                        .chat(chat.getChat())
+                        .createdAt(chat.getCreatedAt())
+                        .itsMe(chat.getUser().equals(user))
+                        .build())
+                .toList();
+
+        return ChatGroupResponse.builder()
+                .chats(chatResponses)
                 .build();
     }
 
