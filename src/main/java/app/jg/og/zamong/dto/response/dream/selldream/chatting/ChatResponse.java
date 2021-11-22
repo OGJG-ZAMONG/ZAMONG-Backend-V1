@@ -19,6 +19,8 @@ public class ChatResponse implements Response {
 
     private final LocalDateTime createdAt;
 
+    private final Boolean itsMe;
+
     @Builder
     @Getter
     public static class User {

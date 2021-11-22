@@ -67,6 +67,7 @@ public class SellDreamChattingRoomServiceImpl implements SellDreamChattingRoomSe
                         .build())
                 .chat(chat.getChat())
                 .createdAt(chat.getCreatedAt())
+                .itsMe(true)
                 .build();
     }
 
