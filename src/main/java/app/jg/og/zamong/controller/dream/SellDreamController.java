@@ -112,4 +112,9 @@ public class SellDreamController {
     public ResponseBody chat(@RequestBody SellDreamChatRequest request) {
         return ResponseBody.of(sellDreamChattingRoomService.createChat(request), HttpStatus.CREATED.value());
     }
+
+    @GetMapping("/chat/{room-id}")
+    public ResponseBody chats(@PathVariable("room-id") String uuid) {
+        return ResponseBody.listOf(sellDreamChattingRoomService.queryChats(uuid), HttpStatus.OK.value());
+    }
 }
