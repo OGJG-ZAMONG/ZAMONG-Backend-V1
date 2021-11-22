@@ -7,6 +7,7 @@ import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.UUID;
 
 @Getter
@@ -37,4 +38,8 @@ public class SellDreamChattingRoom {
     @ManyToOne
     @JoinColumn(name = "sell_dream_uuid", nullable = false)
     private SellDream sellDream;
+
+    @OneToMany(mappedBy = "room")
+    @OrderBy("createdAt DESC")
+    private List<SellDreamChatting> chats;
 }

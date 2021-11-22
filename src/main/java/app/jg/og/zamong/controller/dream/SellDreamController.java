@@ -1,5 +1,6 @@
 package app.jg.og.zamong.controller.dream;
 
+import app.jg.og.zamong.dto.request.dream.selldream.SellDreamChatRequest;
 import app.jg.og.zamong.dto.request.dream.selldream.SellDreamCostRequest;
 import app.jg.og.zamong.dto.request.dream.selldream.SellDreamRequest;
 import app.jg.og.zamong.dto.response.ResponseBody;
@@ -49,13 +50,18 @@ public class SellDreamController {
         sellDreamService.patchSellDreamCost(uuid, request);
     }
 
+    @GetMapping("/{dream-uuid}/request")
+    public ResponseBody sellDreamRequest(@PathVariable("dream-uuid") String uuid) {
+        return ResponseBody.listOf(sellDreamService.querySellDreamRequests(uuid), HttpStatus.OK.value());
+    }
+
     @PostMapping("/{dream-uuid}/request")
     public ResponseBody sellRequest(@PathVariable("dream-uuid") String uuid) {
         return ResponseBody.of(sellDreamService.doSellRequestDream(uuid), HttpStatus.OK.value());
     }
 
-    @PostMapping("/{dream-uuid}/accept")
-    public ResponseBody accept(@PathVariable("dream-uuid") String uuid) {
+    @PostMapping("/{sell-dream-request-uuid}/accept")
+    public ResponseBody accept(@PathVariable("sell-dream-request-uuid") String uuid) {
         return ResponseBody.of(sellDreamService.acceptSellDreamRequest(uuid), HttpStatus.OK.value());
     }
 
@@ -100,5 +106,19 @@ public class SellDreamController {
     @GetMapping("/room")
     public ResponseBody room() {
         return ResponseBody.listOf(sellDreamChattingRoomService.queryChattingRoom(), HttpStatus.OK.value());
+    }
+
+    @PostMapping("/chat")
+    public ResponseBody chat(@RequestBody SellDreamChatRequest request) {
+        return ResponseBody.of(sellDreamChattingRoomService.createChat(request), HttpStatus.CREATED.value());
+    }
+
+    @GetMapping("/chat/{room-id}")
+    public ResponseBody chats(
+            @RequestParam("page") int page,
+            @Max(50) @RequestParam("size") int size,
+            @PathVariable("room-id") String uuid
+    ) {
+        return ResponseBody.listOf(sellDreamChattingRoomService.queryChats(uuid, page, size), HttpStatus.OK.value());
     }
 }
