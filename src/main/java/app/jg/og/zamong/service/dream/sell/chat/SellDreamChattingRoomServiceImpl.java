@@ -1,6 +1,7 @@
 package app.jg.og.zamong.service.dream.sell.chat;
 
 import app.jg.og.zamong.dto.request.dream.selldream.SellDreamChatRequest;
+import app.jg.og.zamong.dto.response.dream.selldream.chatting.ChatGroupResponse;
 import app.jg.og.zamong.dto.response.dream.selldream.chatting.ChatResponse;
 import app.jg.og.zamong.dto.response.dream.selldream.chatting.ChattingRoomGroupResponse;
 import app.jg.og.zamong.dto.response.dream.selldream.chatting.ChattingRoomResponse;
@@ -68,6 +69,30 @@ public class SellDreamChattingRoomServiceImpl implements SellDreamChattingRoomSe
                 .chat(chat.getChat())
                 .createdAt(chat.getCreatedAt())
                 .itsMe(true)
+                .build();
+    }
+
+    @Override
+    public ChatGroupResponse queryChats(String uuid) {
+        User user = securityContextService.getPrincipal().getUser();
+
+        SellDreamChattingRoom room = sellDreamChattingRoomRepository.findById(UUID.fromString(uuid))
+                .orElseThrow(() -> new DreamNotFoundException("Room Not Found"));
+
+        return ChatGroupResponse.builder()
+                .chats(room.getChats().stream()
+                        .map(chat -> ChatResponse.builder()
+                                .uuid(chat.getUuid())
+                                .user(ChatResponse.User.builder()
+                                        .uuid(chat.getUser().getUuid())
+                                        .id(chat.getUser().getId())
+                                        .profile(chat.getUser().getProfile())
+                                        .build())
+                                .chat(chat.getChat())
+                                .createdAt(chat.getCreatedAt())
+                                .itsMe(chat.getUser().equals(user))
+                                .build())
+                        .collect(Collectors.toList()))
                 .build();
     }
 
