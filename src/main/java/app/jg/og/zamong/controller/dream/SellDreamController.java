@@ -114,7 +114,11 @@ public class SellDreamController {
     }
 
     @GetMapping("/chat/{room-id}")
-    public ResponseBody chats(@PathVariable("room-id") String uuid) {
-        return ResponseBody.listOf(sellDreamChattingRoomService.queryChats(uuid), HttpStatus.OK.value());
+    public ResponseBody chats(
+            @RequestParam("page") int page,
+            @Max(50) @RequestParam("size") int size,
+            @PathVariable("room-id") String uuid
+    ) {
+        return ResponseBody.listOf(sellDreamChattingRoomService.queryChats(uuid, page, size), HttpStatus.OK.value());
     }
 }
