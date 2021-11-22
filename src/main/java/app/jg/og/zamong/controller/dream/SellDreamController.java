@@ -1,5 +1,6 @@
 package app.jg.og.zamong.controller.dream;
 
+import app.jg.og.zamong.dto.request.dream.selldream.SellDreamChatRequest;
 import app.jg.og.zamong.dto.request.dream.selldream.SellDreamCostRequest;
 import app.jg.og.zamong.dto.request.dream.selldream.SellDreamRequest;
 import app.jg.og.zamong.dto.response.ResponseBody;
@@ -105,5 +106,10 @@ public class SellDreamController {
     @GetMapping("/room")
     public ResponseBody room() {
         return ResponseBody.listOf(sellDreamChattingRoomService.queryChattingRoom(), HttpStatus.OK.value());
+    }
+
+    @PostMapping("/chat")
+    public ResponseBody chat(@RequestBody SellDreamChatRequest request) {
+        return ResponseBody.of(sellDreamChattingRoomService.createChat(request), HttpStatus.CREATED.value());
     }
 }
