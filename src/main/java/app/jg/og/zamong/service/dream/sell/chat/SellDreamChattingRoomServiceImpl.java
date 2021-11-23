@@ -20,6 +20,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.UUID;
@@ -50,6 +51,7 @@ public class SellDreamChattingRoomServiceImpl implements SellDreamChattingRoomSe
     }
 
     @Override
+    @Transactional
     public ChatResponse createChat(SellDreamChatRequest request) {
         SellDreamChattingRoom room = sellDreamChattingRoomRepository.findById(UUID.fromString(request.getRoom()))
                 .orElseThrow(() -> new DreamNotFoundException("Room Not Found"));
@@ -62,6 +64,8 @@ public class SellDreamChattingRoomServiceImpl implements SellDreamChattingRoomSe
                 .user(user)
                 .room(room)
                 .build());
+
+        room.setLastChat(chat);
 
         return ChatResponse.builder()
                 .uuid(chat.getUuid())
