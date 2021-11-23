@@ -23,6 +23,7 @@ public class SellDreamChattingRoom {
     @Column(columnDefinition = "BINARY(16)")
     private UUID uuid;
 
+    @Setter
     @ManyToOne
     @JoinColumn(name = "last_chat_uuid")
     private SellDreamChatting lastChat;
