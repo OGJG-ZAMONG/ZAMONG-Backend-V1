@@ -74,6 +74,10 @@ public class UserServiceImpl implements UserService {
             throw new BadUserInformationException("잘못된 비밀번호입니다");
         }
 
+        findPasswordTokenRepository.findById(user.getUuid().toString())
+                .filter(token -> token.getFindPasswordToken().equals(request.getChangePasswordToken()))
+                .orElseThrow(() -> new BadUserInformationException("잘못된 비밀번호 변경 토큰"));
+
         user.setPassword(passwordEncoder.encode(request.getNewPassword()));
         userRepository.save(user);
     }
