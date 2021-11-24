@@ -83,6 +83,11 @@ public class UserController {
         userService.modifyPassword(request);
     }
 
+    @GetMapping("/password/find")
+    public ResponseBody findPassword() {
+        return ResponseBody.of(userService.sendFindPasswordEmail(), HttpStatus.OK.value());
+    }
+
     @GetMapping("/search")
     public ResponseBody search(@RequestParam("query") String query) {
         return ResponseBody.listOf(userFindService.searchUsers(query), HttpStatus.OK.value());
