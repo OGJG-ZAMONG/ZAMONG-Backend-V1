@@ -2,6 +2,7 @@ package app.jg.og.zamong.dto.request;
 
 import lombok.*;
 
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
@@ -19,4 +20,8 @@ public class ResetPasswordRequest {
 
     @NotNull
     private String changePasswordToken;
+
+    @Email(message = "이메일 형식이 올바르지 않습니다")
+    @NotNull(message = "이메일을 반드시 입력해야 합니다")
+    private String email;
 }
