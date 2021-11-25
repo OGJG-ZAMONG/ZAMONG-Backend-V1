@@ -7,6 +7,7 @@ import app.jg.og.zamong.entity.dream.dreamtype.DreamType;
 import app.jg.og.zamong.entity.dream.enums.SalesStatus;
 import app.jg.og.zamong.entity.dream.selldream.SellDream;
 import app.jg.og.zamong.entity.dream.selldream.SellDreamRepository;
+import app.jg.og.zamong.entity.dream.selldream.buyrequest.SellDreamBuyRequestRepository;
 import app.jg.og.zamong.entity.user.User;
 import app.jg.og.zamong.exception.business.DreamNotFoundException;
 import app.jg.og.zamong.service.securitycontext.SecurityContextService;
@@ -27,6 +28,7 @@ import java.util.stream.Collectors;
 public class SellDreamFindServiceImpl implements SellDreamFindService {
 
     private final SellDreamRepository sellDreamRepository;
+    private final SellDreamBuyRequestRepository sellDreamBuyRequestRepository;
 
     private final SecurityContextService securityContextService;
 
@@ -113,6 +115,8 @@ public class SellDreamFindServiceImpl implements SellDreamFindService {
 
     @Override
     public SellDreamInformationResponse querySellDreamInformation(String uuid) {
+        User user = securityContextService.getPrincipal().getUser();
+
         SellDream sellDream = sellDreamRepository.findById(UUID.fromString(uuid))
                 .orElseThrow(() -> new DreamNotFoundException("해당하는 꿈을 찾을 수 없습니다"));
 
@@ -125,6 +129,7 @@ public class SellDreamFindServiceImpl implements SellDreamFindService {
                 .attachmentImage(sellDream.getDefaultImage())
                 .cost(sellDream.getCost())
                 .status(sellDream.getStatus())
+                .isRequesting(sellDreamBuyRequestRepository.findByUserAndSellDream(user, sellDream) != null)
                 .user(SellDreamInformationResponse.User.builder()
                         .uuid(sellDream.getUser().getUuid())
                         .id(sellDream.getUser().getId())
