@@ -9,14 +9,14 @@ import app.jg.og.zamong.service.dream.share.find.ShareDreamFindService;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.validator.constraints.Range;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
-import javax.validation.constraints.Max;
-import javax.websocket.server.PathParam;
 
 @RequiredArgsConstructor
+@Validated
 @RestController
 @RequestMapping("/dream/share")
 public class ShareDreamController {
@@ -25,16 +25,16 @@ public class ShareDreamController {
 
     @GetMapping
     public ResponseBody share(
-            @PathParam("page") int page,
-            @Max(50) @PathParam("size") int size,
-            @PathParam("sort") String sort) {
+            @RequestParam("page") int page,
+            @Range(min = 1, max = 50) @RequestParam("size") int size,
+            @RequestParam("sort") String sort) {
         return ResponseBody.listOf(shareDreamFindService.queryShareDreams(page, size, sort), HttpStatus.OK.value());
     }
 
     @GetMapping("/me")
     public ResponseBody myShareDream(
             @RequestParam("page") int page,
-            @Max(50) @RequestParam("size") int size,
+            @Range(min = 1, max = 50) @RequestParam("size") int size,
             @RequestParam("sort") String sort,
             @RequestParam("shared") Boolean shared) {
         return ResponseBody.listOf(shareDreamFindService.queryMyShareDreams(page, size, sort, shared), HttpStatus.OK.value());
@@ -52,24 +52,24 @@ public class ShareDreamController {
 
     @GetMapping("/timetable")
     public ResponseBody shareDreamTimeTable(
-            @Range(min = 2000, max = 3000) @PathParam("year") int year,
-            @Range(min = 1, max = 12) @PathParam("month") int month
+            @Range(min = 2000, max = 3000) @RequestParam("year") int year,
+            @Range(min = 1, max = 12) @RequestParam("month") int month
     ) {
         return ResponseBody.listOf(shareDreamFindService.queryMyShareDreamTimeTable(year, month), HttpStatus.OK.value());
     }
 
     @GetMapping("/timetable/v2")
     public ResponseBody shareDreamTimeTableV2(
-            @Range(min = 2000, max = 3000) @PathParam("year") int year,
-            @Range(min = 1, max = 12) @PathParam("month") int month
+            @Range(min = 2000, max = 3000) @RequestParam("year") int year,
+            @Range(min = 1, max = 12) @RequestParam("month") int month
     ) {
         return ResponseBody.listOf(shareDreamFindService.queryShareDreamTimeTableV2(year, month), HttpStatus.OK.value());
     }
 
     @GetMapping("/follow")
     public ResponseBody follwoing(
-            @PathParam("page") int page,
-            @Max(50) @PathParam("size") int size
+            @RequestParam("page") int page,
+            @Range(min = 1, max = 50) @RequestParam("size") int size
     ) {
         return ResponseBody.listOf(shareDreamFindService.queryFollowShareDreams(page, size), HttpStatus.OK.value());
     }
@@ -120,7 +120,7 @@ public class ShareDreamController {
     }
 
     @GetMapping("/search")
-    public ResponseBody search(@PathParam("title") String title, @RequestParam("types") String[] types) {
+    public ResponseBody search(@RequestParam("title") String title, @RequestParam("types") String[] types) {
         return ResponseBody.listOf(shareDreamFindService.searchShareDreams(title, types), HttpStatus.OK.value());
     }
 }
