@@ -13,6 +13,7 @@ import app.jg.og.zamong.entity.user.profile.Profile;
 import app.jg.og.zamong.entity.user.profile.ProfileRepository;
 import app.jg.og.zamong.exception.business.BadUserInformationException;
 import app.jg.og.zamong.exception.business.UserIdentityDuplicationException;
+import app.jg.og.zamong.exception.business.UserNotFoundException;
 import app.jg.og.zamong.service.file.FileSaveService;
 import app.jg.og.zamong.service.mail.MailService;
 import app.jg.og.zamong.service.securitycontext.SecurityContextService;
@@ -82,11 +83,12 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public void resetPassword(ResetPasswordRequest request) {
-        User user = securityContextService.getPrincipal().getUser();
-
-        findPasswordTokenRepository.findById(user.getUuid().toString())
+        findPasswordTokenRepository.findById(request.getEmail())
                 .filter(token -> token.getFindPasswordToken().equals(request.getChangePasswordToken()))
                 .orElseThrow(() -> new BadUserInformationException("잘못된 비밀번호 변경 토큰"));
+
+        User user = userRepository.findByEmail(request.getEmail())
+                .orElseThrow(() -> new UserNotFoundException("찾을 수 없는 사용자"));
 
         user.setPassword(passwordEncoder.encode(request.getNewPassword()));
         userRepository.save(user);
@@ -96,16 +98,15 @@ public class UserServiceImpl implements UserService {
     private final MailService mailService;
 
     @Override
-    public StringResponse sendFindPasswordEmail() {
-        User user = securityContextService.getPrincipal().getUser();
+    public StringResponse sendFindPasswordEmail(String email) {
         String findPasswordToken = UUID.randomUUID().toString();
 
-        findPasswordTokenRepository.save(new FindPasswordToken(user.getUuid().toString(), findPasswordToken));
+        findPasswordTokenRepository.save(new FindPasswordToken(email, findPasswordToken));
 
         String changePasswordPageUrl = ZAMONG_URL + "?token=" + findPasswordToken;
 
         SendSimpleMailRequest request = SendSimpleMailRequest.builder()
-                .address(user.getEmail())
+                .address(email)
                 .title("ZAMONG 비밀번호 변경 관련")
                 .content(changePasswordPageUrl + "\n위 링크로 들어가 비밀번호를 변경해주세요")
                 .build();

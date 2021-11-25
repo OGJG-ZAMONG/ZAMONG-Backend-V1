@@ -13,5 +13,5 @@ public interface UserService {
     void modifyPassword(ChangePasswordRequest request);
     void resetPassword(ResetPasswordRequest request);
 
-    StringResponse sendFindPasswordEmail();
+    StringResponse sendFindPasswordEmail(String email);
 }
