@@ -2,6 +2,7 @@ package app.jg.og.zamong.service.user;
 
 import app.jg.og.zamong.dto.request.ChangePasswordRequest;
 import app.jg.og.zamong.dto.request.CheckIdDuplicationRequest;
+import app.jg.og.zamong.dto.request.ResetPasswordRequest;
 import app.jg.og.zamong.dto.request.SendSimpleMailRequest;
 import app.jg.og.zamong.dto.response.StringResponse;
 import app.jg.og.zamong.entity.redis.findpasswordtoken.FindPasswordToken;
@@ -73,6 +74,15 @@ public class UserServiceImpl implements UserService {
         if(!passwordEncoder.matches(request.getOldPassword(), user.getPassword())) {
             throw new BadUserInformationException("잘못된 비밀번호입니다");
         }
+
+        user.setPassword(passwordEncoder.encode(request.getNewPassword()));
+        userRepository.save(user);
+    }
+
+    @Override
+    @Transactional
+    public void resetPassword(ResetPasswordRequest request) {
+        User user = securityContextService.getPrincipal().getUser();
 
         findPasswordTokenRepository.findById(user.getUuid().toString())
                 .filter(token -> token.getFindPasswordToken().equals(request.getChangePasswordToken()))
