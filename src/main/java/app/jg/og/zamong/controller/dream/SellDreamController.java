@@ -8,12 +8,11 @@ import app.jg.og.zamong.service.dream.sell.SellDreamService;
 import app.jg.og.zamong.service.dream.sell.chat.SellDreamChattingRoomService;
 import app.jg.og.zamong.service.dream.sell.find.SellDreamFindService;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.validator.constraints.Range;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import javax.validation.constraints.Max;
-import javax.websocket.server.PathParam;
 
 @RequiredArgsConstructor
 @RestController
@@ -69,30 +68,30 @@ public class SellDreamController {
 
     @GetMapping("/continue")
     public ResponseBody sellContinue(
-            @PathParam("page") int page,
-            @Max(50) @PathParam("size") int size
+            @RequestParam("page") int page,
+            @Range(min = 1, max = 50) @RequestParam("size") int size
     ) {
         return ResponseBody.listOf(sellDreamFindService.queryPendingSellDreams(page, size), HttpStatus.OK.value());
     }
 
     @GetMapping("/continue/me")
     public ResponseBody sellMyContinueSellDream(
-            @PathParam("page") int page,
-            @Max(50) @PathParam("size") int size
+            @RequestParam("page") int page,
+            @Range(min = 1, max = 50) @RequestParam("size") int size
     ) {
         return ResponseBody.listOf(sellDreamFindService.queryMyPendingSellDreams(page, size), HttpStatus.OK.value());
     }
 
     @GetMapping("/close")
     public ResponseBody sellClose(
-            @PathParam("page") int page,
-            @Max(50) @PathParam("size") int size
+            @RequestParam("page") int page,
+            @Range(min = 1, max = 50) @RequestParam("size") int size
     ) {
         return ResponseBody.listOf(sellDreamFindService.queryMyClosedSellDream(page, size), HttpStatus.OK.value());
     }
 
     @GetMapping("/search")
-    public ResponseBody search(@PathParam("title") String title, @RequestParam("types") String[] types) {
+    public ResponseBody search(@RequestParam("title") String title, @RequestParam("types") String[] types) {
         return ResponseBody.listOf(sellDreamFindService.searchSellDream(title, types), HttpStatus.OK.value());
     }
 
@@ -116,7 +115,7 @@ public class SellDreamController {
     @GetMapping("/chat/{room-id}")
     public ResponseBody chats(
             @RequestParam("page") int page,
-            @Max(50) @RequestParam("size") int size,
+            @Range(min = 1, max = 50) @RequestParam("size") int size,
             @PathVariable("room-id") String uuid
     ) {
         return ResponseBody.listOf(sellDreamChattingRoomService.queryChats(uuid, page, size), HttpStatus.OK.value());

@@ -5,12 +5,11 @@ import app.jg.og.zamong.dto.response.ResponseBody;
 import app.jg.og.zamong.service.dream.interpretation.InterpretationDreamService;
 import app.jg.og.zamong.service.dream.interpretation.find.InterpretationDreamFindService;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.validator.constraints.Range;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import javax.validation.constraints.Max;
-import javax.websocket.server.PathParam;
 
 @RequiredArgsConstructor
 @RestController
@@ -22,8 +21,8 @@ public class InterpretationDreamController {
 
     @GetMapping
     public ResponseBody interpretation(
-            @PathParam("page") int page,
-            @Max(50) @PathParam("size") int size
+            @RequestParam("page") int page,
+            @Range(min = 1, max = 50) @RequestParam("size") int size
     ) {
         return ResponseBody.listOf(interpretationDreamFindService.queryInterpretationDreams(page, size), HttpStatus.OK.value());
     }
@@ -39,7 +38,7 @@ public class InterpretationDreamController {
     }
 
     @GetMapping("/search")
-    public ResponseBody search(@PathParam("title") String title, @RequestParam("types") String[] types) {
+    public ResponseBody search(@RequestParam("title") String title, @RequestParam("types") String[] types) {
         return ResponseBody.listOf(interpretationDreamFindService.searchInterpretationDreams(title, types), HttpStatus.OK.value());
     }
 
