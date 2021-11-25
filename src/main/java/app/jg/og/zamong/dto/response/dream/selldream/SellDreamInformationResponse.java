@@ -32,6 +32,8 @@ public class SellDreamInformationResponse implements Response {
 
     private final User user;
 
+    private final Boolean isRequesting;
+
     @Builder
     @Getter
     public static class User {
