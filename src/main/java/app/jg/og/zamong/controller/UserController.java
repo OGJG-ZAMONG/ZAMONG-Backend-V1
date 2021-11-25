@@ -10,6 +10,7 @@ import app.jg.og.zamong.service.user.UserService;
 import app.jg.og.zamong.service.user.find.UserFindService;
 import app.jg.og.zamong.service.user.follow.UserFollowService;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.validator.constraints.Range;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -17,10 +18,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Email;
-import javax.validation.constraints.Max;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import javax.websocket.server.PathParam;
 
 @RequiredArgsConstructor
 @Validated
@@ -58,16 +57,16 @@ public class UserController {
     @GetMapping("/{user-uuid}/following")
     public ResponseBody following(
             @PathVariable("user-uuid") String uuid,
-            @PathParam("page") int page,
-            @Max(50) @PathParam("size") int size) {
+            @RequestParam("page") int page,
+            @Range(min = 1, max = 50) @RequestParam("size") int size) {
         return ResponseBody.of(userFollowService.queryFollowings(uuid, page, size), HttpStatus.OK.value());
     }
 
     @GetMapping("/{user-uuid}/follower")
     public ResponseBody follower(
             @PathVariable("user-uuid") String uuid,
-            @PathParam("page") int page,
-            @Max(50) @PathParam("size") int size) {
+            @RequestParam("page") int page,
+            @Range(min = 1, max = 50) @RequestParam("size") int size) {
         return ResponseBody.listOf(userFollowService.queryFollowers(uuid, page, size), HttpStatus.OK.value());
     }
 
