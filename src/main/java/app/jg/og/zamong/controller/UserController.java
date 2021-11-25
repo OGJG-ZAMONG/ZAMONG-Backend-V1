@@ -3,6 +3,7 @@ package app.jg.og.zamong.controller;
 import app.jg.og.zamong.dto.request.ChangePasswordRequest;
 import app.jg.og.zamong.dto.request.CheckIdDuplicationRequest;
 import app.jg.og.zamong.dto.request.FollowUserRequest;
+import app.jg.og.zamong.dto.request.ResetPasswordRequest;
 import app.jg.og.zamong.dto.response.ResponseBody;
 import app.jg.og.zamong.service.securitycontext.SecurityContextService;
 import app.jg.og.zamong.service.user.UserService;
@@ -81,6 +82,11 @@ public class UserController {
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void password(@Valid @RequestBody ChangePasswordRequest request) {
         userService.modifyPassword(request);
+    }
+
+    @PostMapping("/password")
+    public void password(@Valid @RequestBody ResetPasswordRequest request) {
+        userService.resetPassword(request);
     }
 
     @GetMapping("/password/find")
