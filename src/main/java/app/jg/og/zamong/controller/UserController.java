@@ -3,6 +3,7 @@ package app.jg.og.zamong.controller;
 import app.jg.og.zamong.dto.request.ChangePasswordRequest;
 import app.jg.og.zamong.dto.request.CheckIdDuplicationRequest;
 import app.jg.og.zamong.dto.request.FollowUserRequest;
+import app.jg.og.zamong.dto.request.ResetPasswordRequest;
 import app.jg.og.zamong.dto.response.ResponseBody;
 import app.jg.og.zamong.service.securitycontext.SecurityContextService;
 import app.jg.og.zamong.service.user.UserService;
@@ -10,14 +11,19 @@ import app.jg.og.zamong.service.user.find.UserFindService;
 import app.jg.og.zamong.service.user.follow.UserFollowService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.Max;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import javax.websocket.server.PathParam;
 
 @RequiredArgsConstructor
+@Validated
 @RequestMapping("/user")
 @RestController
 public class UserController {
@@ -83,8 +89,18 @@ public class UserController {
         userService.modifyPassword(request);
     }
 
+    @PostMapping("/password")
+    public void password(@Valid @RequestBody ResetPasswordRequest request) {
+        userService.resetPassword(request);
+    }
+
+    @GetMapping("/password/find")
+    public ResponseBody findPassword(@RequestParam("email") @NotNull @Email String email) {
+        return ResponseBody.of(userService.sendFindPasswordEmail(email), HttpStatus.OK.value());
+    }
+
     @GetMapping("/search")
-    public ResponseBody search(@RequestParam("query") String query) {
+    public ResponseBody search(@RequestParam("query") @Size(min = 1, max = 50) String query) {
         return ResponseBody.listOf(userFindService.searchUsers(query), HttpStatus.OK.value());
     }
 }

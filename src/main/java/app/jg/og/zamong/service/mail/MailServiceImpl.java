@@ -1,6 +1,7 @@
 package app.jg.og.zamong.service.mail;
 
 import app.jg.og.zamong.dto.request.SendMailRequest;
+import app.jg.og.zamong.dto.request.SendSimpleMailRequest;
 import app.jg.og.zamong.exception.externalinfra.MailSendFailedException;
 import app.jg.og.zamong.service.mailtemplate.MailTemplateService;
 import lombok.RequiredArgsConstructor;
@@ -59,5 +60,29 @@ public class MailServiceImpl implements MailService {
                 codes[4],
                 codes[5]
         );
+    }
+
+    @Override
+    public void sendSimpleEmail(SendSimpleMailRequest request) {
+        try {
+            sendMailLogic(request);
+        } catch (Exception e) {
+            throw new MailSendFailedException("메일 전송에 실패하였습니다");
+        }
+    }
+
+    private void sendMailLogic(SendSimpleMailRequest request) throws Exception {
+        MimeMessage message = mailSender.createMimeMessage();
+        MimeMessageHelper messageHelper = new MimeMessageHelper(message, false, "UTF-8");
+
+        messageHelper.setTo(request.getAddress());
+        messageHelper.setFrom(fromAddress);
+        messageHelper.setSubject(request.getTitle());
+
+        final String text = request.getContent();
+        final boolean isHTML = false;
+
+        messageHelper.setText(text, isHTML);
+        mailSender.send(message);
     }
 }
