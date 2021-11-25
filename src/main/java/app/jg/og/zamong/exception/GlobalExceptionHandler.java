@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
@@ -59,6 +60,15 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(IllegalStateException.class)
     public ResponseEntity<ErrorResponse> handleIllegalStateException(IllegalStateException e) {
+        ErrorCode errorCode = ErrorCode.INVALID_PARAMETER;
+        String errorDescription = e.getMessage();
+        ErrorResponse response = ErrorResponse.of(errorCode, errorDescription);
+
+        return new ResponseEntity<>(response, HttpStatus.valueOf(errorCode.getStatus()));
+    }
+
+    @ExceptionHandler(MissingServletRequestParameterException.class)
+    public ResponseEntity<ErrorResponse> handleIllegalStateException(MissingServletRequestParameterException e) {
         ErrorCode errorCode = ErrorCode.INVALID_PARAMETER;
         String errorDescription = e.getMessage();
         ErrorResponse response = ErrorResponse.of(errorCode, errorDescription);
