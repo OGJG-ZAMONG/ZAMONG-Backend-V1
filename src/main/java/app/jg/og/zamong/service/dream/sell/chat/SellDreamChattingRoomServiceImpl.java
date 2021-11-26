@@ -40,7 +40,7 @@ public class SellDreamChattingRoomServiceImpl implements SellDreamChattingRoomSe
     public ChattingRoomGroupResponse queryChattingRoom() {
         User user = securityContextService.getPrincipal().getUser();
 
-        List<SellDreamChattingRoom> rooms = sellDreamChattingRoomRepository.findBySeller(user);
+        List<SellDreamChattingRoom> rooms = sellDreamChattingRoomRepository.findByUserOrderByLastChatDesc(user);
 
         List<ChattingRoomResponse> responses = rooms.stream().map(this::of).collect(Collectors.toList());
 
