@@ -7,6 +7,7 @@ import app.jg.og.zamong.entity.dream.dreamtype.DreamType;
 import app.jg.og.zamong.entity.dream.enums.SalesStatus;
 import app.jg.og.zamong.entity.dream.selldream.SellDream;
 import app.jg.og.zamong.entity.dream.selldream.SellDreamRepository;
+import app.jg.og.zamong.entity.dream.selldream.buyrequest.SellDreamBuyRequest;
 import app.jg.og.zamong.entity.dream.selldream.buyrequest.SellDreamBuyRequestRepository;
 import app.jg.og.zamong.entity.user.User;
 import app.jg.og.zamong.exception.business.DreamNotFoundException;
@@ -18,6 +19,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
@@ -120,6 +122,18 @@ public class SellDreamFindServiceImpl implements SellDreamFindService {
         SellDream sellDream = sellDreamRepository.findById(UUID.fromString(uuid))
                 .orElseThrow(() -> new DreamNotFoundException("해당하는 꿈을 찾을 수 없습니다"));
 
+        Boolean isRequesting = null;
+        LocalDateTime requestDateTime = null;
+        Boolean isAccept = null;
+
+        SellDreamBuyRequest sellDreamBuyRequest = sellDreamBuyRequestRepository.findByUserAndSellDream(user, sellDream);
+
+        if(sellDreamBuyRequest != null) {
+            isRequesting = true;
+            isAccept = sellDreamBuyRequest.getIsAccept();
+            requestDateTime = sellDreamBuyRequest.getDateTime();
+        }
+
         return SellDreamInformationResponse.builder()
                 .uuid(sellDream.getUuid())
                 .title(sellDream.getTitle())
@@ -129,7 +143,11 @@ public class SellDreamFindServiceImpl implements SellDreamFindService {
                 .attachmentImage(sellDream.getDefaultImage())
                 .cost(sellDream.getCost())
                 .status(sellDream.getStatus())
-                .isRequesting(sellDreamBuyRequestRepository.findByUserAndSellDream(user, sellDream) != null)
+                .requestStatus(SellDreamInformationResponse.MyRequestStatus.builder()
+                        .isRequesting(isRequesting)
+                        .isAccept(isAccept)
+                        .requestDateTime(requestDateTime)
+                        .build())
                 .user(SellDreamInformationResponse.User.builder()
                         .uuid(sellDream.getUser().getUuid())
                         .id(sellDream.getUser().getId())
