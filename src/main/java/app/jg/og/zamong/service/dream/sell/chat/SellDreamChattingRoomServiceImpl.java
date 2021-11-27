@@ -59,7 +59,7 @@ public class SellDreamChattingRoomServiceImpl implements SellDreamChattingRoomSe
         User user = userRepository.findById(UUID.fromString(request.getFrom()))
                 .orElseThrow(() -> new UserNotFoundException("User Not Found"));
 
-        User toUser = room.getCustomer().equals(user) ? user : room.getSeller();
+        User toUser = room.getCustomer().equals(user) ? room.getSeller() : room.getCustomer();
 
         SellDreamChatting chat = sellDreamChattingRepository.save(SellDreamChatting.builder()
                 .chat(request.getChat())
@@ -77,6 +77,7 @@ public class SellDreamChattingRoomServiceImpl implements SellDreamChattingRoomSe
                         .profile(user.getProfile())
                         .build())
                 .to(toUser.getUuid())
+                .room(room.getUuid())
                 .chat(chat.getChat())
                 .createdAt(chat.getCreatedAt())
                 .itsMe(true)
