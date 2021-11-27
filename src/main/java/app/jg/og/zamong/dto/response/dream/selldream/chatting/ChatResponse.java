@@ -21,6 +21,10 @@ public class ChatResponse implements Response {
 
     private final Boolean itsMe;
 
+    private final UUID to;
+
+    private final UUID room;
+
     @Builder
     @Getter
     public static class User {

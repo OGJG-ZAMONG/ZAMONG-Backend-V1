@@ -3,6 +3,7 @@ package app.jg.og.zamong.dto.response.dream.selldream;
 import app.jg.og.zamong.dto.response.Response;
 import app.jg.og.zamong.entity.dream.enums.DreamType;
 import app.jg.og.zamong.entity.dream.enums.SalesStatus;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -32,7 +33,7 @@ public class SellDreamInformationResponse implements Response {
 
     private final User user;
 
-    private final Boolean isRequesting;
+    private final MyRequestStatus requestStatus;
 
     @Builder
     @Getter
@@ -43,5 +44,17 @@ public class SellDreamInformationResponse implements Response {
         private final String id;
 
         private final String profile;
+    }
+
+    @Builder
+    @Getter
+    public static class MyRequestStatus {
+
+        private final Boolean isRequesting;
+
+        private final Boolean isAccept;
+
+        @JsonProperty("request_datetime")
+        private final LocalDateTime requestDateTime;
     }
 }

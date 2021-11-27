@@ -1,12 +1,11 @@
 package app.jg.og.zamong.entity.dream.selldream.chatting.room;
 
-import app.jg.og.zamong.entity.user.User;
+import app.jg.og.zamong.entity.dream.selldream.chatting.room.querydsl.SellDreamChattingRoomQueryDslRepository;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
 
-import java.util.List;
 import java.util.UUID;
 
-public interface SellDreamChattingRoomRepository extends CrudRepository<SellDreamChattingRoom, UUID> {
-
-    List<SellDreamChattingRoom> findBySeller(User seller);
+@Repository
+public interface SellDreamChattingRoomRepository extends CrudRepository<SellDreamChattingRoom, UUID>, SellDreamChattingRoomQueryDslRepository {
 }
