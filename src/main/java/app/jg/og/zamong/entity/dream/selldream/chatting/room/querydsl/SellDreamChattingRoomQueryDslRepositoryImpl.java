@@ -20,7 +20,7 @@ public class SellDreamChattingRoomQueryDslRepositoryImpl extends QuerydslReposit
         return from(sellDreamChattingRoom)
                 .where(sellDreamChattingRoom.customer.eq(user)
                         .or(sellDreamChattingRoom.seller.eq(user)))
-                .innerJoin(sellDreamChattingRoom.lastChat)
+                .leftJoin(sellDreamChattingRoom.lastChat)
                 .orderBy(sellDreamChattingRoom.lastChat.createdAt.desc())
                 .fetch();
     }
