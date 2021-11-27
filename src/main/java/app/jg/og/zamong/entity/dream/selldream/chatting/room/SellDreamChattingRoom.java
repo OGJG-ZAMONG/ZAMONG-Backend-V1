@@ -28,7 +28,7 @@ public class SellDreamChattingRoom {
     @JoinColumn(name = "last_chat_uuid")
     private SellDreamChatting lastChat;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "seller_uuid", nullable = false)
     private User seller;
 
