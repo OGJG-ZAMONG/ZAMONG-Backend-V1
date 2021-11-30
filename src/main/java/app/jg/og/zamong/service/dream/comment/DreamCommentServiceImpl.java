@@ -39,6 +39,8 @@ public class DreamCommentServiceImpl implements DreamCommentService {
     private final SecurityContextService securityContextService;
     private final DreamCommentFilteringService dreamCommentFilteringService;
 
+    private static final String ANONYMOUS_PROFILE = "https://s3-zamong-1.s3.ap-northeast-2.amazonaws.com/anoymous.png";
+
     @Override
     public DreamCommentResponse createDream(String dreamId, DreamCommentRequest request) {
         User user = securityContextService.getPrincipal().getUser();
@@ -57,6 +59,7 @@ public class DreamCommentServiceImpl implements DreamCommentService {
                 .isChecked(false)
                 .dateTime(LocalDateTime.now())
                 .depth(depth)
+                .isAnonymous(request.getIsAnonymous())
                 .pComment(pComment)
                 .user(user)
                 .dream(dream)
@@ -128,8 +131,8 @@ public class DreamCommentServiceImpl implements DreamCommentService {
                 .isChecked(comment.getIsChecked())
                 .content(dreamCommentFilteringService.filteringComment(comment.getContent()))
                 .dateTime(comment.getDateTime())
-                .userUuid(comment.getUser().getUuid())
-                .userProfile(comment.getUser().getProfile())
+                .userUuid(comment.getIsAnonymous() == null || comment.getIsAnonymous() ? null : comment.getUser().getUuid())
+                .userProfile(comment.getIsAnonymous() == null || comment.getIsAnonymous() ? ANONYMOUS_PROFILE : comment.getUser().getProfile())
                 .likeCount(recommendRepository.countAllByCommentAndRecommendType(comment, RecommendType.LIKE))
                 .dislikeCount(recommendRepository.countAllByCommentAndRecommendType(comment, RecommendType.DISLIKE))
                 .isLike(recommendRepository.existsByCommentAndUserAndRecommendType(comment, user, RecommendType.LIKE))

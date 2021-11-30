@@ -20,4 +20,6 @@ public class DreamCommentRequest {
 
     @JsonProperty("p_comment")
     private String pComment;
+
+    private Boolean isAnonymous;
 }
