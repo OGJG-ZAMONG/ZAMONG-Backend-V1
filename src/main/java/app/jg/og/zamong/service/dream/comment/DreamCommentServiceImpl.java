@@ -57,6 +57,7 @@ public class DreamCommentServiceImpl implements DreamCommentService {
                 .isChecked(false)
                 .dateTime(LocalDateTime.now())
                 .depth(depth)
+                .isAnonymous(request.getIsAnonymous())
                 .pComment(pComment)
                 .user(user)
                 .dream(dream)
