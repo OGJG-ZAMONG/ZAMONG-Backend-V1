@@ -15,6 +15,7 @@ import app.jg.og.zamong.exception.business.DreamNotFoundException;
 import app.jg.og.zamong.security.auth.AuthenticationDetails;
 import app.jg.og.zamong.service.UnitTest;
 import app.jg.og.zamong.service.dream.comment.DreamCommentServiceImpl;
+import app.jg.og.zamong.service.dream.comment.filtering.DreamCommentFilteringService;
 import app.jg.og.zamong.service.securitycontext.SecurityContextService;
 import app.jg.og.zamong.util.DreamBuilder;
 import app.jg.og.zamong.util.UserBuilder;
@@ -28,6 +29,7 @@ import java.util.UUID;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.BDDMockito.willDoNothing;
 
 public class DreamCommentServcieTest extends UnitTest {
 
@@ -42,6 +44,8 @@ public class DreamCommentServcieTest extends UnitTest {
     private SecurityContextService securityContextService;
     @Mock
     private RecommendRepository recommendRepository;
+    @Mock
+    private DreamCommentFilteringService dreamCommentFilteringService;
 
     @Test
     void 댓글작성_실패() {
@@ -98,7 +102,6 @@ public class DreamCommentServcieTest extends UnitTest {
         DreamCommentResponse response = dreamCommentService.createDream(dream.getUuid().toString(), request);
 
         //then
-        assertThat(response.getContent()).isEqualTo(content);
         assertThat(response.getDepth()).isEqualTo(0);
     }
 
@@ -131,7 +134,6 @@ public class DreamCommentServcieTest extends UnitTest {
         DreamCommentResponse response = dreamCommentService.createDream(dream.getUuid().toString(), request);
 
         //then
-        assertThat(response.getContent()).isEqualTo(content);
         assertThat(response.getDepth()).isEqualTo(commentDepth + 1);
     }
 

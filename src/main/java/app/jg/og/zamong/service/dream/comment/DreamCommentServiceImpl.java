@@ -17,6 +17,7 @@ import app.jg.og.zamong.entity.user.User;
 import app.jg.og.zamong.exception.business.CommentNotFoundException;
 import app.jg.og.zamong.exception.business.DreamNotFoundException;
 import app.jg.og.zamong.exception.business.ForbiddenUserException;
+import app.jg.og.zamong.service.dream.comment.filtering.DreamCommentFilteringService;
 import app.jg.og.zamong.service.securitycontext.SecurityContextService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -36,6 +37,7 @@ public class DreamCommentServiceImpl implements DreamCommentService {
     private final RecommendRepository recommendRepository;
 
     private final SecurityContextService securityContextService;
+    private final DreamCommentFilteringService dreamCommentFilteringService;
 
     @Override
     public DreamCommentResponse createDream(String dreamId, DreamCommentRequest request) {
@@ -62,7 +64,7 @@ public class DreamCommentServiceImpl implements DreamCommentService {
 
         return DreamCommentResponse.builder()
                 .uuid(comment.getUuid())
-                .content(comment.getContent())
+                .content(dreamCommentFilteringService.filteringComment(comment.getContent()))
                 .user(UserInformationResponse.builder()
                         .uuid(user.getUuid())
                         .name(user.getName())
@@ -110,7 +112,7 @@ public class DreamCommentServiceImpl implements DreamCommentService {
         return DreamCommendGroupResponse.CommentResponse.builder()
                 .uuid(comment.getUuid())
                 .isChecked(comment.getIsChecked())
-                .content(comment.getContent())
+                .content(dreamCommentFilteringService.filteringComment(comment.getContent()))
                 .dateTime(comment.getDateTime())
                 .userUuid(comment.getUser().getUuid())
                 .userProfile(comment.getUser().getProfile())
