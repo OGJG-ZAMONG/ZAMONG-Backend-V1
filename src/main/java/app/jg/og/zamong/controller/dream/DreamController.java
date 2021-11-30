@@ -70,6 +70,12 @@ public class DreamController {
         return ResponseBody.listOf(dreamCommentService.queryDreamComment(uuid), HttpStatus.OK.value());
     }
 
+    @DeleteMapping("/comment/{comment-uuid}")
+    @ResponseStatus(value = HttpStatus.NO_CONTENT)
+    public void deleteComment(@PathVariable("comment-uuid") String uuid) {
+        dreamCommentService.deleteDreamComment(uuid);
+    }
+
     @GetMapping("/comment/{comment-uuid}/comment")
     public ResponseBody reComment(@PathVariable("comment-uuid") String uuid) {
         return ResponseBody.listOf(dreamCommentService.queryDreamReComment(uuid), HttpStatus.OK.value());

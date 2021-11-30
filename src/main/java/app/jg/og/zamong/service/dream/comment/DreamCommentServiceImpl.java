@@ -108,6 +108,20 @@ public class DreamCommentServiceImpl implements DreamCommentService {
                 .build();
     }
 
+    @Override
+    public void deleteDreamComment(String uuid) {
+        User user = securityContextService.getPrincipal().getUser();
+
+        Comment comment = commentRepository.findById(UUID.fromString(uuid))
+                .orElseThrow(() -> new CommentNotFoundException("댓글을 찾을 수 없습니다"));
+
+        if(!comment.getUser().equals(user)) {
+            throw new ForbiddenUserException("작성자가 아닙니다");
+        }
+
+        commentRepository.delete(comment);
+    }
+
     private DreamCommendGroupResponse.CommentResponse convert(Comment comment, User user) {
         return DreamCommendGroupResponse.CommentResponse.builder()
                 .uuid(comment.getUuid())
