@@ -36,6 +36,8 @@ public class Comment {
 
     private Integer depth;
 
+    private Boolean isAnonymous;
+
     @OneToMany(mappedBy = "pComment")
     @OrderBy("dateTime DESC")
     private List<Comment> comments;
