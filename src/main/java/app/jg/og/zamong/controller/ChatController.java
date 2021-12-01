@@ -21,6 +21,8 @@ public class ChatController {
     public void send(@Payload SellDreamChatRequest message) {
         ChatResponse response = sellDreamChattingRoomService.createChat(message);
 
+        System.out.println(message.getRoom() + " 으로 메세지 전송: " + message.getChat());
+
         simpMessagingTemplate.convertAndSend("/topic/" + message.getRoom(), response);
         simpMessagingTemplate.convertAndSend("/topic/" + response.getTo(), response);
     }
