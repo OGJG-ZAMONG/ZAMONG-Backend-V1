@@ -178,7 +178,7 @@ public class DreamCommentServiceImpl implements DreamCommentService {
         }
 
         comment.setContent(request.getContent());
-        return new StringResponse(request.getContent());
+        return new StringResponse(dreamCommentFilteringService.filteringComment(request.getContent()));
     }
 
     @Override
