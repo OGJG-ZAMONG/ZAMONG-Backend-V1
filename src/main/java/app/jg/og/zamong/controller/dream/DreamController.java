@@ -88,9 +88,8 @@ public class DreamController {
     }
 
     @PatchMapping("/comment/{comment-uuid}/content")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void content(@PathVariable("comment-uuid") String uuid, @Valid @RequestBody DreamCommentRequest request) {
-        dreamCommentService.patchCommentContent(uuid, request);
+    public ResponseBody content(@PathVariable("comment-uuid") String uuid, @Valid @RequestBody DreamCommentRequest request) {
+        return ResponseBody.of(dreamCommentService.patchCommentContent(uuid, request), HttpStatus.OK.value());
     }
 
     @PostMapping("/comment/{comment-uuid}/check")
