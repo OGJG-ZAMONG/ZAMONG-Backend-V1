@@ -13,6 +13,8 @@ public interface FollowRepository extends PagingAndSortingRepository<Follow, UUI
     Page<Follow> findAllByFollowing(User user, Pageable pageable);
     List<Follow> findAllByFollower(User user);
 
+    Follow findByFollowingAndFollower(User following, User follower);
+
     boolean existsByFollowingAndFollower(User following, User follower);
 
     void deleteByFollowingAndFollower(User following, User follower);
