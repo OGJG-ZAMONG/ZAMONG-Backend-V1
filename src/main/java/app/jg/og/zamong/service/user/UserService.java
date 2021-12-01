@@ -12,6 +12,7 @@ public interface UserService {
     void modifyUserId(CheckIdDuplicationRequest request);
     void modifyPassword(ChangePasswordRequest request);
     void resetPassword(ResetPasswordRequest request);
+    void leaveUser();
 
     StringResponse sendFindPasswordEmail(String email);
 }

@@ -94,6 +94,13 @@ public class UserServiceImpl implements UserService {
         userRepository.save(user);
     }
 
+    @Override
+    public void leaveUser() {
+        User user = securityContextService.getPrincipal().getUser();
+
+        userRepository.delete(user);
+    }
+
     private static final String ZAMONG_URL = "https://zamong.org/changepw";
     private final MailService mailService;
 
