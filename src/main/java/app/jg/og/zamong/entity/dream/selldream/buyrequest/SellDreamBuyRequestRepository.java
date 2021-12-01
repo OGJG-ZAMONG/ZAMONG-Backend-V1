@@ -11,4 +11,5 @@ public interface SellDreamBuyRequestRepository extends CrudRepository<SellDreamB
 
     SellDreamBuyRequest findByUserAndSellDream(User user, SellDream sellDream);
     List<SellDreamBuyRequest> findBySellDream(SellDream sellDream);
+    List<SellDreamBuyRequest> findByUser(User user);
 }

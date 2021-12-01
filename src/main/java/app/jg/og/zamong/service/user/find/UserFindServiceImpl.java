@@ -3,6 +3,9 @@ package app.jg.og.zamong.service.user.find;
 import app.jg.og.zamong.dto.response.user.UserGroupResponse;
 import app.jg.og.zamong.dto.response.user.UserInformationResponse;
 import app.jg.og.zamong.dto.response.user.UserResponse;
+import app.jg.og.zamong.entity.dream.enums.SalesStatus;
+import app.jg.og.zamong.entity.dream.selldream.SellDreamRepository;
+import app.jg.og.zamong.entity.dream.selldream.buyrequest.SellDreamBuyRequestRepository;
 import app.jg.og.zamong.entity.dream.sharedream.ShareDreamRepository;
 import app.jg.og.zamong.entity.user.User;
 import app.jg.og.zamong.entity.user.UserRepository;
@@ -21,6 +24,7 @@ public class UserFindServiceImpl implements UserFindService {
 
     private final UserRepository userRepository;
     private final ShareDreamRepository shareDreamRepository;
+    private final SellDreamBuyRequestRepository sellDreamBuyRequestRepository;
 
     private final SecurityContextService securityContextService;
 
@@ -30,7 +34,10 @@ public class UserFindServiceImpl implements UserFindService {
                 .orElseThrow(() -> new UserNotFoundException("해당하는 유저를 찾을 수 없습니다"));
 
         Integer shareDreamCount = shareDreamRepository.findByUser(user).size();
-        return UserInformationResponse.of(user, shareDreamCount);
+        Long boughtSellDreamCount = sellDreamBuyRequestRepository.findByUser(user).stream()
+                .filter(s -> s.getSellDream().getStatus().equals(SalesStatus.DONE)).count();
+
+        return UserInformationResponse.of(user, shareDreamCount, boughtSellDreamCount);
     }
 
     @Override
@@ -38,7 +45,10 @@ public class UserFindServiceImpl implements UserFindService {
         User user = securityContextService.getPrincipal().getUser();
 
         Integer shareDreamCount = shareDreamRepository.findByUser(user).size();
-        return UserInformationResponse.of(user, shareDreamCount);
+        Long boughtSellDreamCount = sellDreamBuyRequestRepository.findByUser(user).stream()
+                .filter(s -> s.getSellDream().getStatus().equals(SalesStatus.DONE)).count();
+
+        return UserInformationResponse.of(user, shareDreamCount, boughtSellDreamCount);
     }
 
     @Override

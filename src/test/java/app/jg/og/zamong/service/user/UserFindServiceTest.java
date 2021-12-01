@@ -1,6 +1,7 @@
 package app.jg.og.zamong.service.user;
 
 import app.jg.og.zamong.dto.response.user.UserInformationResponse;
+import app.jg.og.zamong.entity.dream.selldream.buyrequest.SellDreamBuyRequestRepository;
 import app.jg.og.zamong.entity.dream.sharedream.ShareDream;
 import app.jg.og.zamong.entity.dream.sharedream.ShareDreamRepository;
 import app.jg.og.zamong.entity.user.User;
@@ -16,6 +17,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -34,6 +36,8 @@ public class UserFindServiceTest extends UnitTest {
     private ShareDreamRepository shareDreamRepository;
     @Mock
     private SecurityContextService securityContextService;
+    @Mock
+    private SellDreamBuyRequestRepository sellDreamBuyRequestRepository;
 
     static private User user;
 
@@ -51,6 +55,7 @@ public class UserFindServiceTest extends UnitTest {
 
         given(userRepository.findById(UUID.fromString(uuid))).willReturn(Optional.of(user));
         given(shareDreamRepository.findByUser(user)).willReturn(shareDreams);
+        given(sellDreamBuyRequestRepository.findByUser(user)).willReturn(Collections.emptyList());
 
         //when
         UserInformationResponse response = userFindService.queryUserInformation(uuid);
@@ -69,6 +74,7 @@ public class UserFindServiceTest extends UnitTest {
 
         given(securityContextService.getPrincipal()).willReturn(new AuthenticationDetails(user));
         given(shareDreamRepository.findByUser(user)).willReturn(shareDreams);
+        given(sellDreamBuyRequestRepository.findByUser(user)).willReturn(Collections.emptyList());
 
         //when
         UserInformationResponse response = userFindService.queryMyInformation();
