@@ -98,7 +98,7 @@ public class UserController {
         return ResponseBody.of(userService.sendFindPasswordEmail(email), HttpStatus.OK.value());
     }
 
-    @DeleteMapping("/user")
+    @DeleteMapping
     public void leave() {
         userService.leaveUser();
     }
