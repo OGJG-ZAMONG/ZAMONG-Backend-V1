@@ -23,11 +23,11 @@ public class UserInformationResponse implements Response {
 
     private Integer shareDreamCount;
 
-    private Integer boughtSellDreamCount;
+    private Long boughtSellDreamCount;
 
     private Integer lucyCount;
 
-    public static UserInformationResponse of(User user, Integer shareDreamCount, Integer boughtSellDreamCount) {
+    public static UserInformationResponse of(User user, Integer shareDreamCount, Long boughtSellDreamCount) {
         return UserInformationResponse.builder()
                 .uuid(user.getUuid())
                 .name(user.getName())
