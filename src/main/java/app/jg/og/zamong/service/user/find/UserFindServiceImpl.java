@@ -7,6 +7,8 @@ import app.jg.og.zamong.entity.dream.enums.SalesStatus;
 import app.jg.og.zamong.entity.dream.selldream.SellDreamRepository;
 import app.jg.og.zamong.entity.dream.selldream.buyrequest.SellDreamBuyRequestRepository;
 import app.jg.og.zamong.entity.dream.sharedream.ShareDreamRepository;
+import app.jg.og.zamong.entity.follow.Follow;
+import app.jg.og.zamong.entity.follow.FollowRepository;
 import app.jg.og.zamong.entity.user.User;
 import app.jg.og.zamong.entity.user.UserRepository;
 import app.jg.og.zamong.exception.business.UserNotFoundException;
@@ -25,6 +27,7 @@ public class UserFindServiceImpl implements UserFindService {
     private final UserRepository userRepository;
     private final ShareDreamRepository shareDreamRepository;
     private final SellDreamBuyRequestRepository sellDreamBuyRequestRepository;
+    private final FollowRepository followRepository;
 
     private final SecurityContextService securityContextService;
 
@@ -53,15 +56,21 @@ public class UserFindServiceImpl implements UserFindService {
 
     @Override
     public UserGroupResponse searchUsers(String query) {
+        User me = securityContextService.getPrincipal().getUser();
         List<User> users = userRepository.findAllByUserId(query);
 
         return UserGroupResponse.builder()
                 .users(users.stream()
-                        .map(user -> UserResponse.builder()
+                        .map(user -> {
+                            Follow follow = followRepository.findByFollowingAndFollower(user, me);
+                            return UserResponse.builder()
                                 .uuid(user.getUuid())
                                 .id(user.getId())
                                 .profile(user.getProfile())
-                                .build())
+                                .followDateTime(follow != null ? follow.getFollowDateTime() : null)
+                                .isFollowing(follow != null)
+                                .build();
+                        })
                         .collect(Collectors.toList()))
                 .build();
     }
