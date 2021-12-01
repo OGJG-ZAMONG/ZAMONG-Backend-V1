@@ -3,6 +3,8 @@ package app.jg.og.zamong.service.dream.comment;
 import app.jg.og.zamong.dto.request.DreamCommentRecommendRequest;
 import app.jg.og.zamong.dto.request.dream.DreamCommentRequest;
 import app.jg.og.zamong.dto.response.NumberResponse;
+import app.jg.og.zamong.dto.response.Response;
+import app.jg.og.zamong.dto.response.StringResponse;
 import app.jg.og.zamong.dto.response.dream.comment.DreamCommendGroupResponse;
 import app.jg.og.zamong.dto.response.dream.comment.DreamCommentResponse;
 import app.jg.og.zamong.dto.response.user.UserInformationResponse;
@@ -165,7 +167,7 @@ public class DreamCommentServiceImpl implements DreamCommentService {
 
     @Override
     @Transactional
-    public void patchCommentContent(String uuid, DreamCommentRequest request) {
+    public Response patchCommentContent(String uuid, DreamCommentRequest request) {
         User user = securityContextService.getPrincipal().getUser();
 
         Comment comment = commentRepository.findById(UUID.fromString(uuid))
@@ -176,6 +178,7 @@ public class DreamCommentServiceImpl implements DreamCommentService {
         }
 
         comment.setContent(request.getContent());
+        return new StringResponse(request.getContent());
     }
 
     @Override
