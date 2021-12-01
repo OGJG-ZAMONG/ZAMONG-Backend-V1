@@ -14,5 +14,4 @@ public interface SellDreamRepository extends PagingAndSortingRepository<SellDrea
     Page<SellDream> findByStatus(SalesStatus status, Pageable pageable);
     Page<SellDream> findByStatusAndUser(SalesStatus status, User user, Pageable pageable);
     Page<SellDream> findByUserAndStatusIn(User user, List<SalesStatus> statuses, Pageable pageable);
-    List<SellDream> findByUser(User user);
 }
