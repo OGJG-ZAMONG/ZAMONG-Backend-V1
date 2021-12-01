@@ -98,6 +98,11 @@ public class UserController {
         return ResponseBody.of(userService.sendFindPasswordEmail(email), HttpStatus.OK.value());
     }
 
+    @DeleteMapping("/user")
+    public void leave() {
+        userService.leaveUser();
+    }
+
     @GetMapping("/search")
     public ResponseBody search(@RequestParam("query") @Size(min = 1, max = 50) String query) {
         return ResponseBody.listOf(userFindService.searchUsers(query), HttpStatus.OK.value());
