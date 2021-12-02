@@ -159,7 +159,7 @@ public class ShareDreamServiceImpl implements ShareDreamService {
         ShareDream shareDream = shareDreamRepository.findById(UUID.fromString(uuid))
                 .orElseThrow(() -> new DreamNotFoundException("해당하는 꿈을 찾을 수 없습니다"));
 
-        User user = securityContextService.getPrincipal().getUser();
+        User user = userRepository.save(securityContextService.getPrincipal().getUser());
 
         shareDreamLucyPointRepository.findByUserAndShareDream(user, shareDream)
                 .ifPresent(s -> { throw new ForbiddenUserException("이미 추가되었습니다"); });
@@ -170,7 +170,7 @@ public class ShareDreamServiceImpl implements ShareDreamService {
                 .build());
 
         shareDream.addLucy();
-
+        shareDream.getUser().increaseLucy(1);
     }
 
     @Override
@@ -187,5 +187,6 @@ public class ShareDreamServiceImpl implements ShareDreamService {
         shareDreamLucyPointRepository.deleteByUserAndShareDream(user, shareDream);
 
         shareDream.cancelLucy();
+        shareDream.getUser().decreaseLucy(1);
     }
 }
