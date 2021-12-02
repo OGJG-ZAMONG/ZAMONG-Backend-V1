@@ -27,6 +27,8 @@ public class SellDreamRequestGroupResponse implements Response {
 
         private final String profile;
 
+        private final Boolean isAccept;
+
         @JsonProperty("request_datetime")
         private final LocalDateTime requestDateTime;
     }
