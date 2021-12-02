@@ -3,6 +3,7 @@ package app.jg.og.zamong.dto.request.dream.interpretationdream;
 import app.jg.og.zamong.entity.dream.enums.DreamType;
 import lombok.*;
 
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.List;
@@ -22,4 +23,8 @@ public class InterpretationDreamRequest {
 
     @NotNull(message = "꿈의 유형을 입력해주세요")
     private List<DreamType> dreamTypes;
+
+    @NotNull
+    @Min(value = 1, message = "최소 1개 이상이어야합니다")
+    private Integer lucyCount;
 }

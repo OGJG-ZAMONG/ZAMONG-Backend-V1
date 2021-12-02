@@ -8,6 +8,7 @@ import app.jg.og.zamong.exception.business.AlreadySharedException;
 import app.jg.og.zamong.exception.business.NotSharedException;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.DynamicInsert;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -18,6 +19,7 @@ import java.util.List;
 @SuperBuilder
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@DynamicInsert
 @Entity(name = "share_dream")
 public class ShareDream extends Dream {
 

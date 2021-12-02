@@ -1,12 +1,15 @@
 package app.jg.og.zamong.service.dream.interpretation;
 
 import app.jg.og.zamong.dto.request.dream.interpretationdream.InterpretationDreamRequest;
+import app.jg.og.zamong.dto.request.dream.interpretationdream.SelectInterpretationDreamRequest;
 import app.jg.og.zamong.dto.response.dream.CreateDreamResponse;
 import app.jg.og.zamong.dto.response.Response;
 import app.jg.og.zamong.dto.response.StringResponse;
 import app.jg.og.zamong.dto.response.dream.interpretationdream.InterpretationDreamCategoryResponse;
 import app.jg.og.zamong.entity.dream.attachment.AttachmentImage;
 import app.jg.og.zamong.entity.dream.attachment.AttachmentImageRepository;
+import app.jg.og.zamong.entity.dream.comment.Comment;
+import app.jg.og.zamong.entity.dream.comment.CommentRepository;
 import app.jg.og.zamong.entity.dream.dreamtype.DreamType;
 import app.jg.og.zamong.entity.dream.dreamtype.DreamTypeRepository;
 import app.jg.og.zamong.entity.dream.enums.DreamTag;
@@ -15,7 +18,11 @@ import app.jg.og.zamong.entity.dream.interpretationdream.InterpretationDreamRepo
 import app.jg.og.zamong.entity.dream.interpretationdream.interpretation.Interpretation;
 import app.jg.og.zamong.entity.dream.interpretationdream.interpretation.InterpretationRepository;
 import app.jg.og.zamong.entity.user.User;
+import app.jg.og.zamong.entity.user.UserRepository;
+import app.jg.og.zamong.exception.business.CommentNotFoundException;
 import app.jg.og.zamong.exception.business.DreamNotFoundException;
+import app.jg.og.zamong.exception.business.ForbiddenUserException;
+import app.jg.og.zamong.exception.business.UserNotFoundException;
 import app.jg.og.zamong.service.securitycontext.SecurityContextService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -33,17 +40,21 @@ public class InterpretationDreamServiceImpl implements InterpretationDreamServic
     private final InterpretationDreamRepository interpretationDreamRepository;
     private final DreamTypeRepository dreamTypeRepository;
     private final AttachmentImageRepository attachmentImageRepository;
+    private final UserRepository userRepository;
+    private final CommentRepository commentRepository;
 
     private final SecurityContextService securityContextService;
 
     @Override
+    @Transactional
     public CreateDreamResponse createInterpretationDream(InterpretationDreamRequest request) {
-        User user = securityContextService.getPrincipal().getUser();
+        User user = userRepository.save(securityContextService.getPrincipal().getUser());
 
         InterpretationDream interpretationDream = interpretationDreamRepository.save(InterpretationDream.builder()
                 .title(request.getTitle())
                 .content(request.getContent())
                 .user(user)
+                .lucyCount(request.getLucyCount())
                 .build());
 
         request.getDreamTypes()
@@ -87,6 +98,27 @@ public class InterpretationDreamServiceImpl implements InterpretationDreamServic
                 .createdAt(interpretationDream.getCreatedAt())
                 .updatedAt(interpretationDream.getUpdatedAt())
                 .build();
+    }
+
+    @Override
+    @Transactional
+    public Response selectInterpretationDream(SelectInterpretationDreamRequest request) {
+        User user = userRepository.save(securityContextService.getPrincipal().getUser());
+
+        InterpretationDream interpretationDream = interpretationDreamRepository.findById(request.getDreamUuid())
+                .orElseThrow(() -> new DreamNotFoundException("해당하는 꿈을 찾을 수 없습니다"));
+
+        Comment comment = commentRepository.findById(request.getCommentUuid())
+                .orElseThrow(() -> new CommentNotFoundException("댓글을 찾을 수 없습니다"));
+
+        if(!interpretationDream.getUser().equals(user) || !comment.getDream().equals(interpretationDream) || !comment.getUser().equals(user)) {
+            throw new ForbiddenUserException("올바르지 않은 신원정보");
+        }
+
+        user.decreaseLucy(interpretationDream.getLucyCount());
+        comment.getUser().increaseLucy(interpretationDream.getLucyCount());
+
+        return new StringResponse(interpretationDream.getLucyCount() + "루시를 전달하였습니다");
     }
 
     @Override

@@ -1,6 +1,7 @@
 package app.jg.og.zamong.controller.dream;
 
 import app.jg.og.zamong.dto.request.dream.interpretationdream.InterpretationDreamRequest;
+import app.jg.og.zamong.dto.request.dream.interpretationdream.SelectInterpretationDreamRequest;
 import app.jg.og.zamong.dto.response.ResponseBody;
 import app.jg.og.zamong.service.dream.interpretation.InterpretationDreamService;
 import app.jg.og.zamong.service.dream.interpretation.find.InterpretationDreamFindService;
@@ -30,6 +31,11 @@ public class InterpretationDreamController {
     @PostMapping
     public ResponseBody interpretation(@Valid @RequestBody InterpretationDreamRequest request) {
         return ResponseBody.of(interpretationDreamService.createInterpretationDream(request), HttpStatus.CREATED.value());
+    }
+
+    @PostMapping("/select")
+    public ResponseBody select(@Valid @RequestBody SelectInterpretationDreamRequest request) {
+        return ResponseBody.of(interpretationDreamService.selectInterpretationDream(request), HttpStatus.OK.value());
     }
 
     @PutMapping("/{dream-uuid}")
