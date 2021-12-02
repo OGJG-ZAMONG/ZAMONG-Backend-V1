@@ -3,6 +3,7 @@ package app.jg.og.zamong.entity.user;
 import app.jg.og.zamong.entity.dream.Dream;
 import app.jg.og.zamong.entity.follow.Follow;
 import app.jg.og.zamong.entity.user.profile.Profile;
+import app.jg.og.zamong.exception.business.NotSharedException;
 import lombok.*;
 import lombok.experimental.Delegate;
 import org.hibernate.annotations.GenericGenerator;
@@ -53,4 +54,15 @@ public class User {
     @OneToOne(mappedBy = "user", optional = false)
     @Delegate
     private Profile profile;
+
+    public void increaseLucy(Integer lucy) {
+        this.lucyCount += lucy;
+    }
+
+    public void decreaseLucy(Integer lucy) {
+        if(this.lucyCount - lucy < 0) {
+            throw new NotSharedException("루시 개수가 충분하지 않습니다");
+        }
+        this.lucyCount -= lucy;
+    }
 }
