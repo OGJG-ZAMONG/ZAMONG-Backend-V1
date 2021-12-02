@@ -3,6 +3,7 @@ package app.jg.og.zamong.service.dream;
 import app.jg.og.zamong.dto.response.dream.sharedream.*;
 import app.jg.og.zamong.entity.dream.sharedream.ShareDream;
 import app.jg.og.zamong.entity.dream.sharedream.ShareDreamRepository;
+import app.jg.og.zamong.entity.dream.sharedream.lucypoint.ShareDreamLucyPointRepository;
 import app.jg.og.zamong.entity.user.User;
 import app.jg.og.zamong.security.auth.AuthenticationDetails;
 import app.jg.og.zamong.service.UnitTest;
@@ -34,6 +35,8 @@ public class ShareDreamFindServiceTest extends UnitTest {
     private ShareDreamRepository shareDreamRepository;
     @Mock
     private SecurityContextService securityContextService;
+    @Mock
+    private ShareDreamLucyPointRepository shareDreamLucyPointRepository;
 
     @Test
     void 공유꿈_상세정보() {
@@ -41,7 +44,9 @@ public class ShareDreamFindServiceTest extends UnitTest {
         User user = UserBuilder.build();
         ShareDream shareDream = ShareDreamBuilder.build(user);
 
+        given(securityContextService.getPrincipal()).willReturn(new AuthenticationDetails(user));
         given(shareDreamRepository.findById(shareDream.getUuid())).willReturn(Optional.of(shareDream));
+        given(shareDreamLucyPointRepository.findByUserAndShareDream(any(), any())).willReturn(Optional.empty());
 
         //when
         ShareDreamInformationResponse response = dreamFindService.queryShareDreamInformation(shareDream.getUuid().toString());
