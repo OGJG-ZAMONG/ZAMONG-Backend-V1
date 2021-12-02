@@ -4,6 +4,7 @@ import app.jg.og.zamong.dto.response.dream.sharedream.*;
 import app.jg.og.zamong.entity.dream.dreamtype.DreamType;
 import app.jg.og.zamong.entity.dream.sharedream.ShareDream;
 import app.jg.og.zamong.entity.dream.sharedream.ShareDreamRepository;
+import app.jg.og.zamong.entity.dream.sharedream.lucypoint.ShareDreamLucyPointRepository;
 import app.jg.og.zamong.entity.follow.Follow;
 import app.jg.og.zamong.entity.follow.FollowRepository;
 import app.jg.og.zamong.entity.user.User;
@@ -29,10 +30,12 @@ public class ShareDreamFindServiceImpl implements ShareDreamFindService {
 
     private final ShareDreamRepository shareDreamRepository;
     private final SecurityContextService securityContextService;
+    private final ShareDreamLucyPointRepository shareDreamLucyPointRepository;
     private final FollowRepository followRepository;
 
     @Override
     public ShareDreamInformationResponse queryShareDreamInformation(String uuid) {
+        User me = securityContextService.getPrincipal().getUser();
         ShareDream shareDream = shareDreamRepository.findById(UUID.fromString(uuid))
                 .orElseThrow(() -> new DreamNotFoundException("해당하는 꿈을 찾을 수 없습니다"));
         User user = shareDream.getUser();
@@ -56,6 +59,7 @@ public class ShareDreamFindServiceImpl implements ShareDreamFindService {
                         .id(user.getId())
                         .profile(user.getProfile())
                         .build())
+                .isLiked(shareDreamLucyPointRepository.findByUserAndShareDream(me, shareDream).isPresent())
                 .build();
     }
 
