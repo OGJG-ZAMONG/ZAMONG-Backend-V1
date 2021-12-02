@@ -15,6 +15,7 @@ import app.jg.og.zamong.entity.dream.interpretationdream.InterpretationDreamRepo
 import app.jg.og.zamong.entity.dream.interpretationdream.interpretation.Interpretation;
 import app.jg.og.zamong.entity.dream.interpretationdream.interpretation.InterpretationRepository;
 import app.jg.og.zamong.entity.user.User;
+import app.jg.og.zamong.entity.user.UserRepository;
 import app.jg.og.zamong.exception.business.DreamNotFoundException;
 import app.jg.og.zamong.service.securitycontext.SecurityContextService;
 import lombok.RequiredArgsConstructor;
@@ -33,17 +34,22 @@ public class InterpretationDreamServiceImpl implements InterpretationDreamServic
     private final InterpretationDreamRepository interpretationDreamRepository;
     private final DreamTypeRepository dreamTypeRepository;
     private final AttachmentImageRepository attachmentImageRepository;
+    private final UserRepository userRepository;
 
     private final SecurityContextService securityContextService;
 
     @Override
+    @Transactional
     public CreateDreamResponse createInterpretationDream(InterpretationDreamRequest request) {
-        User user = securityContextService.getPrincipal().getUser();
+        User user = userRepository.save(securityContextService.getPrincipal().getUser());
+
+        user.decreaseLucy(request.getLucyCount());
 
         InterpretationDream interpretationDream = interpretationDreamRepository.save(InterpretationDream.builder()
                 .title(request.getTitle())
                 .content(request.getContent())
                 .user(user)
+                .lucyCount(request.getLucyCount())
                 .build());
 
         request.getDreamTypes()
