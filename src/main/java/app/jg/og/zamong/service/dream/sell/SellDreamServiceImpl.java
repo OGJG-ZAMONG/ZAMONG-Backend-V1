@@ -210,6 +210,7 @@ public class SellDreamServiceImpl implements SellDreamService {
                                 .userUuid(sellDreamBuyRequest.getUser().getUuid())
                                 .id(sellDreamBuyRequest.getUser().getId())
                                 .profile(sellDreamBuyRequest.getUser().getProfile())
+                                .isAccept(sellDreamBuyRequest.getIsAccept())
                                 .requestDateTime(sellDreamBuyRequest.getDateTime())
                                 .build())
                         .collect(Collectors.toList()))
