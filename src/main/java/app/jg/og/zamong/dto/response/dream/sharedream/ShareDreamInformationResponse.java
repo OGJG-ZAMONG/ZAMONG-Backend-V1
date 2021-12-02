@@ -40,6 +40,8 @@ public class ShareDreamInformationResponse implements Response {
 
     private final User user;
 
+    private final Boolean isLiked;
+
     @Builder
     @Getter
     public static class User {
