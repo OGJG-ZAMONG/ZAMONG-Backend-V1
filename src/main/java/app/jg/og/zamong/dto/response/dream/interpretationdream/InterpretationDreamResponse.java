@@ -22,6 +22,8 @@ public class InterpretationDreamResponse {
 
     private final LocalDateTime updatedAt;
 
+    private final Integer lucyCount;
+
     private final User user;
 
     @Builder

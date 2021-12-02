@@ -27,6 +27,8 @@ public class InterpretationDreamInformationResponse implements Response {
 
     private final User user;
 
+    private final Integer lucyCount;
+
     @Builder
     @Getter
     public static class User {
