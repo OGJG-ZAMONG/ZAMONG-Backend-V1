@@ -70,6 +70,7 @@ public class InterpretationDreamFindServiceImpl implements InterpretationDreamFi
                         .id(interpretationDream.getUser().getId())
                         .profile(interpretationDream.getUser().getProfile())
                         .build())
+                .lucyCount(interpretationDream.getLucyCount())
                 .build();
     }
 
@@ -90,6 +91,7 @@ public class InterpretationDreamFindServiceImpl implements InterpretationDreamFi
                         .id(interpretationDream.getUser().getId())
                         .profile(interpretationDream.getUser().getProfile())
                         .build())
+                .lucyCount(interpretationDream.getLucyCount())
                 .build();
     }
 }

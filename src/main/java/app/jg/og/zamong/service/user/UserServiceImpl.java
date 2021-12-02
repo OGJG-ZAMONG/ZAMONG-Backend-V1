@@ -1,9 +1,6 @@
 package app.jg.og.zamong.service.user;
 
-import app.jg.og.zamong.dto.request.ChangePasswordRequest;
-import app.jg.og.zamong.dto.request.CheckIdDuplicationRequest;
-import app.jg.og.zamong.dto.request.ResetPasswordRequest;
-import app.jg.og.zamong.dto.request.SendSimpleMailRequest;
+import app.jg.og.zamong.dto.request.*;
 import app.jg.og.zamong.dto.response.StringResponse;
 import app.jg.og.zamong.entity.redis.findpasswordtoken.FindPasswordToken;
 import app.jg.og.zamong.entity.redis.findpasswordtoken.FindPasswordTokenRepository;
