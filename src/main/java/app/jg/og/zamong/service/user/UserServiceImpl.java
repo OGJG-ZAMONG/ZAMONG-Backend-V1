@@ -1,6 +1,7 @@
 package app.jg.og.zamong.service.user;
 
 import app.jg.og.zamong.dto.request.*;
+import app.jg.og.zamong.dto.request.dream.LeaveUserRequest;
 import app.jg.og.zamong.dto.response.StringResponse;
 import app.jg.og.zamong.entity.redis.findpasswordtoken.FindPasswordToken;
 import app.jg.og.zamong.entity.redis.findpasswordtoken.FindPasswordTokenRepository;
@@ -92,8 +93,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void leaveUser() {
+    public void leaveUser(LeaveUserRequest request) {
         User user = securityContextService.getPrincipal().getUser();
+
+        if(!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
+            throw new BadUserInformationException("잘못된 비밀번호입니다");
+        }
 
         userRepository.delete(user);
     }

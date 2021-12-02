@@ -4,6 +4,7 @@ import app.jg.og.zamong.dto.request.ChangePasswordRequest;
 import app.jg.og.zamong.dto.request.CheckIdDuplicationRequest;
 import app.jg.og.zamong.dto.request.FollowUserRequest;
 import app.jg.og.zamong.dto.request.ResetPasswordRequest;
+import app.jg.og.zamong.dto.request.dream.LeaveUserRequest;
 import app.jg.og.zamong.dto.response.ResponseBody;
 import app.jg.og.zamong.service.securitycontext.SecurityContextService;
 import app.jg.og.zamong.service.user.UserService;
@@ -99,8 +100,8 @@ public class UserController {
     }
 
     @DeleteMapping
-    public void leave() {
-        userService.leaveUser();
+    public void leave(@Valid @RequestBody LeaveUserRequest request) {
+        userService.leaveUser(request);
     }
 
     @GetMapping("/search")
