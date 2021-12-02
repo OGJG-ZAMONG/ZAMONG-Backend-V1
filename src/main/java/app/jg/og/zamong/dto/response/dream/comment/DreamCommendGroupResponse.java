@@ -28,6 +28,8 @@ public class DreamCommendGroupResponse implements Response {
 
         private final String userProfile;
 
+        private final String userId;
+
         private final String content;
 
         private final Integer likeCount;

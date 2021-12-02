@@ -134,6 +134,7 @@ public class DreamCommentServiceImpl implements DreamCommentService {
                 .dateTime(comment.getDateTime())
                 .userUuid(comment.getIsAnonymous() == null || !comment.getIsAnonymous() ? comment.getUser().getUuid() : null)
                 .userProfile(comment.getIsAnonymous() == null || !comment.getIsAnonymous() ? comment.getUser().getProfile() : ANONYMOUS_PROFILE)
+                .userId(comment.getIsAnonymous() == null || !comment.getIsAnonymous() ? comment.getUser().getId() : "익명")
                 .likeCount(recommendRepository.countAllByCommentAndRecommendType(comment, RecommendType.LIKE))
                 .dislikeCount(recommendRepository.countAllByCommentAndRecommendType(comment, RecommendType.DISLIKE))
                 .isLike(recommendRepository.existsByCommentAndUserAndRecommendType(comment, user, RecommendType.LIKE))
