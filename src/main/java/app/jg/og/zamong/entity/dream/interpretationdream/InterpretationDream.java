@@ -12,6 +12,9 @@ import javax.persistence.Entity;
 @Getter
 @SuperBuilder
 @AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 public class InterpretationDream extends Dream {
+
+    private Integer lucyCount;
 }
