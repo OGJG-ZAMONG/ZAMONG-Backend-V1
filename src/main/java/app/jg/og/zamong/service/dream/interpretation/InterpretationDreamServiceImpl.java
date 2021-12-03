@@ -79,11 +79,17 @@ public class InterpretationDreamServiceImpl implements InterpretationDreamServic
     @Override
     @Transactional
     public CreateDreamResponse modifyInterpretationDream(String uuid, InterpretationDreamRequest request) {
+        User user = userRepository.save(securityContextService.getPrincipal().getUser());
+
         InterpretationDream interpretationDream = interpretationDreamRepository.findById(UUID.fromString(uuid))
                 .orElseThrow(() -> new DreamNotFoundException("해당하는 꿈을 찾을 수 없습니다"));
 
+        user.increaseLucy(interpretationDream.getLucyCount());
+        user.decreaseLucy(request.getLucyCount());
+
         interpretationDream.setTitle(request.getTitle());
         interpretationDream.setContent(request.getContent());
+        interpretationDream.setLucyCount(request.getLucyCount());
 
         dreamTypeRepository.deleteByDream(interpretationDream);
 
