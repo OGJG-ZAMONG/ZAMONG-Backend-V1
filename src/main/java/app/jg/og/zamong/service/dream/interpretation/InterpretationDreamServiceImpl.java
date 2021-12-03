@@ -118,6 +118,9 @@ public class InterpretationDreamServiceImpl implements InterpretationDreamServic
         user.decreaseLucy(interpretationDream.getLucyCount());
         comment.getUser().increaseLucy(interpretationDream.getLucyCount());
 
+        comment.setIsSelected(true);
+        interpretationDream.setIsInterpretation(true);
+
         return new StringResponse(interpretationDream.getLucyCount() + "루시를 전달하였습니다");
     }
 
