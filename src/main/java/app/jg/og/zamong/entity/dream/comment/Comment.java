@@ -38,6 +38,9 @@ public class Comment {
 
     private Boolean isAnonymous;
 
+    @Setter
+    private Boolean isSelected;
+
     @OneToMany(mappedBy = "pComment")
     @OrderBy("dateTime DESC")
     private List<Comment> comments;
