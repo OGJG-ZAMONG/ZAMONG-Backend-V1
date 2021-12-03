@@ -111,7 +111,7 @@ public class InterpretationDreamServiceImpl implements InterpretationDreamServic
         Comment comment = commentRepository.findById(request.getCommentUuid())
                 .orElseThrow(() -> new CommentNotFoundException("댓글을 찾을 수 없습니다"));
 
-        if(!interpretationDream.getUser().equals(user) || !comment.getDream().equals(interpretationDream) || !comment.getUser().equals(user)) {
+        if(!interpretationDream.getUser().equals(user) || !comment.getDream().equals(interpretationDream)) {
             throw new ForbiddenUserException("올바르지 않은 신원정보");
         }
 
