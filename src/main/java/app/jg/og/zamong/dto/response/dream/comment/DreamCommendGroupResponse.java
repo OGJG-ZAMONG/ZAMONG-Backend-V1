@@ -22,6 +22,8 @@ public class DreamCommendGroupResponse implements Response {
 
         private final Boolean isChecked;
 
+        private final Boolean isSelected;
+
         private final LocalDateTime dateTime;
 
         private final UUID userUuid;
