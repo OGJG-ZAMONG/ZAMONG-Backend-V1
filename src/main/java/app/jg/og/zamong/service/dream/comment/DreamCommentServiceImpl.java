@@ -132,6 +132,7 @@ public class DreamCommentServiceImpl implements DreamCommentService {
                 .isChecked(comment.getIsChecked())
                 .content(dreamCommentFilteringService.filteringComment(comment.getContent()))
                 .dateTime(comment.getDateTime())
+                .isSelected(comment.getIsSelected())
                 .userUuid(comment.getIsAnonymous() == null || !comment.getIsAnonymous() ? comment.getUser().getUuid() : null)
                 .userProfile(comment.getIsAnonymous() == null || !comment.getIsAnonymous() ? comment.getUser().getProfile() : ANONYMOUS_PROFILE)
                 .userId(comment.getIsAnonymous() == null || !comment.getIsAnonymous() ? comment.getUser().getId() : "익명")

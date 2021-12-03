@@ -86,6 +86,7 @@ public class InterpretationDreamFindServiceImpl implements InterpretationDreamFi
                 .updatedAt(interpretationDream.getUpdatedAt())
                 .dreamTypes(interpretationDream.getDreamTypes().stream().map(DreamType::getCode).collect(Collectors.toList()))
                 .attachmentImage(interpretationDream.getDefaultImage())
+                .isInterpretation(interpretationDream.getIsInterpretation())
                 .user(InterpretationDreamInformationResponse.User.builder()
                         .uuid(interpretationDream.getUser().getUuid())
                         .id(interpretationDream.getUser().getId())
