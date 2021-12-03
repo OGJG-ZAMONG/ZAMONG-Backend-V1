@@ -13,6 +13,7 @@ import javax.persistence.Entity;
 @Entity
 public class InterpretationDream extends Dream {
 
+    @Setter
     private Integer lucyCount;
 
     @Setter
