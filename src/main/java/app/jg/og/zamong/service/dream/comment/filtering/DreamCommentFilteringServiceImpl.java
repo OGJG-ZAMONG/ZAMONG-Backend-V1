@@ -28,7 +28,7 @@ public class DreamCommentFilteringServiceImpl implements DreamCommentFilteringSe
 
             if(content.contains(filterWord)) {
                 int s = filterWord.length();
-                content = content.replace(filterWord, "*".repeat(s));
+                content = content.replace(filterWord, "자" + "몽".repeat(s == 1 ? 1 : s - 1));
             }
         }
 
