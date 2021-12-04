@@ -17,5 +17,5 @@ public interface ShareDreamRepository extends PagingAndSortingRepository<ShareDr
     Page<ShareDream> findByIsSharedIsTrue(Pageable pageable);
     Page<ShareDream> findByUser(User user, Pageable pageable);
     Page<ShareDream> findByUserAndIsSharedIn(User user, List<Boolean> isShared, Pageable pageable);
-    Page<ShareDream> findByUserIn(List<User> users, Pageable pageable);
+    Page<ShareDream> findByUserInAndIsSharedTrue(List<User> users, Pageable pageable);
 }
