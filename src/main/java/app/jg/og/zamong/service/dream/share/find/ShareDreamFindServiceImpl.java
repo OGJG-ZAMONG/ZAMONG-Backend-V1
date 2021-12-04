@@ -146,12 +146,11 @@ public class ShareDreamFindServiceImpl implements ShareDreamFindService {
     public ShareDreamGroupResponse queryFollowShareDreams(int page, int size) {
         User user = securityContextService.getPrincipal().getUser();
 
-
         List<User> followings = followRepository.findAllByFollower(user).stream().map(Follow::getFollowing).collect(Collectors.toList());
 
         Pageable request = PageRequest.of(page, size, Sort.by("createdAt").descending());
 
-        Page<ShareDream> shareDreamPage = shareDreamRepository.findByUserIn(followings, request);
+        Page<ShareDream> shareDreamPage = shareDreamRepository.findByUserInAndIsSharedTrue(followings, request);
 
         List<ShareDreamResponse> shareDreamGroup = shareDreamPage
                 .map(sd -> ShareDreamResponse.builder()
@@ -161,6 +160,7 @@ public class ShareDreamFindServiceImpl implements ShareDreamFindService {
                         .defaultPostingImage(sd.getDefaultImage())
                         .isShared(sd.getIsShared())
                         .createdAt(sd.getCreatedAt())
+                        .userUuid(sd.getUser().getUuid())
                         .build())
                 .toList();
 
