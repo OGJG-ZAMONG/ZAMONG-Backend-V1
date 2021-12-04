@@ -112,7 +112,7 @@ public class UserServiceImpl implements UserService {
 
         findPasswordTokenRepository.save(new FindPasswordToken(email, findPasswordToken));
 
-        String changePasswordPageUrl = ZAMONG_URL + "?token=" + findPasswordToken;
+        String changePasswordPageUrl = ZAMONG_URL + "?token=" + findPasswordToken + "&email=" + email;
 
         SendSimpleMailRequest request = SendSimpleMailRequest.builder()
                 .address(email)
