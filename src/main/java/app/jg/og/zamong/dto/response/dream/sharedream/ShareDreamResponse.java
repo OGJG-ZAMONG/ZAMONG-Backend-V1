@@ -1,6 +1,5 @@
 package app.jg.og.zamong.dto.response.dream.sharedream;
 
-import app.jg.og.zamong.entity.dream.sharedream.ShareDream;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -16,6 +15,8 @@ public class ShareDreamResponse {
     private final String defaultPostingImage;
 
     private final String profile;
+
+    private final UUID userUuid;
 
     private final String title;
 
