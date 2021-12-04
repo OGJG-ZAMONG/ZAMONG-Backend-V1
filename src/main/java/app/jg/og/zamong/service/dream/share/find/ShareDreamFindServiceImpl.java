@@ -160,6 +160,7 @@ public class ShareDreamFindServiceImpl implements ShareDreamFindService {
                         .defaultPostingImage(sd.getDefaultImage())
                         .isShared(sd.getIsShared())
                         .createdAt(sd.getCreatedAt())
+                        .userUuid(sd.getUser().getUuid())
                         .build())
                 .toList();
 
