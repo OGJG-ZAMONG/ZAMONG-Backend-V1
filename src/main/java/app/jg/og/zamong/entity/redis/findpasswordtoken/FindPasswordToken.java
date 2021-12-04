@@ -8,7 +8,7 @@ import org.springframework.data.redis.core.index.Indexed;
 
 @Getter
 @AllArgsConstructor
-@RedisHash(timeToLive = 60)
+@RedisHash(timeToLive = 60 * 5)
 public class FindPasswordToken {
 
     @Id
