@@ -24,6 +24,7 @@ public class InterpretationDreamSearchRepositoryImpl extends QuerydslRepositoryS
                 .where(interpretationDream.title.contains(title)
                         .and(dreamType.code.in(dreamTypes)))
                 .orderBy(interpretationDream.createdAt.desc())
+                .distinct()
                 .fetch();
     }
 }

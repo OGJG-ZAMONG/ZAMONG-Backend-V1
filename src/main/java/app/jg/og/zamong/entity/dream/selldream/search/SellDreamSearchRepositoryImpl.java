@@ -24,6 +24,7 @@ public class SellDreamSearchRepositoryImpl extends QuerydslRepositorySupport imp
                 .where(sellDream.title.contains(title)
                         .and(dreamType.code.in(dreamTypes)))
                 .orderBy(sellDream.createdAt.desc())
+                .distinct()
                 .fetch();
     }
 }

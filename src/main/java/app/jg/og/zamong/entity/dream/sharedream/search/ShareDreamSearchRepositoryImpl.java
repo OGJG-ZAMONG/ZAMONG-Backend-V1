@@ -25,6 +25,7 @@ public class ShareDreamSearchRepositoryImpl extends QuerydslRepositorySupport im
                         .and(shareDream.isShared.isTrue()
                                 .and(dreamType.code.in(dreamTypes))))
                 .orderBy(shareDream.createdAt.desc())
+                .distinct()
                 .fetch();
     }
 }
