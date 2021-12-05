@@ -93,6 +93,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public void leaveUser(LeaveUserRequest request) {
         User user = securityContextService.getPrincipal().getUser();
 
