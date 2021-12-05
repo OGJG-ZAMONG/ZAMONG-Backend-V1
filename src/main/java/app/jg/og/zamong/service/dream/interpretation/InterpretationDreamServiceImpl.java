@@ -23,6 +23,7 @@ import app.jg.og.zamong.exception.business.CommentNotFoundException;
 import app.jg.og.zamong.exception.business.DreamNotFoundException;
 import app.jg.og.zamong.exception.business.ForbiddenUserException;
 import app.jg.og.zamong.exception.business.UserNotFoundException;
+import app.jg.og.zamong.service.file.FileSaveService;
 import app.jg.og.zamong.service.securitycontext.SecurityContextService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -44,6 +45,7 @@ public class InterpretationDreamServiceImpl implements InterpretationDreamServic
     private final CommentRepository commentRepository;
 
     private final SecurityContextService securityContextService;
+    private final FileSaveService fileSaveService;
 
     @Override
     @Transactional
@@ -66,6 +68,8 @@ public class InterpretationDreamServiceImpl implements InterpretationDreamServic
         attachmentImageRepository.save(AttachmentImage
                 .builder()
                 .tag(DreamTag.INTERPRETATION_DREAM)
+                .host(fileSaveService.queryHostName())
+                .path(FileSaveService.DEFAULT_IMAGES[(int)(System.currentTimeMillis() % 5)])
                 .dream(interpretationDream)
                 .build());
 

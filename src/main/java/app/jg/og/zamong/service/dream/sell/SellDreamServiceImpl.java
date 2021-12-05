@@ -23,6 +23,7 @@ import app.jg.og.zamong.entity.user.User;
 import app.jg.og.zamong.exception.business.DreamNotFoundException;
 import app.jg.og.zamong.exception.business.ForbiddenStatusSellDreamException;
 import app.jg.og.zamong.exception.business.ForbiddenUserException;
+import app.jg.og.zamong.service.file.FileSaveService;
 import app.jg.og.zamong.service.securitycontext.SecurityContextService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -44,6 +45,7 @@ public class SellDreamServiceImpl implements SellDreamService {
     private final SellDreamChattingRoomRepository sellDreamChattingRoomRepository;
 
     private final SecurityContextService securityContextService;
+    private final FileSaveService fileSaveService;
 
     @Override
     @Transactional
@@ -67,6 +69,8 @@ public class SellDreamServiceImpl implements SellDreamService {
         attachmentImageRepository.save(AttachmentImage
                 .builder()
                 .tag(DreamTag.SELL_DREAM)
+                .host(fileSaveService.queryHostName())
+                .path(FileSaveService.DEFAULT_IMAGES[(int)(System.currentTimeMillis() % 5)])
                 .dream(sellDream)
                 .build());
 

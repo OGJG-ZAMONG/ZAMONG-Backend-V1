@@ -68,6 +68,8 @@ public class ShareDreamServiceImpl implements ShareDreamService {
         attachmentImageRepository.save(AttachmentImage
                 .builder()
                 .tag(DreamTag.SHARE_DREAM)
+                .host(fileSaveService.queryHostName())
+                .path(FileSaveService.DEFAULT_IMAGES[(int)(System.currentTimeMillis() % 5)])
                 .dream(shareDream)
                 .build());
 
