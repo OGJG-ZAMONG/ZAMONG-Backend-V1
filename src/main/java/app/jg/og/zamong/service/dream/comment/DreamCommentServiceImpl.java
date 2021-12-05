@@ -145,6 +145,7 @@ public class DreamCommentServiceImpl implements DreamCommentService {
     }
 
     @Override
+    @Transactional
     public void doCommentRecommend(String uuid, DreamCommentRecommendRequest request) {
         User user = securityContextService.getPrincipal().getUser();
 
@@ -155,8 +156,13 @@ public class DreamCommentServiceImpl implements DreamCommentService {
                 .orElse(null);
 
         if(recommend != null) {
+            RecommendType recommendType = recommend.getRecommendType();
+
             recommendRepository.delete(recommend);
-            return;
+
+            if(recommendType == request.getType()) {
+                return;
+            }
         }
 
         recommendRepository.save(Recommend.builder()
