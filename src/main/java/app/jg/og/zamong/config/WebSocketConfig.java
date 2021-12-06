@@ -19,7 +19,8 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
                 "http://127.0.0.1:5500",
                 "http://localhost:3000",
                 "http://localhost:8080",
-                "http://www.zamong.app.s3-website.ap-northeast-2.amazonaws.com"
+                "http://www.zamong.app.s3-website.ap-northeast-2.amazonaws.com",
+                "https://zamong.org"
         ).withSockJS();
     }
 
