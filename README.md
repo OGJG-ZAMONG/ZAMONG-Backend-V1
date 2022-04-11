@@ -6,6 +6,17 @@
 
 프로젝트 설계에 관한 세부사항을 [OGJG-ZAMONG/ZAMONG-Backend-V1/wiki](https://github.com/OGJG-ZAMONG/ZAMONG-Backend-V1/wiki)에서 확인할 수 있습니다.
 
+## Description
+
+![나의 꿈](./docs/1.png)
+![꿈 상세](./docs/3.png)
+![꿈 목록](./docs/4.png)
+
+### Key Features
+* 꿈 기록 및 공유
+* 꿈 해몽
+* 꿈 판매
+
 ## Reference
 
 * [Spring boot Graceful Shutdown - 용감한 남매들 Tech Blog](https://bravenamme.github.io/2020/10/06/graceful-shutdown/)
